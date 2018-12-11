@@ -48,20 +48,33 @@ difference()
     {
        difference() 
       {
-         offset(r = 0) 
-          square(size = [camchamberw,camchamberh], center = false);
-         offset(r = -2) 
-          square(size = [camchamberw,camchamberh], center = false);
-         translate([camchamberw/2, camchamberh/2, 0])
-          square(size = [camchamberw,camchamberh*5/6], center = true);
+       offset(r = 0) 
+        square(size = [camchamberw,camchamberh], center = false);
+       offset(r = -2) 
+        square(size = [camchamberw,camchamberh], center = false);
+       translate([camchamberw/2, camchamberh/2, 0])
+        square(size = [camchamberw,camchamberh*5/6], center = true);
+      }
+    }
+    difference()
+    {
+      translate([camchamberw/2,camchamberh/2,-2])
+        cylinder(standoff+2,d=holediffuser+3);
+      translate([0,0,-3])
+        linear_extrude(height = standoff+3)
+        {
+          difference() 
+          {
+           offset(r = 0) 
+            square(size = [camchamberw,camchamberh], center = false);
+           offset(r = -2.5) 
+            square(size = [camchamberw,camchamberh], center = false);
+          }
         }
     }
-    
-    translate([camchamberw/2,camchamberh/2,])
-      cylinder(standoff,d=holediffuser+4);
   }
-  translate([camchamberw/2,camchamberh/2,-thickness/2])
-    cylinder((standoff+thickness)*2,d=holediffuser);
+  translate([camchamberw/2,camchamberh/2,-thickness/2-2])
+    cylinder((standoff+thickness+2)*2,d=holediffuser);
 }
 
 /* Camera Frame Model */
