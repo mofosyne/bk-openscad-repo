@@ -1,10 +1,13 @@
+$fn=30;
+
 /* Diffuser Lense For A Particular Project (OpenSCAD) */
-tol = 0.1;
+tol = 0.2;
 
 /* LED PCB */
 holedia   = 16;
 
 /* Diffuser spec */
+dheight = 20;
 thickness = 1.5;
 standoff = 1.5;
 holediffuser = holedia+4;
@@ -21,17 +24,15 @@ camchamberh = camchamberh_org - tol -1;
 /* Enclosure hole */
 enclosurew = 19;
 
-rotate([0,180])
-{
-
 /* Diffuser */
-translate([0, 1/2, 0])
 difference()
 {
   union()
   {
+    // Body
+    cube( [camchamberw,camchamberh, dheight]);
 
-    // Diffuser Body
+    // Grip
     translate([0, 0, standoff])
     {
       hull()
@@ -42,39 +43,15 @@ difference()
           cube([camchamberw+0.6,camchamberh,0.1], center = false);
       }
     }
-    
-    // Standoff
-    linear_extrude(height = standoff) 
-    {
-       difference() 
-      {
-       offset(r = 0) 
-        square(size = [camchamberw,camchamberh], center = false);
-       offset(r = -2) 
-        square(size = [camchamberw,camchamberh], center = false);
-       translate([camchamberw/2, camchamberh/2, 0])
-        square(size = [camchamberw,camchamberh*5/6], center = true);
-      }
-    }
-    difference()
-    {
-      translate([camchamberw/2,camchamberh/2,-2])
-        cylinder(standoff+2,d=holediffuser+2);
-      translate([0,0,-3])
-        linear_extrude(height = standoff+3)
-        {
-          difference() 
-          {
-           offset(r = 0) 
-            square(size = [camchamberw,camchamberh], center = false);
-           offset(r = -2.5) 
-            square(size = [camchamberw,camchamberh], center = false);
-          }
-        }
-    }
   }
-  translate([camchamberw/2,camchamberh/2,-thickness/2-2])
-    cylinder((standoff+thickness+2)*2,d=holediffuser);
+
+  translate([camchamberw_org/2,camchamberh_org/2,2])
+    linear_extrude(height = dheight, scale=4) 
+      circle(d=holediffuser);
+  
+  translate([camchamberw_org/2,camchamberh_org/2,0])
+    linear_extrude(height = dheight) 
+      circle(d=holediffuser);
 }
 
 /* Camera Frame Model */
@@ -93,6 +70,4 @@ union()
   }
   %translate([camchamberw_org/2,camchamberh_org/2,-thickness/2])
      cylinder(thickness,d=holedia);
-}
-
 }
