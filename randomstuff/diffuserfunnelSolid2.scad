@@ -9,7 +9,7 @@ holedia   = 16;
 /* Diffuser spec */
 dheight = 20;
 thickness = 1.5;
-standoff = 1.5;
+standoff = 3;
 holediffuser = holedia+4;
 
 /* Camera Chamber */
@@ -39,13 +39,13 @@ difference()
       {
         translate([0, 0, 0])
           cube([camchamberw,camchamberh,0.1], center = false);
-        translate([-0.6/2, 0, thickness])
+        translate([-0.6/2, 0, standoff])
           cube([camchamberw+0.6,camchamberh,0.1], center = false);
       }
     }
   }
 
-  translate([camchamberw_org/2,camchamberh_org/2,2])
+  translate([camchamberw_org/2,camchamberh_org/2, standoff])
     linear_extrude(height = dheight, scale=4) 
       circle(d=holediffuser);
   
