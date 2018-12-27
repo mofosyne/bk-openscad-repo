@@ -1,5 +1,5 @@
 /* Diffuser Lense For A Particular Project (OpenSCAD) */
-tol = 0.1;
+tol = 0.4;
 
 /* LED PCB */
 ledpcbw = 26.7;
@@ -17,9 +17,9 @@ ledw = 5;
 
 
 /* Mask spec */
-thickness = 0.4;
+thickness = 1;
 standoff = 1.5;
-holediffuser = holedia+2;
+holediffuser = holedia+3;
 
 /* Camera Chamber */
 camchamberw_org = 27;
@@ -35,7 +35,7 @@ enclosurew = 19;
 
 
 /* LED MASK */
-//rotate([0,180,0])
+rotate([0,180,0])
 translate([0,tol,0])
 difference()
 { union()
@@ -54,13 +54,13 @@ difference()
 
     // CAM SUPPORT
     translate([camchamberw/2,camchamberh/2,0])
-      cylinder(thickness,d=holediffuser+3);
+      cylinder(thickness,d=holediffuser+2);
     translate([0,camchamberh/2 -1,0])
       cube([camchamberw,2,thickness]);
     
     // CAM MASK
     translate([camchamberw/2,camchamberh/2,-orginal_diffuser_h])
-      cylinder(orginal_diffuser_h,d=holediffuser+0.5);
+      cylinder(orginal_diffuser_h,d=holediffuser+2);
     
     // LED MASK AREA
     translate([ledpcbw/2 - ledw/2,0,0])

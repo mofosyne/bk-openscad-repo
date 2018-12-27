@@ -1,6 +1,7 @@
 // Customizable Dummy Battery (AAA, AA, C, D, user defined)(Remixed)
 // Original author by Eansdar https://www.thingiverse.com/thing:2650806/
-// Remixed by mofosyne to print as one piece avoiding overhangs
+// Remixed by mofosyne to print as one piece avoiding overhangs, as well as
+//   improving tolerances and adding polarity symbols.
 ////////////////////////////////////////////////////////////////////////////////
 //
 // https://en.wikipedia.org/wiki/List_of_battery_sizes
@@ -22,7 +23,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-battery_type    = "D" ; // [AAA,AA,C,D,Generic,Demo]
+battery_type    = "Demo" ; // [AAA,AA,C,D,Generic,Demo]
+
+/* Global Settings */
+base_thickness = 1.5;
 
 /* [Settings for Generic Battery (mm)] */
 body_radius     =  7.0 ; // [4:0.1:20]
@@ -64,44 +68,67 @@ $fs =  0.4 ;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-module battery(batt)
+module plussymbol(s,t)
 {
-  difference()
+  cube([t,s,s/3], center=true);
+  cube([t,s/3,s], center=true);
+}
+module negsymbol(s,t)
+{
+  cube([t,s,s/3], center=true);
+}
+
+module battery(batt)
+{ 
+  union()
   {
-    union()
-    {
-      cylinder(h=batt[cHeight], r=batt[cRadius]); // outer
-      translate([0,0,batt[cHeight]-0.1])
-      {
-	cylinder(h=batt[cPin]+0.1, r1=batt[cRadius], r2=batt[cRadius]/4 ) ; // pin on top
-      }
-    }
-    
-    /* Inner Hollow */
     difference()
     {
-      translate([0, 0, batt[cWidth]]) cylinder(h=batt[cHeight]-2*batt[cWidth], r=batt[cRadius]-batt[cWidth]) ;  // inner
-      translate([+batt[cRadius]/2+batt[cWire], -batt[cRadius], 0]) cube([(batt[cRadius])/2,2*(batt[cRadius]),batt[cHeight]]);
-    }
+      union()
+      {
+        cylinder(h=batt[cHeight], r=batt[cRadius]); // outer
+        translate([0,0,batt[cHeight]-0.1])
+        {
+    cylinder(h=batt[cPin]+0.1, r1=batt[cRadius], r2=batt[cRadius]/4 ) ; // pin on top
+        }
+      }
+      
+      /* Polarity */ 
 
-    /* Base */
-    translate([+batt[cRadius]*2/3+batt[cWire], -batt[cRadius], -1]) cube([(batt[cRadius])/2,2*(batt[cRadius]),batt[cHeight]+2]);
-    
-    /* Wires */
-    translate([ batt[cRadius]/3, 0,-batt[cRadius]]) { cylinder(h=batt[cHeight]  +2*batt[cRadius], d=batt[cWire]) ; } // wire 1
-    translate([-batt[cRadius]/3, 0,-batt[cRadius]]) { cylinder(h=batt[cHeight]  +2*batt[cRadius], d=batt[cWire]) ; } // wire 2
-    translate([0, batt[cRadius]/2,-batt[cRadius]])  { cylinder(h=batt[cHeight]/2+2*batt[cRadius], d=batt[cWire]) ; } // neg terminal wire 3
-    translate([0,-batt[cRadius]/2,-batt[cRadius]])  { cylinder(h=batt[cHeight]/2+2*batt[cRadius], d=batt[cWire]) ; } // neg terminal wire 4
+      translate([batt[cRadius]*2/3+batt[cWire]-base_thickness,0,batt[cHeight]*5/6])
+        plussymbol(batt[cRadius]/2, base_thickness/2);
+      translate([batt[cRadius]*2/3+batt[cWire]-base_thickness,0,batt[cHeight]/6])
+        negsymbol(batt[cRadius]/2, base_thickness/2);
 
-    /* Cut-Out */
-    hull()
-    {
-      translate([-batt[cRadius], batt[cRadius], batt[cRadius]+batt[cWidth]])
-        rotate([90,0,0])
-        cylinder(h=2*batt[cRadius], r=batt[cRadius]) ;
-      translate([-batt[cRadius], batt[cRadius], batt[cHeight]-batt[cRadius]-batt[cWidth]])
-        rotate([90,0,0])
-        cylinder(h=2*batt[cRadius], r=batt[cRadius]) ;
+
+      /* Inner Hollow */
+      difference()
+      {
+        translate([0, 0, batt[cWidth]]) cylinder(h=batt[cHeight]-2*batt[cWidth], r=batt[cRadius]-batt[cWidth]) ;  // inner
+        translate([batt[cRadius]*2/3+batt[cWire]-base_thickness, -batt[cRadius], 0])
+          cube([base_thickness*2,2*(batt[cRadius]),batt[cHeight]]);
+      }
+
+      /* Base */
+      translate([batt[cRadius]*2/3+batt[cWire], -batt[cRadius], -1]) 
+        cube([(batt[cRadius])/2,2*(batt[cRadius]),batt[cHeight]+2]);
+      
+      /* Wires */
+      translate([ batt[cRadius]/3, 0,-batt[cRadius]]) { cylinder(h=batt[cHeight]  +2*batt[cRadius], d=batt[cWire]) ; } // wire 1
+      translate([-batt[cRadius]/3, 0,-batt[cRadius]]) { cylinder(h=batt[cHeight]  +2*batt[cRadius], d=batt[cWire]) ; } // wire 2
+      translate([0, batt[cRadius]/2,-batt[cRadius]])  { cylinder(h=batt[cHeight]/2+2*batt[cRadius], d=batt[cWire]) ; } // neg terminal wire 3
+      translate([0,-batt[cRadius]/2,-batt[cRadius]])  { cylinder(h=batt[cHeight]/2+2*batt[cRadius], d=batt[cWire]) ; } // neg terminal wire 4
+
+      /* Cut-Out */
+      hull()
+      {
+        translate([-batt[cRadius], batt[cRadius], batt[cRadius]+batt[cWidth]])
+          rotate([90,0,0])
+          cylinder(h=2*batt[cRadius], r=batt[cRadius]) ;
+        translate([-batt[cRadius], batt[cRadius], batt[cHeight]-batt[cRadius]-batt[cWidth]])
+          rotate([90,0,0])
+          cylinder(h=2*batt[cRadius], r=batt[cRadius]) ;
+      }
     }
   }
 }
