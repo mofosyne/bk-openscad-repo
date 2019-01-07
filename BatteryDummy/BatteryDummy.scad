@@ -23,16 +23,21 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+// battery type (for the 'Generic' type set the values in the 'Generic Battery' section below)
 battery_type    = "Demo" ; // [AAA,AA,C,D,Generic,Demo]
 
-/* Global Settings */
-base_thickness = 1.5;
-
 /* [Settings for Generic Battery (mm)] */
-body_radius     =  7.0 ; // [4:0.1:20]
-body_height     = 48.4 ; // [35:0.1:60]
+// diameter of the body
+body_diameter   = 14.5 ; // [8:0.1:40]
+// height of body plus pin
+body_height     = 50.5 ; // [35:0.1:60]
+// width of the body wall
 body_wall_width =  1.2 ; // [0.7:0.1:5]
+// diameter of the pin
+pin_diameter    =  5.5 ; // [3:0.1:12]
+// height of the pin
 pin_height      =  1.0 ; // [0.7:0.1:2.5]
+// diameter of the holes for the wire
 wire_diameter   =  1.2 ; // [0.7:0.1:2]
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -40,31 +45,42 @@ wire_diameter   =  1.2 ; // [0.7:0.1:2]
 /* [Hidden] */
 
 // column index into Batt
-cName   = 0 ; // name
-cRadius = 1 ; // body radius
-cHeight = 2 ; // body height
-cWidth  = 3 ; // wall width
-cPin    = 4 ; // pin height
-cWire   = 5 ; // wire diameter
+cName        = 0 ; // name
+cDiameter    = 1 ; // body diameter
+cHeight      = 2 ; // body height (incl pin height)
+cWidth       = 3 ; // wall width
+cPinDiameter = 4 ; // pin diameter
+cPinHeight   = 5 ; // pin width
+cWire        = 6 ; // wire diameter
 
 /*
-  D   Overall Length: 61.5mm (http://data.energizer.com/pdfs/e95.pdf)
-  C   Overall Length: 50.0mm (http://data.energizer.com/pdfs/e93.pdf)
-  AA  Overall Length: 50.5mm (http://data.energizer.com/pdfs/e91.pdf)
-  AAA Overall Length: 44.5mm (http://data.energizer.com/pdfs/l92.pdf)
+  Dimensions:
+
+  D   http://data.energizer.com/pdfs/e95.pdf
+      http://professional.duracell.com/downloads/datasheets/product/Industrial/Industrial%20D.pdf
+  C   http://data.energizer.com/pdfs/e93.pdf
+      http://professional.duracell.com/downloads/datasheets/product/Industrial/Industrial%20C.pdf
+  AA  http://data.energizer.com/pdfs/e91.pdf
+      http://professional.duracell.com/downloads/datasheets/product/Industrial/Industrial%20AA.pdf
+  AAA http://data.energizer.com/pdfs/l92.pdf
+      http://professional.duracell.com/downloads/datasheets/product/Industrial/Industrial%20AAA.pdf
 */
 
 // Note: Battery length is the height of the battery body and plus the pin height.
 Batt =
-[ // name, radi, heig, wid, pin, wire
-  [ "D"  , 17.1, 60.0, 1.5, 1.5, 1.2 ],
-  [ "C"  , 13.1, 48.5, 1.5, 1.5, 1.2 ],
-  [ "AA" ,  7  , 49.5, 1.2, 1  , 1.2 ],
-  [ "AAA",  5.2, 43.7, 1  , 0.8, 1.2 ]
+[ // name, diam, heig, wid, pinD, pinH, wire
+  [ "D"  , 34.2, 61.5, 1.5,  9.5,  1.5, 1.2 ],
+  [ "C"  , 26.2, 50.0, 1.5,  7.5,  1.5, 1.2 ],
+  [ "AA" , 14.5, 50.5, 1.2,  5.5,  1.0, 1.2 ],
+  [ "AAA", 10.5, 44.5, 1.0,  3.8,  0.8, 1.2 ]
 ] ;
 
 $fa =  5 ;
 $fs =  0.4 ;
+
+////////////////////////////////////////////////////////////////////////////////
+
+base_thickness = 1.5;
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -79,55 +95,62 @@ module negsymbol(s,t)
 }
 
 module battery(batt)
-{ 
+{
+  batt_radius = batt[cDiameter] / 2 ;
+  batt_height = batt[cHeight];
+  batt_pin_height = batt[cPinHeight];
+  batt_pin_diameter = batt[cPinDiameter];
+  batt_wire_diameter = batt[cWire];
+  batt_wall_width = batt[cWidth];
+
   union()
   {
     difference()
     {
       union()
       {
-        cylinder(h=batt[cHeight], r=batt[cRadius]); // outer
-        translate([0,0,batt[cHeight]-0.1])
+        cylinder(h=batt_height, r=batt_radius); // outer
+        translate([0,0,batt_height-0.1])
         {
-    cylinder(h=batt[cPin]+0.1, r1=batt[cRadius], r2=batt[cRadius]/4 ) ; // pin on top
+          cylinder(h=batt_pin_height+0.1, r1=batt_radius, r2=batt_pin_diameter/2 ) ; // pin on top
         }
       }
-      
-      /* Polarity */ 
 
-      translate([batt[cRadius]*2/3+batt[cWire]-base_thickness,0,batt[cHeight]*5/6])
-        plussymbol(batt[cRadius]/2, base_thickness/2);
-      translate([batt[cRadius]*2/3+batt[cWire]-base_thickness,0,batt[cHeight]/6])
-        negsymbol(batt[cRadius]/2, base_thickness/2);
+      /* Polarity */
+
+      translate([batt_radius*2/3+batt_wire_diameter-base_thickness,0,batt_height*5/6])
+        plussymbol(batt_radius/2, base_thickness/2);
+      translate([batt_radius*2/3+batt_wire_diameter-base_thickness,0,batt_height/6])
+        negsymbol(batt_radius/2, base_thickness/2);
 
 
       /* Inner Hollow */
       difference()
       {
-        translate([0, 0, batt[cWidth]]) cylinder(h=batt[cHeight]-2*batt[cWidth], r=batt[cRadius]-batt[cWidth]) ;  // inner
-        translate([batt[cRadius]*2/3+batt[cWire]-base_thickness, -batt[cRadius], 0])
-          cube([base_thickness*2,2*(batt[cRadius]),batt[cHeight]]);
+        translate([0, 0, batt_wall_width]) cylinder(h=batt_height-2*batt_wall_width, r=batt_radius-batt_wall_width) ;  // inner
+        translate([batt_radius*2/3+batt_wire_diameter-base_thickness, -batt_radius, 0])
+          cube([base_thickness*2,2*(batt_radius),batt_height]);
       }
 
       /* Base */
-      translate([batt[cRadius]*2/3+batt[cWire], -batt[cRadius], -1]) 
-        cube([(batt[cRadius])/2,2*(batt[cRadius]),batt[cHeight]+2]);
-      
+      translate([batt_radius*2/3+batt_wire_diameter, -batt_radius, -1])
+        cube([(batt_radius)/2,2*(batt_radius),batt_height+2]);
+
       /* Wires */
-      translate([ batt[cRadius]/3, 0,-batt[cRadius]]) { cylinder(h=batt[cHeight]  +2*batt[cRadius], d=batt[cWire]) ; } // wire 1
-      translate([-batt[cRadius]/3, 0,-batt[cRadius]]) { cylinder(h=batt[cHeight]  +2*batt[cRadius], d=batt[cWire]) ; } // wire 2
-      translate([0, batt[cRadius]/2,-batt[cRadius]])  { cylinder(h=batt[cHeight]/2+2*batt[cRadius], d=batt[cWire]) ; } // neg terminal wire 3
-      translate([0,-batt[cRadius]/2,-batt[cRadius]])  { cylinder(h=batt[cHeight]/2+2*batt[cRadius], d=batt[cWire]) ; } // neg terminal wire 4
+      translate([ batt_pin_diameter*2/3, 0,-batt_radius]) { cylinder(h=batt_height  +2*batt_radius, d=batt_wire_diameter) ; } // wire 1
+      translate([-batt_pin_diameter*2/3, 0,-batt_radius]) { cylinder(h=batt_height  +2*batt_radius, d=batt_wire_diameter) ; } // wire 2
+      translate([0, batt_pin_diameter/2,-batt_radius])  { cylinder(h=batt_height/2+2*batt_radius, d=batt_wire_diameter) ; } // neg terminal wire 3
+      translate([0,-batt_pin_diameter/2,-batt_radius])  { cylinder(h=batt_height/2+2*batt_radius, d=batt_wire_diameter) ; } // neg terminal wire 4
 
       /* Cut-Out */
       hull()
       {
-        translate([-batt[cRadius], batt[cRadius], batt[cRadius]+batt[cWidth]])
+        translate([-batt_radius, batt_radius, batt_radius+batt_wall_width])
           rotate([90,0,0])
-          cylinder(h=2*batt[cRadius], r=batt[cRadius]) ;
-        translate([-batt[cRadius], batt[cRadius], batt[cHeight]-batt[cRadius]-batt[cWidth]])
+          cylinder(h=2*batt_radius, r=batt_radius) ;
+        translate([-batt_radius, batt_radius, batt_height-batt_radius-batt_wall_width])
           rotate([90,0,0])
-          cylinder(h=2*batt[cRadius], r=batt[cRadius]) ;
+          cylinder(h=2*batt_radius, r=batt_radius) ;
       }
     }
   }
@@ -135,7 +158,7 @@ module battery(batt)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-module batteryType(battery_type, body_radius, body_height, body_wall_width, pin_height, wire_diameter)
+module batteryType(battery_type, body_diameter, body_height, body_wall_width, pin_diameter, pin_height, wire_diameter)
 {
   idx = search([battery_type], Batt) ;
   if (idx != [[]])
@@ -144,10 +167,10 @@ module batteryType(battery_type, body_radius, body_height, body_wall_width, pin_
   }
   else if (battery_type == "Demo")
   {
-    iD   = search(["D"  ], Batt) ;   rD   = Batt[iD  [0]][cRadius] ;
-    iC   = search(["C"  ], Batt) ;   rC   = Batt[iC  [0]][cRadius] ;
-    iAA  = search(["AA" ], Batt) ;   rAA  = Batt[iAA [0]][cRadius] ;
-    iAAA = search(["AAA"], Batt) ;   rAAA = Batt[iAAA[0]][cRadius] ;
+    iD   = search(["D"  ], Batt) ;   rD   = Batt[iD  [0]][cDiameter] / 2 ;
+    iC   = search(["C"  ], Batt) ;   rC   = Batt[iC  [0]][cDiameter] / 2 ;
+    iAA  = search(["AA" ], Batt) ;   rAA  = Batt[iAA [0]][cDiameter] / 2 ;
+    iAAA = search(["AAA"], Batt) ;   rAAA = Batt[iAAA[0]][cDiameter] / 2 ;
 
     dD   =   rD                              ; translate([-rD  , dD  , 0]) batteryType("D"  ) ;
     dC   = 2*rD +   rC                  + 10 ; translate([-rC  , dC  , 0]) batteryType("C"  ) ;
@@ -156,7 +179,7 @@ module batteryType(battery_type, body_radius, body_height, body_wall_width, pin_
   }
   else
   {
-    battery(["Generic", body_radius, body_height, body_wall_width, pin_height, wire_diameter]) ;
+    battery(["Generic", body_diameter, body_height, body_wall_width, pin_diameter, pin_height, wire_diameter]) ;
   }
 }
 
@@ -164,7 +187,7 @@ module batteryType(battery_type, body_radius, body_height, body_wall_width, pin_
 
 rotate([0,0,180])
 rotate([0, 90, 0])
-  batteryType(battery_type, body_radius, body_height, body_wall_width, pin_height, wire_diameter) ;
+  batteryType(battery_type, body_diameter, body_height, body_wall_width, pin_height, wire_diameter) ;
 
 ////////////////////////////////////////////////////////////////////////////////
 // EOF
