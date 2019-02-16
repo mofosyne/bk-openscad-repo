@@ -11,7 +11,7 @@ holder_base_thickness=0.8; /* Thickness of base */
 holder_hole_size=8; /* Size of the leaflet holder */
 
 // Leaflet Reference Dimentions
-leaflet_w=100;//mm
+leaflet_w=115;//mm (e.g. letter width is around 110mm )
 leaflet_l=220;//mm
 
 // Calc
