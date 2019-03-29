@@ -11,11 +11,10 @@ Remixed from https://www.thingiverse.com/thing:1563872/files
 opal_base_mm = 1;
 
 // Height of the tip part of the opal [mm]
-opal_top_height = 1;
+opal_top_height = 2;
 
 // Diameter of the threaded part of the opal [mm]
-opalBaseDia = 6; // REMOVE
-opal_oval_width = 4;
+opal_oval_width = 3;
 opal_oval_length = 5;
 
 // Quantity of opals in X-direction
@@ -30,7 +29,7 @@ widthDistance = 5;
 lengthDistance = 5;
 
 // General inaccuracy for the opal holes. Reduce to get a tighter fit [mm]
-inaccuracy = 0.3;
+inaccuracy = 1;
 
 opalBaseDia_w_ina = opal_oval_width + inaccuracy;
 opalBaseDia_l_ina = opal_oval_length + inaccuracy;
@@ -148,7 +147,8 @@ module case()
     }
   }
 
-  union() {
+  union() 
+  {
     // bottom surfaces
     for (i = [-centerY, centerY]) {
       translate([0,i,0]) {
@@ -156,29 +156,29 @@ module case()
       }
     }
 
-    translate([0,0,coverThickness-eps]) {
-
-            // base
-      translate([0,centerY,0]) {
+    translate([0,0,coverThickness-eps]) 
+    {
+      // base
+      translate([0,centerY,0]) 
+      {
         rrectTube(h=opal_base_mm+eps, ow=baseWidth, ol=baseLength, or=baseRadius, t=sidewallWidth);
-            
-            //lid
-                translate([0,0,opal_base_mm])
-                rrectTube(h=lidInsetHeight+eps, ow=interiorWidth - lidInsetOffset, ol=interiorLength - lidInsetOffset, or=interiorFillet - lidInsetOffset/2, t=sidewallWidth);
 
-            // opalcase
-                difference() {
-                    rrect(h=opal_base_mm, w=baseWidth, l=baseLength, r=baseRadius);
-                    opals_dimples();
-                } 
+        //lid  
+        translate([0,0,opal_base_mm])
+        rrectTube(h=lidInsetHeight+eps, ow=interiorWidth - lidInsetOffset, ol=interiorLength - lidInsetOffset, or=interiorFillet - lidInsetOffset/2, t=sidewallWidth);
+
+        // opalcase
+        difference() 
+        {
+            rrect(h=opal_base_mm, w=baseWidth, l=baseLength, r=baseRadius);
+            #opals_dimples();
+        } 
       }
-            
 
-      
-      translate([0,-centerY,0]) {
-
-             // lid   
-                rrectTube(h=opal_top_height+eps, ow=baseWidth, ol=baseLength, or=baseRadius, t=sidewallWidth);
+      translate([0,-centerY,0]) 
+      {
+        // lid   
+        rrectTube(h=opal_top_height+eps, ow=baseWidth, ol=baseLength, or=baseRadius, t=sidewallWidth);
       }
     }
 
