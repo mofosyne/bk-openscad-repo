@@ -7,6 +7,8 @@ Remixed from https://www.thingiverse.com/thing:1563872/files
 
 /*[opal Settings]*/
 
+opal_stand_mm = 2;
+
 // Height of the threaded part of the opal [mm]
 opal_base_mm = 1;
 
@@ -24,9 +26,9 @@ width_number = 1;
 length_number = 1;
 
 // Distance between and at the edges of the opal holes in X-direction [mm]
-widthDistance = 6;
+widthDistance = 10;
 // Distance between and at the edges of the opal holes in Y-direction [mm]
-lengthDistance = 5;
+lengthDistance = 10;
 
 // General inaccuracy for the opal holes. Reduce to get a tighter fit [mm]
 inaccuracy = 1;
@@ -66,7 +68,7 @@ interiorWidth = width_number * opalBaseDia_w_ina + (width_number+1) * widthDista
 interiorLength = length_number * opalBaseDia_l_ina + (length_number+1) * lengthDistance + sidewallWidth;
 
 // Height of the case in mm (interior dimension)
-interiorHeight = opal_base_mm + opal_top_height + 0.6;
+interiorHeight = opal_stand_mm + opal_top_height + 1;
 
 /*[Details]*/
 
@@ -92,6 +94,38 @@ $fn = 20; // resolution
 eps = 0.1;
 
 
+module oval_stand(oval_w, oval_l, oval_base_depth, height, inaccuracy)
+{
+  // calc
+  oval_w_ina = oval_w + inaccuracy;
+  oval_l_ina = oval_l + inaccuracy;
+
+  base_w_ina = oval_w*2;
+  base_l_ina = oval_l*2;
+  
+  module ovalshape(w,l,h)
+  {
+    linear_extrude(h)
+      resize(newsize=[w,l,1]) 
+        circle(r=1);
+  }
+  
+  difference()
+  {
+    hull()
+    {
+      ovalshape(base_w_ina*2, base_l_ina*2, 0.1);
+      
+      translate([0,0,height])
+        rotate([-10,0,0])
+          ovalshape(oval_w_ina, oval_l_ina, 1);
+    }
+    
+    #translate([0,0,height])
+      rotate([-10,0,0])
+        ovalshape(oval_w_ina, oval_l_ina, oval_base_depth);
+  }
+}
 
 
 module case()
@@ -161,18 +195,18 @@ module case()
       // base
       translate([0,centerY,0]) 
       {
-        rrectTube(h=opal_base_mm+eps, ow=baseWidth, ol=baseLength, or=baseRadius, t=sidewallWidth);
 
         //lid  
-        translate([0,0,opal_base_mm])
+        translate([0,0,0])
         rrectTube(h=lidInsetHeight+eps, ow=interiorWidth - lidInsetOffset, ol=interiorLength - lidInsetOffset, or=interiorFillet - lidInsetOffset/2, t=sidewallWidth);
 
         // opalcase
         difference() 
         {
-            rrect(h=opal_base_mm, w=baseWidth, l=baseLength, r=baseRadius);
-            #opals_dimples();
+            //rrect(h=opal_base_mm, w=baseWidth, l=baseLength, r=baseRadius);
+            //#opals_dimples();
         } 
+        oval_stand(opalBaseDia_w_ina,opalBaseDia_l_ina,opal_base_mm,2,inaccuracy);
       }
 
       translate([0,-centerY,0]) 
