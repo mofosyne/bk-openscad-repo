@@ -5,12 +5,12 @@
 //hole = 2.8; // Arduino
 hole = 2.5; // Raspberry Pi
 
-marginT = 0.5; // Controls the size of the grip
+marginT = 0.6; // Controls the size of the grip
 marginB = marginT;
-skirt = 3;
+skirt = 1;
 rise = 10;
 bump = 1;
-thick = 11;
+thick = 1;
 
 slotAngle = 20;
 slot = hole * sin(slotAngle);
@@ -18,7 +18,7 @@ shave = hole * (1 - cos(slotAngle));
 
 eps = 0.1;
 
-Repeat(4, 1, hole + marginB + skirt + 1, rise + rise + 1) translate([0, 0, hole/2 - shave]) rotate([-90, 0, 0]) HoleClip();
+Repeat(2, 1, hole + marginB + skirt + 1, rise + rise + 1) translate([0, 0, hole/2 - shave]) rotate([-90, 0, 0]) HoleClip();
 
 module Repeat(count_x, count_y, size_x, size_y) {
 	for (i = [0 : count_x - 1]) {
@@ -30,6 +30,8 @@ module Repeat(count_x, count_y, size_x, size_y) {
 }
 
 module HoleClip() {
+  union()
+  {
     difference() {
         union() {
             cylinder( d = hole + marginB, h = thick, $fn=20);
@@ -41,11 +43,22 @@ module HoleClip() {
         }
         
         // Slot Cut
-        slot_depth = 5+bump*2; // Adjust based on material
-        translate([-slot / 2, -(hole + marginB + eps)/2, rise + thick + bump * 2 - slot_depth]) cube([slot, hole + marginB + eps, slot_depth]);
+        slot_depth = 7+bump*2; // Adjust based on material
+        translate([-slot / 2, -(hole + marginB + eps)/2, rise + thick + bump * 2 - slot_depth+eps]) cube([slot, hole + marginB + eps, slot_depth]);
         
+        translate([0, +(hole + marginB + eps)/2, rise + thick + bump * 2 - slot_depth+eps])
+          rotate([90,0,0]) cylinder(r=(slot)/2, h = hole + marginB + eps, $fn=30);
+
+
+        // Center Cut
+        translate([0, 0, thick - eps])
+          cylinder(d = hole/2, h = rise + bump * 2 + 2, $fn=20);
+
         // Top and bottom cut
-        translate([-(hole + marginB + skirt)/2, hole/2 - shave, -eps]) cube([hole + marginB + skirt, marginB + skirt, rise + rise + eps * 2+bump*2]);
-        translate([-(hole + marginB + skirt)/2, -hole/2 + shave - (marginB + skirt), rise/4]) cube([hole + marginB + skirt, marginB + skirt, rise +  rise + eps * 2 + bump*2]);
+        translate([-(hole + marginB + skirt)/2, hole*4/10 - shave, -eps]) 
+          cube([hole + marginB + skirt, marginB + skirt, rise + thick+bump * 2+10]);
+        translate([-(hole + marginB + skirt)/2, -hole/2 + shave - (marginB + skirt), rise/4]) 
+          cube([hole + marginB + skirt, marginB + skirt, rise +  rise + eps * 2 + bump*2]);
     }
+  }
 }
