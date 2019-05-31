@@ -19,7 +19,7 @@ bottomcut = 6;
 
 /* Wrap Spec */
 shell_thickness = 1; // Shell Thickness
-sep = 10; // Seperation between wrapper earphone slots
+sep = 15; // Seperation between wrapper earphone slots
 
 /* calc h value based on wire estimated length 
 est_wrap_count = 7; // Number of times you can wrap it around
@@ -33,7 +33,7 @@ echo("<b>est wire length:</b>", calc_wire_length);
 h = bottomcut + uppercut + (calc_wire_length/2)/desired_wrap_count;
 */
 
-h = 50;
+h = 60;
 
 module typec_socket(outerdia, outerheight, sideshift, tol)
 {
@@ -41,8 +41,8 @@ module typec_socket(outerdia, outerheight, sideshift, tol)
   typec_pluglength = 8.3;
   typec_plugdepth  = 6.5;
   plug_socket(
-      typec_plugdia+tol, typec_pluglength+tol*2,typec_plugdepth+tol,
-      outerdia, outerheight, sideshift+tol*2
+      typec_plugdia+tol, typec_pluglength+0.5+tol,typec_plugdepth+tol,
+      outerdia, outerheight, outerdia/2 + sideshift+0.5+tol
     );
   
   echo("<b>usb type-c rim width:</b>", (outerdia - typec_plugdia)/2);
@@ -50,7 +50,7 @@ module typec_socket(outerdia, outerheight, sideshift, tol)
 
 module plug_socket(plugdia, pluglength, plugdepth, outerdia, outerheight, sideshift)
 {
-  translate([0,-sideshift,0])
+  translate([0, -sideshift,0])
   difference()
   {
     union()
@@ -65,7 +65,7 @@ module plug_socket(plugdia, pluglength, plugdepth, outerdia, outerheight, sidesh
             cylinder(r = outerdia/2, outerheight);
           
           /* Side Shift */
-          translate([0, sideshift,0])
+          translate([0,(pluglength-plugdia)/2 + sideshift,0])
             cylinder(r = outerdia/2, outerheight);
         }
       }
@@ -106,6 +106,8 @@ module plug_socket(plugdia, pluglength, plugdepth, outerdia, outerheight, sidesh
           rotate([0,90,0])
             cylinder(r=1, outerdia, center=true);
       }
+      
+      if (0)
       rotate([0,0,180])
         translate([(outerheight+4)/2,0,(outerheight+2)/2])
           cube((outerheight+4), center=true); 
@@ -144,12 +146,12 @@ module earphone_wrap()
       }
       
       /* Socket */
-      translate([0,-sep/2,0])
+      translate([0,-(sep + earphone_dia + shell_thickness*2)/2,0])
         typec_socket(
             earphone_dia+shell_thickness*2,
             10,
-            sep/2 + earphone_dia,
-            0.5
+            (earphone_dia+shell_thickness*2)/2,
+            0.1
           );
     }
     
