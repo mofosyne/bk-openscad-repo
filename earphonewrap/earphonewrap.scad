@@ -1,7 +1,16 @@
 $fn=100;
+/*
+Object Name: OpenSCAD earphone wrap for USB type-c
+Author: Brian Khuu 2019
+
+This is a design based from "iPhone 7 Earphone Wrap" by 80am33 https://www.thingiverse.com/thing:2161135
+
+However it was redone to support a USB type-c plug instead. And also to be done in OpenSCAD to allow for easier modification by others in the future.
+
+*/
 
 /* Earphone dimention specification */
-earphone_dia = 4.5;  // Diameter of earphone handle
+earphone_dia = 5;  // Diameter of earphone handle
 earphone_sit_r = 4;  // Radius of cutout for headphone alignment
 
 /* Wrap Top/Bottom Cuts */
@@ -12,7 +21,7 @@ bottomcut = 6;
 shell_thickness = 1; // Shell Thickness
 sep = 10; // Seperation between wrapper earphone slots
 
-/* calc h value based on wire estimated length */
+/* calc h value based on wire estimated length 
 est_wrap_count = 7; // Number of times you can wrap it around
 est_hand_size = 65; // Size of your hand you are wrapping around
 est_hand_thickness = 15; // Size of your hand you are wrapping around
@@ -22,17 +31,18 @@ calc_wire_length = est_wrap_count*(2*est_hand_size+2*est_hand_thickness);
 echo("<b>est wire length:</b>", calc_wire_length);
 
 h = bottomcut + uppercut + (calc_wire_length/2)/desired_wrap_count;
-echo("<b>h:</b>", h);
+*/
 
+h = 50;
 
 module typec_socket(outerdia, outerheight, sideshift, tol)
 {
-  typec_plugdia    = 2.44;
-  typec_pluglength = 8.25;
+  typec_plugdia    = 2.5;
+  typec_pluglength = 8.3;
   typec_plugdepth  = 6.5;
   plug_socket(
-      typec_plugdia+tol, typec_pluglength+tol,typec_plugdepth+tol,
-      outerdia, outerheight, sideshift
+      typec_plugdia+tol, typec_pluglength+tol*2,typec_plugdepth+tol,
+      outerdia, outerheight, sideshift+tol*2
     );
   
   echo("<b>usb type-c rim width:</b>", (outerdia - typec_plugdia)/2);
@@ -69,9 +79,9 @@ module plug_socket(plugdia, pluglength, plugdepth, outerdia, outerheight, sidesh
           cylinder(r=(outerdia/2), 1);
         translate([0,-(pluglength-plugdia)/2,0])
           cylinder(r=(outerdia/2), 1);
-        translate([0,(pluglength-plugdia)/2,-0.5])
+        translate([0,(pluglength-plugdia)/2,-1])
           cylinder(r=(plugdia/2), 1);
-        translate([0,-(pluglength-plugdia)/2,-0.5])
+        translate([0,-(pluglength-plugdia)/2,-1])
           cylinder(r=(plugdia/2), 1);
       }
 
@@ -139,7 +149,7 @@ module earphone_wrap()
             earphone_dia+shell_thickness*2,
             10,
             sep/2 + earphone_dia,
-            0.1
+            0.5
           );
     }
     
@@ -191,3 +201,4 @@ module earphone_wrap()
 earphone_wrap();
 xtotal = shell_thickness*2+earphone_dia;
 echo("<b>x total:</b>", xtotal);
+echo("<b>h:</b>", h);
