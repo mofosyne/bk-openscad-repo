@@ -42,14 +42,14 @@ h = bottomcut + uppercut + (calc_wire_length/2)/desired_wrap_count;
 */
 
 // Height of the earphone wrap
-h = 60;
+h = 65;
 
 module typec_socket(outerdia, outerheight, sideshift, tol)
 {
   typec_plugdia    = 2.5;
   typec_pluglength = 8.3;
   typec_plugdepth  = 6.5;
-  plug_socket(
+  plug_inc_trrs_socket(
       typec_plugdia+tol, typec_pluglength+0.5+tol,typec_plugdepth+tol,
       outerdia, outerheight, outerdia/2 + sideshift+0.5+tol
     );
@@ -57,8 +57,11 @@ module typec_socket(outerdia, outerheight, sideshift, tol)
   echo("<b>usb type-c rim width:</b>", (outerdia - typec_plugdia)/2);
 }
 
-module plug_socket(plugdia, pluglength, plugdepth, outerdia, outerheight, sideshift)
+module plug_inc_trrs_socket(plugdia, pluglength, plugdepth, outerdia, outerheight, sideshift)
 {
+  trrs_plugdia    = 3.5-0.01; //Make slightly smaller for snug fit
+  trrs_plugdepth  = 15;
+
   translate([0, -sideshift,0])
   difference()
   {
@@ -94,6 +97,18 @@ module plug_socket(plugdia, pluglength, plugdepth, outerdia, outerheight, sidesh
           cylinder(r=(plugdia/2), 1);
       }
 
+    /* TRRS Cut */
+    translate([0,0,outerheight])
+    hull()
+    {
+      translate([0,0,-plugdepth])
+      cylinder(r=(trrs_plugdia)*2/3, plugdepth);
+      translate([0,0,-plugdepth-1])
+      cylinder(r=(trrs_plugdia/2), 1);
+    }
+    translate([0,0,outerheight-trrs_plugdepth])
+      cylinder(r=(trrs_plugdia/2), trrs_plugdepth+1);
+
     /* Socket Cut */
     translate([0,0,outerheight-plugdepth])
       hull()
@@ -110,12 +125,13 @@ module plug_socket(plugdia, pluglength, plugdepth, outerdia, outerheight, sidesh
       hull()
       {
         translate([0,0,outerheight])
-          cube( [outerdia+1, pluglength*2/3, 0.1], center=true);
-        translate([0,0,outerheight-plugdepth+1])
+          cube( [outerdia+1, trrs_plugdia*2/3, 0.1], center=true);
+        translate([0,0,outerheight-trrs_plugdepth+1])
           rotate([0,90,0])
             cylinder(r=1, outerdia, center=true);
       }
       
+      // Enable to cut only on one side
       if (0)
       rotate([0,0,180])
         translate([(outerheight+4)/2,0,(outerheight+2)/2])
@@ -158,7 +174,7 @@ module earphone_wrap()
       translate([0,-(sep + earphone_dia + shell_thickness*2)/2,0])
         typec_socket(
             earphone_dia+shell_thickness*2,
-            10,
+            20,
             (earphone_dia+shell_thickness*2)/2,
             0.1
           );
