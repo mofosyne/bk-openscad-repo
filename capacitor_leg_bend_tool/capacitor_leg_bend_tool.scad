@@ -22,7 +22,7 @@ capl=31;
 cap_pin_spacing=7.5;
 
 // Capacitor Pin Diameter
-cap_pin_dia=1.4;
+cap_pin_dia=1.1;
 
 /** Object Spec **/
 
@@ -103,8 +103,8 @@ difference()
         cube([1,leg_guide,base_h+cap_radius/2]);
 
       translate([cap_radius-cap_pin_spacing/2 - 1/2 + pin_offset_1*pin_pitch-1,0,0])
-        cube([1,leg_guide,1]);        
+        cube([1,leg_guide+1,1]);        
       translate([cap_radius+cap_pin_spacing/2 - 1/2 + pin_offset_2*pin_pitch+1,0,0])
-        cube([1,leg_guide,1]);
+        cube([1,leg_guide+1,1]);
     }
 }
