@@ -21,10 +21,13 @@ capl=31;
 // Capacitor Pin Spacing
 cap_pin_spacing=7.5;
 
+// Capacitor Pin Diameter
+cap_pin_dia=1.1;
+
 /** Object Spec **/
 
 // Base Height
-base_h=10;
+base_h=1;
 
 // Leg Guide Length
 leg_guide=5;
@@ -57,31 +60,31 @@ difference()
     union()
     {
       rotate([-90,0,0])
-        cylinder(r=0.5, h=4);
-      translate([-0.5,-0.5,0])
-        cube([1,4,2]);
+        cylinder(r=cap_pin_dia/2, h=4);
+      translate([-cap_pin_dia/2,-0.5,0])
+        cube([cap_pin_dia,4,2]);
     }
 
     translate([cap_radius+cap_pin_spacing/2,leg_guide,cap_radius+base_h])
     union()
     {
       rotate([-90,0,0])
-        cylinder(r=0.5, h=4);
-      translate([-0.5,-0.5,0])
-        cube([1,4,2]);
+        cylinder(r=cap_pin_dia/2, h=4);
+      translate([-cap_pin_dia/2,-0.5,0])
+        cube([cap_pin_dia,4,2]);
     }
     
-    // Cap Bevel
+    // Cap Pin Bevel
     translate([cap_radius-cap_pin_spacing/2,leg_guide,cap_radius+base_h])
     rotate([-90,0,0])
-    cylinder(r1=1, r2=0.5, h=1);
+    cylinder(r1=cap_pin_dia, r2=cap_pin_dia/2, h=1);
     
     translate([cap_radius+cap_pin_spacing/2,leg_guide,cap_radius+base_h])
     rotate([-90,0,0])
-    cylinder(r1=1, r2=0.5, h=1);
+    cylinder(r1=cap_pin_dia, r2=cap_pin_dia/2, h=1);
     
     // Jig Ledge
-    translate([0,0,base_h+cap_radius/3])
+    translate([0,0,base_h+cap_radius/2])
     cube([capd,leg_guide,cap_radius+base_h]);
 
     // Pin Gap
@@ -90,6 +93,18 @@ difference()
       translate([cap_radius-cap_pin_spacing/2 - 1/2 + pin_offset_1*pin_pitch,0,0])
         cube([1,leg_guide,base_h+cap_radius/2]);        
       translate([cap_radius+cap_pin_spacing/2 - 1/2 + pin_offset_2*pin_pitch,0,0])
+        cube([1,leg_guide,base_h+cap_radius/2]);        
+    }
+    hull()
+    {
+      translate([cap_radius-cap_pin_spacing/2 - 1/2 + pin_offset_1*pin_pitch,0,0])
+        cube([1,leg_guide,base_h+cap_radius/2]);        
+      translate([cap_radius+cap_pin_spacing/2 - 1/2 + pin_offset_2*pin_pitch,0,0])
         cube([1,leg_guide,base_h+cap_radius/2]);
+
+      translate([cap_radius-cap_pin_spacing/2 - 1/2 + pin_offset_1*pin_pitch-1,0,0])
+        cube([1,leg_guide+1,1]);        
+      translate([cap_radius+cap_pin_spacing/2 - 1/2 + pin_offset_2*pin_pitch+1,0,0])
+        cube([1,leg_guide+1,1]);
     }
 }
