@@ -145,11 +145,11 @@ module rpi_camera_model() {
 module cam_holder(thickness, rotate, hull_base)
 {
   fn=30;
-  pressfit_h=7;
+  pressfit_h=5;
   
   // Simulated Camera
-  %rotate([rotate,0,0])translate([0 ,0,thickness+2]) rpi_camera_model();
- 
+  %rotate([rotate,0,0])translate([0 ,0,thickness+1]) rpi_camera_model();
+  
   xs = 25.0;  // width of PCB
   ys = 23.85-7;  // height of PCB
   zs = 0.95;  // thickness of bare PCB, not including soldermask
@@ -173,14 +173,13 @@ module cam_holder(thickness, rotate, hull_base)
    cube([xs,ys,thickness]);
    translate([mhox,mhoy,0]) 
    {  // through holes
-      translate([0,0,0])        cylinder(d1=ID1*1.3,d2=ID1*0.7,h=pressfit_h,$fn=fn);     
-      translate([mhxc,0,0])     cylinder(d1=ID1*1.3,d2=ID1*0.7,h=pressfit_h,$fn=fn);
-      translate([mhxc,mhyc,0])  cylinder(d1=ID1*1.3,d2=ID1*0.7,h=pressfit_h,$fn=fn);
-      translate([0,mhyc,0])     cylinder(d1=ID1*1.3,d2=ID1*0.7,h=pressfit_h,$fn=fn);
+      translate([0,0,0])        cylinder(d1=ID1*1.1,d2=ID1*0.8,h=pressfit_h,$fn=fn);     
+      translate([mhxc,0,0])     cylinder(d1=ID1*1.1,d2=ID1*0.8,h=pressfit_h,$fn=fn);
+      translate([mhxc,mhyc,0])  cylinder(d1=ID1*1.1,d2=ID1*0.8,h=pressfit_h,$fn=fn);
+      translate([0,mhyc,0])     cylinder(d1=ID1*1.1,d2=ID1*0.8,h=pressfit_h,$fn=fn);
    }
  }
 }
-
 
 union()
 {
