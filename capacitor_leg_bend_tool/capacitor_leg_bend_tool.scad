@@ -90,21 +90,18 @@ difference()
     // Pin Gap
     hull()
     {
-      translate([cap_radius-cap_pin_spacing/2 - 1/2 + pin_offset_1*pin_pitch,0,0])
-        cube([1,leg_guide,base_h+cap_radius/2]);        
-      translate([cap_radius+cap_pin_spacing/2 - 1/2 + pin_offset_2*pin_pitch,0,0])
-        cube([1,leg_guide,base_h+cap_radius/2]);        
+      translate([cap_radius-cap_pin_spacing/2 - cap_pin_dia/2 + pin_offset_1*pin_pitch,0,base_h+cap_radius/2])
+        cube([cap_pin_dia,leg_guide,1]);        
+      translate([cap_radius-cap_pin_spacing/2 - cap_pin_dia + pin_offset_1*pin_pitch,0,0])
+        cube([cap_pin_dia*2,leg_guide+1,1]);        
     }
+
     hull()
     {
-      translate([cap_radius-cap_pin_spacing/2 - 1/2 + pin_offset_1*pin_pitch,0,0])
-        cube([1,leg_guide,base_h+cap_radius/2]);        
-      translate([cap_radius+cap_pin_spacing/2 - 1/2 + pin_offset_2*pin_pitch,0,0])
-        cube([1,leg_guide,base_h+cap_radius/2]);
-
-      translate([cap_radius-cap_pin_spacing/2 - 1/2 + pin_offset_1*pin_pitch-1,0,0])
-        cube([1,leg_guide+1,1]);        
-      translate([cap_radius+cap_pin_spacing/2 - 1/2 + pin_offset_2*pin_pitch+1,0,0])
-        cube([1,leg_guide+1,1]);
+      translate([cap_radius+cap_pin_spacing/2 - cap_pin_dia/2 + pin_offset_2*pin_pitch,0,base_h+cap_radius/2])
+        cube([cap_pin_dia,leg_guide,1]);
+      translate([cap_radius+cap_pin_spacing/2 - cap_pin_dia + pin_offset_2*pin_pitch,0,0])
+        cube([cap_pin_dia*2,leg_guide+1,1]);        
     }
+    
 }
