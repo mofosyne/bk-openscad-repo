@@ -3,7 +3,7 @@ $fn=20;
 /* Debug Clip Req */
 
 bh = 2; // base thickness
-st = 1.5; // side thickness
+st = 1; // side thickness
 mt = 2; // middle thickness
 
 /* probe pin spec */
@@ -11,7 +11,8 @@ ppext = 3; // Probe extention length
 ppbody = 13; // Body of the probe
 ppdia = 1; // probe pin diameter
 
-ppdiatol = 0.8; // tolerance for fitting
+ppdiatol = 0.7; // tolerance for fitting
+ppdiaoutset = ppext*2/3; // How far to space out to allow for side fits
 
 /* Castellated Module Pin Spacing and count */
 ppc = 18; // pin pair count
@@ -38,18 +39,22 @@ pcb_h = 2; // pcb thickness
 
 /* calc */
 boxx = fps + ppc * pps + pps-0.5;
-boxy = st*2 + ppdia*2 + mody + (ppbody + ppext + 10) + modtol;
+boxy = st*2 + mody + (ppbody + ppdiaoutset)*2;
 boxh = bh+mod_top_depth + mod_pcb_thickness + mod_bottom_depth+0.5;
 
 ppexth = ppext/2;
 
 module probe_pin_req()
 {
-  inset=ppext/2;
-  translate([0,0,-ppbody-inset])
+  inset=0;
+  translate([0,0,-ppbody])
   union()
   {
-    #cylinder(r=(ppdia+ppdiatol)/2, h=ppbody+inset);
+    #cylinder(r=(ppdia+ppdiatol)/2, h=2-0.5);
+    translate([0,0,2-0.5])
+    #cylinder(r1=(ppdia+ppdiatol/2)/2,r2=(ppdia+ppdiatol)/2, h=0.5);
+    translate([0,0,2])
+      #cylinder(r=(ppdia+ppdiatol)/2, h=ppbody-2+0.1);
     %color("gold") cylinder(r=ppdia/2, h=ppbody);
     %color("silver") translate([0,0,ppbody])
       cylinder(r=ppdia/2, r2=0, h=ppext);
@@ -63,70 +68,66 @@ module half_dual_castellation_probe_programmer()
   insert_pcb_offset = ppext*2/3;
   leglength = modcutx - 1;
   joint_spacing = 0.5;
-  
-  module clip_spring()
-  {
-      cube([6,cap_leg_t, 1 + pit_depth+insert_pcb_offset+pcb_h+5]);
-      translate([0, 1.5 ,0])
-      rotate([0,90,0])
-        linear_extrude(height = 6)
-          polygon([[0,0],[-2,-0.5],[-2,-1.5],[0, -2] ]);
-  }
-  
-  union()
-  {    
 
-    /* Clip Body */
-    difference() {
-      union()
-      {
-        cube([boxx,boxy/2,boxh]);
-      }
+  /* Module Visualisation */
+  %color("green",0.25) cube([modx+pps,(mody)/2, bh + (ppdia+ppdiatol)/2]);
 
-      /* Probe Access Cutout */
-      translate([-1, 0, 0]) 
-        union()
-        {
-          top_depth = bh + mod_pcb_thickness + mod_top_depth;
-          translate([0,(ppbody/2)/2+(mody+modtol)/2,0])
-          cube([modx+pps+1,ppbody/2, bh]);
-        }
+  /* Clip Body */
+  difference() {
 
-      /* Module Cutout */
-      translate([-1, 0, 0]) 
-        union()
-        {
-          top_depth = bh + (ppdia+ppdiatol)/2;
-          cube([modx+pps+1,(mody)/2, top_depth]);
-          translate([0, 0, top_depth]) 
-          cube([modx+pps+1,(mody-ppdia*4)/2, mod_bottom_depth]);
-        }
-
-      /* Probe */
-      for ( xi = [0 : 1 : ppc-1] )
-      {
-        translate([fps+pps*xi, 0, bh])
-        union()
-        {
-          translate([0, (mody)/2, 0])
-            rotate([90,0,0])
-            probe_pin_req();
-        }
-      }
+    // Body
+    difference() 
+    {
+      cube([boxx,boxy/2,boxh]);
       
-      /* Extra Probes On Top (I needed this for a specific board) */
-      translate([fps+pps*ppc+pps/4, 0, bh])
+      /* Probe Access Cutout */
+      translate([-1, 1, -0.01]) 
+        union()
+        {
+          translate([0,(mody+modtol)/2+ppdiaoutset,0])
+          cube([modx+pps+1,ppbody*2/3, bh]);
+        }
+    }
+
+    /* Module Cutout (For ease during preview)*/
+    translate([0, 0, -1]) 
+      cube([modx+pps+1,(mody)/2+ppdiaoutset, 2]);
+
+    /* Module Cutout */
+    translate([-1, 0, 0]) 
       union()
       {
-        for ( yi = [1 : 1 : 4] )
-        {
-          translate([0, (pps/4)+(pps*yi), 0])
-            rotate([0,-90,0])
-            probe_pin_req();
-        }
+        top_depth = bh + (ppdia+ppdiatol)/2;
+        cube([modx+pps+1,(mody)/2+ppdiaoutset, top_depth]);
+        translate([0, 0, top_depth]) 
+        cube([modx+pps+1,(mody-ppdia*4)/2, mod_bottom_depth]);
+      }
+
+    /* Probe */
+    for ( xi = [0 : 1 : ppc-1] )
+    {
+      translate([fps+pps*xi, 0, bh])
+      union()
+      {
+        translate([0, (mody)/2+ppdiaoutset, 0])
+          rotate([90,0,0])
+          probe_pin_req();
+      }
+    }
+    
+    /* Extra Probes On Top (I needed this for a specific board) */
+    translate([fps+pps*ppc+pps/4, 0, bh])
+    union()
+    {
+      for ( yi = [1 : 1 : 4] )
+      {
+        translate([0, (pps/4)+(pps*yi), 0])
+          rotate([0,-90,0])
+          probe_pin_req();
       }
     }
   }
+
 }
 
 module dual_castellation_probe_programmer()

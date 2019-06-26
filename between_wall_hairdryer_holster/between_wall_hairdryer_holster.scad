@@ -1,14 +1,26 @@
 $fn=50;
+/*
+  Between Wall Hairdryer Holster
+  Author: Brian Khuu 2019
+  
+  Good for some bathroom to use the dead space between walls.
+  E.g. Mirrors with walls that are next to another wall.
 
-// length of mounting strip base
-sx = 15; 
-// widith of mounting strip base
-sy = 50  ;
-// height of mounting strip base
-sh = 2  ;
+*/
 
+// Width of the space between the walls you have.
 side_wall_lim=90;
 
+// length of mounting strip base
+sx = 15;
+
+// widith of mounting strip base
+sy = 50;
+
+// height of mounting strip base
+sh = 2;
+
+/* This was for a different concept
 module hairdryer_ring_old()
 {
   ring_rotate=45;
@@ -26,6 +38,7 @@ module hairdryer_ring_old()
     circle(r=1);
   }
 }
+*/
 
 module hairdryer_ring()
 {
@@ -36,10 +49,6 @@ module hairdryer_ring()
   translate([side_wall_lim/2,0,0])
     cylinder(r=side_wall_lim*0.8/2, h=100, center=true);
 }
-
-
-
-
 
 difference()
 {
@@ -53,7 +62,6 @@ difference()
       cube([side_wall_lim,0.001,0.001], center=true);
     translate([side_wall_lim/2,-sx/2-20,sy/2+10])  
       cube([side_wall_lim,1,1], center=true);
-
   }
   
   #hairdryer_ring();
@@ -73,9 +81,7 @@ difference()
     cube([1,sx,sy*2], center=true);
 }
 
-
-
-// Bathroom Walls
+// Bathroom Walls Visualisation
 %translate([-1/2,0,0])
   cube([1,100,100], center=true);
 %translate([side_wall_lim+1/2,0,0])
