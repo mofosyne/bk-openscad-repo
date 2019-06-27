@@ -6,9 +6,8 @@ $fn=20;
   Allows for quick connects without soldering to castellation based PCBs. This is useful for testing or quick programming.
 */
 
-/* Debug Clip Req */
-
-bh = 2; // base thickness
+base_thickness = 1; // Base thickness
+bh = 2; // Top thickness
 st = 2; // side thickness
 mt = 2; // middle thickness
 
@@ -46,7 +45,7 @@ pcb_h = 2; // pcb thickness
 /* calc */
 boxx = fps + ppc * pps + pps-0.5;
 boxy = st*2 + mody + (ppbody + ppdiaoutset)*2;
-boxh = bh+mod_top_depth + mod_pcb_thickness + mod_bottom_depth+0.5;
+boxh = bh+mod_top_depth + mod_pcb_thickness + mod_bottom_depth+base_thickness;
 
 ppexth = ppext/2;
 
