@@ -1,9 +1,15 @@
 $fn=20;
+/*
+  Dual Castellation Programmer Jig Via Probes
+  Author: Brian Khuu 2019
+  
+  Allows for quick connects without soldering to castellation based PCBs. This is useful for testing or quick programming.
+*/
 
 /* Debug Clip Req */
 
 bh = 2; // base thickness
-st = 1; // side thickness
+st = 2; // side thickness
 mt = 2; // middle thickness
 
 /* probe pin spec */
@@ -11,7 +17,7 @@ ppext = 3; // Probe extention length
 ppbody = 13; // Body of the probe
 ppdia = 1; // probe pin diameter
 
-ppdiatol = 0.7; // tolerance for fitting
+ppdiatol = 0.6; // tolerance for fitting
 ppdiaoutset = ppext*2/3; // How far to space out to allow for side fits
 
 /* Castellated Module Pin Spacing and count */
@@ -50,11 +56,10 @@ module probe_pin_req()
   translate([0,0,-ppbody])
   union()
   {
-    #cylinder(r=(ppdia+ppdiatol)/2, h=2-0.5);
-    translate([0,0,2-0.5])
-    #cylinder(r1=(ppdia+ppdiatol/2)/2,r2=(ppdia+ppdiatol)/2, h=0.5);
-    translate([0,0,2])
-      #cylinder(r=(ppdia+ppdiatol)/2, h=ppbody-2+0.1);
+    translate([0,0,-1])
+    #cylinder(r1=(ppdia)/2,r2=(ppdia+ppdiatol)/2, h=2);
+    translate([0,0,1])
+      #cylinder(r=(ppdia+ppdiatol)/2, h=ppbody+0.1);
     %color("gold") cylinder(r=ppdia/2, h=ppbody);
     %color("silver") translate([0,0,ppbody])
       cylinder(r=ppdia/2, r2=0, h=ppext);
@@ -70,7 +75,7 @@ module half_dual_castellation_probe_programmer()
   joint_spacing = 0.5;
 
   /* Module Visualisation */
-  %color("green",0.25) cube([modx+pps,(mody)/2, bh + (ppdia+ppdiatol)/2]);
+  ///%color("green",0.25) cube([modx+pps,(mody)/2, bh + (ppdia+ppdiatol)/2]);
 
   /* Clip Body */
   difference() {
@@ -81,11 +86,11 @@ module half_dual_castellation_probe_programmer()
       cube([boxx,boxy/2,boxh]);
       
       /* Probe Access Cutout */
-      translate([-1, 1, -0.01]) 
+      translate([-1, 2, -0.01]) 
         union()
         {
           translate([0,(mody+modtol)/2+ppdiaoutset,0])
-          cube([modx+pps+1,ppbody*2/3, bh]);
+            cube([modx+pps+1,ppbody*2/3, bh]);
         }
     }
 
