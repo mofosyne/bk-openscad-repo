@@ -101,7 +101,7 @@ module half_dual_castellation_probe_programmer()
         {
           translate([0, 0,base_thickness+mod_bottom_depth*3/4]) 
             cube([modx+pps+1,(mody-ppdia*4)/2-1, mod_bottom_depth]);
-          #translate([0, 0,base_thickness+mod_bottom_depth]) 
+          translate([0, 0,base_thickness+mod_bottom_depth]) 
             cube([modx+pps+1,(mody-ppdia*4)/2+0.5, mod_bottom_depth]);
         }
         translate([0, 0, base_thickness+mod_bottom_depth]) 
