@@ -19,7 +19,11 @@ ppbody = 25; // Body of the probe
 ppdia = 1.5; // probe pin diameter
 
 ppdiatol = 0.5; // tolerance for fitting
-ppdiaoutset = ppext/2; // How far to space out to allow for side fits
+ppinset = 2;
+
+ppdiaoutset = ppext-ppinset; // How far to space out to allow for side fits
+
+echo(ppdiaoutset);
 
 /* Castellated Module Pin Spacing and count */
 ppc = 18; // pin pair count
@@ -33,6 +37,7 @@ mody = 27.5; // module y length
 modcutx = 48.3; // module y length cutout area
 modcuty = 18.9; // module y length cutout area
 
+mod_side_clearance = 2.5; // Too large and you can't slide the pcb into the jig if there is parts on the bottom. Too small and you don't have support.
 mod_pcb_thickness = 0.8; //0.8
 mod_bottom_depth = 4;
 modh = mod_pcb_thickness + mod_bottom_depth+1.5; // Module depth required
@@ -48,15 +53,13 @@ boxx = fps + ppc * pps + pps-0.5;
 boxy = st*2 + mody + (ppbody + ppdiaoutset)*2;
 boxh = bh+modh+base_thickness;
 
-ppexth = ppext/2;
-
 module probe_pin_req()
 {
   inset=0;
   translate([0,0,-ppbody])
   union()
   {
-    translate([0,0,-1])
+    translate([0,0,1])
     cylinder(r1=(ppdia)/2,r2=(ppdia+ppdiatol)/2, h=3);
     translate([0,0,2])
       cylinder(r=(ppdia+ppdiatol)/2, h=ppbody+ppext+1);
@@ -69,7 +72,7 @@ module probe_pin_req()
 module half_dual_castellation_probe_programmer()
 {
   /* Module Visualisation */
-  //%translate([0, 0, base_thickness+mod_bottom_depth+ppdiatol/2])color("green",0.25) cube([modx+pps,(mody)/2, mod_pcb_thickness]);
+  %translate([0, 0, base_thickness+mod_bottom_depth+ppdiatol/2])color("green",0.25) cube([modx+pps,(mody)/2, mod_pcb_thickness]);
 
   /* Clip Body */
   difference() {
@@ -82,29 +85,17 @@ module half_dual_castellation_probe_programmer()
       union()
       {
         translate([0,(mody+modtol)/2+ppdiaoutset+2,0])
-          cube([modx+pps+1,ppbody*2/5, 10]);
+          cube([modx+pps+1,ppbody*1/3, 10]);
       }
       
     /* Module Cutout */
     translate([-1, 0, 0]) 
       union()
-      {        
-        hull()
-        {
-          translate([0, 0, base_thickness]) 
-            cube([modx+pps+1,(mody-ppdia*4)/2-1, 1]);
-          translate([0, 0,base_thickness+mod_bottom_depth*3/4]) 
-            cube([modx+pps+1,(mody-ppdia*4)/2-1, mod_bottom_depth]);
-        }
-        hull()
-        {
-          translate([0, 0,base_thickness+mod_bottom_depth*3/4]) 
-            cube([modx+pps+1,(mody-ppdia*4)/2-1, mod_bottom_depth]);
-          translate([0, 0,base_thickness+mod_bottom_depth]) 
-            cube([modx+pps+1,(mody-ppdia*4)/2+0.5, mod_bottom_depth]);
-        }
+      {     
+        translate([0, 0,base_thickness]) 
+          cube([modx+pps+1,(mody-mod_side_clearance)/2, mod_bottom_depth]);   
         translate([0, 0, base_thickness+mod_bottom_depth]) 
-          cube([modx+pps+1,(mody)/2+ppdiaoutset+2, 10]);
+          cube([modx+pps+1,(mody)/2+ppdiaoutset, 10]);
       }
       
     /* Probe */
@@ -116,9 +107,12 @@ module half_dual_castellation_probe_programmer()
         translate([0, (mody)/2+ppdiaoutset, mod_pcb_thickness/2])
           rotate([90,0,0])
           probe_pin_req();
-        translate([0, (mody)/2-1, mod_pcb_thickness/2])
+        
+        //if(0)
+        translate([0, (mody)/2+ppdiaoutset, mod_pcb_thickness/2])
           rotate([180,0,0])
-            cube([ppdia,mody/2,ppdia+0.5], center=true);
+            translate([0, ((mody)/2+ppdiaoutset)/2, 0])
+              cube([ppdia,((mody)/2+ppdiaoutset),ppdia+1], center=true);
       }
     }
     
@@ -126,8 +120,8 @@ module half_dual_castellation_probe_programmer()
     for ( xii = [0 : 1 : ppc-1] )
     {
       translate([fps+pps*xii, boxy/2+1, base_thickness+mod_bottom_depth+ppdia+1.5])
-        rotate([90,0,0])
-          cylinder(r=(2)/2, h=15);
+        rotate([93,0,0])
+          cylinder(r=(1.6)/2, h=15);
     }
   }
 }
