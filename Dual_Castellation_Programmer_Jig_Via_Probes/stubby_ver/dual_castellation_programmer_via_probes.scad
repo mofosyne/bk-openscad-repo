@@ -21,9 +21,6 @@ ppdia = 1.5; // probe pin diameter
 ppdiatol = 0.6; // tolerance for fitting
 ppdiaoutset = ppext*2/3+0.5; // How far to space out to allow for side fits
 
-echo("ppdiaoutset:");
-echo(ppdiaoutset);
-
 /* Castellated Module Pin Spacing and count */
 ppc = 18; // pin pair count
 pps = 2.54; // spacing between each pair of probes
@@ -36,10 +33,9 @@ mody = 27.5; // module y length
 modcutx = 48.3; // module y length cutout area
 modcuty = 18.9; // module y length cutout area
 
-mod_top_depth = 0; // Also means how much of the top to show
 mod_pcb_thickness = 0.8; //0.8
 mod_bottom_depth = 4;
-modh = mod_top_depth + mod_pcb_thickness + mod_bottom_depth; // Module depth required
+modh = mod_pcb_thickness + mod_bottom_depth; // Module depth required
 
 /* Clip */
 clip_tab = 5; // Clip tab to more easily open the clip
@@ -50,7 +46,7 @@ pcb_h = 2; // pcb thickness
 /* calc */
 boxx = fps + ppc * pps + pps-0.5;
 boxy = st*2 + mody + (ppbody + ppdiaoutset)*2;
-boxh = bh+mod_top_depth + mod_pcb_thickness + mod_bottom_depth+base_thickness;
+boxh = bh+modh+base_thickness;
 
 ppexth = ppext/2;
 
@@ -72,12 +68,6 @@ module probe_pin_req()
 
 module half_dual_castellation_probe_programmer()
 {
-  pit_orgin = bh+modh+mt;
-  pit_depth = boxh -bh - modh -mt;
-  insert_pcb_offset = ppext*2/3;
-  leglength = modcutx - 1;
-  joint_spacing = 0.5;
-
   /* Module Visualisation */
   translate([0, 0, base_thickness+mod_bottom_depth]) 
     %color("green",0.25) cube([modx+pps,(mody)/2, mod_pcb_thickness]);
@@ -87,6 +77,14 @@ module half_dual_castellation_probe_programmer()
     
     /* Bulk */
     cube([boxx,boxy/2,boxh]);
+
+    /* Wire Guide */
+    for ( xii = [0 : 1 : ppc-1] )
+    {
+      translate([fps+pps*xii, boxy/2+1, base_thickness+mod_bottom_depth+ppdia+0.5])
+        rotate([90,0,0])
+          cylinder(r=0.5, h=15);
+    }
     
     /* Probe Access Cutout */
     translate([-1, 5, base_thickness+mod_bottom_depth+ppdia/2]) 
@@ -119,10 +117,9 @@ module half_dual_castellation_probe_programmer()
       }
       
     /* Probe */
-    translate([0, 0, base_thickness+mod_bottom_depth]) 
     for ( xi = [0 : 1 : ppc-1] )
     {
-      translate([fps+pps*xi, 0, 0])
+      translate([fps+pps*xi, 0, base_thickness+mod_bottom_depth])
       union()
       {
         translate([0, (mody)/2+ppdiaoutset, mod_pcb_thickness/2])
@@ -130,7 +127,7 @@ module half_dual_castellation_probe_programmer()
           probe_pin_req();
       }
     }
-    
+
   }
 }
 
@@ -144,5 +141,4 @@ module dual_castellation_probe_programmer()
   }
 }
 
-//rotate([0,180,0])
 dual_castellation_probe_programmer();
