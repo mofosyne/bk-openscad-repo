@@ -3,10 +3,17 @@ $fn=100;
   Robot Vac Skirt Extender
   For Model: Hoover Performer Plus
   Author: Brian Khuu 2019
+  
+  This ensures it doesn't go over carpets or doorstops if needed.
+  This is mounted via M4 screws in the Hoover Performer Plus.
+
 */
 
 // Minimum Skirt Enable?
 minimum_skirt = false;
+
+// Holes in extended skirt (needs printed support)
+skirt_holes = true;
 
 // Hole Dia
 hole_dia=4.6;
@@ -30,7 +37,7 @@ width=hole_dia*5;
 bot_radius=160;
 
 // Bottom Skirt Height
-bot_skirt_h=15;
+bot_skirt_h=20;
 
 module minimum_skirt(rounded_bottom)
 {
@@ -68,10 +75,18 @@ module full_skirt()
     translate([bot_radius,0,0])
       rotate([0,-90,0])
         minimum_skirt(false);
-    rotate([0,0,-45])
-      rotate_extrude(angle=90)
-        translate([bot_radius,bot_skirt_h/2,0])
-          square([thickness_skirt,bot_skirt_h], center=true);
+    difference()
+    {
+      rotate([0,0,-45])
+        rotate_extrude(angle=90)
+          translate([bot_radius,bot_skirt_h/2,0])
+            square([thickness_skirt,bot_skirt_h], center=true);
+      
+      if (skirt_holes)
+      for(xi=[-25:1:25])
+        rotate([0,0,xi])
+          cube([1000,3,((bot_skirt_h-10)*2)], center=true);
+    }
   }
 }
 
