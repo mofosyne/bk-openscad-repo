@@ -5,7 +5,8 @@ $fn=20;
   
   Allows for quick connects without soldering to castellation based PCBs. This is useful for testing or quick programming.
   
-  I used P100-E2 probes for this
+  C10-34-10
+  
 */
 
 base_thickness = 1; // Base thickness
@@ -14,9 +15,9 @@ st = 2; // side thickness
 mt = 2; // middle thickness
 
 /* probe pin spec */
-ppext = 8; // Probe extention length
-ppbody = 25; // Body of the probe
-ppdia = 1.5; // probe pin diameter
+ppext = 3; // Probe extention length
+ppbody = 13; // Body of the probe
+ppdia = 1; // probe pin diameter
 
 ppdiatol = 0.5; // tolerance for fitting
 ppinset = 1;
@@ -84,10 +85,17 @@ module half_dual_castellation_probe_programmer()
     translate([-1, 5, base_thickness+mod_bottom_depth+ppdia/2]) 
       union()
       {
-        translate([0,(mody+modtol)/2+ppdiaoutset+2,0])
+        translate([0,(mody+modtol)/2+1,0])
           cube([modx+pps+1,ppbody*1/3, 10]);
       }
       
+    translate([-1, 0, 0]) 
+      union()
+      {     
+        translate([0, (mody+modtol)/2+0.5, base_thickness+mod_bottom_depth+ppdia+1]) 
+          cube([modx+pps+1,6, mod_bottom_depth]);   
+      }
+
     /* Module Cutout */
     translate([-1, 0, 0]) 
       union()
@@ -121,7 +129,7 @@ module half_dual_castellation_probe_programmer()
     {
       translate([fps+pps*xii, boxy/2+1, base_thickness+mod_bottom_depth+ppdia+1.5])
         rotate([93,0,0])
-          cylinder(r=(1.6)/2, h=15);
+          cylinder(r=(1.6)/2, h=10);
     }
   }
 }
