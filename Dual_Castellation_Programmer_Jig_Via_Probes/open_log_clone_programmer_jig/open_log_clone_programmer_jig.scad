@@ -20,7 +20,7 @@ ppbody = 25; // Body of the probe
 ppdia = 1.5; // probe pin diameter
 
 ppdiatol = 0.6; // tolerance for fitting
-ppinset = 2;
+ppinset = 0;
 
 ppdiaoutset = ppext-ppinset; // How far to space out to allow for side fits
 echo(ppdiaoutset);
@@ -34,7 +34,7 @@ ppc = 6;
 pps = 2.54;
 
 // PCB Thickness
-pcb_thickness = 1; // 1mm Open Log Clone
+pcb_thickness = 1.1; // 1mm Open Log Clone
 
 // PCB Probe Offset
 pcb_probe_offset = 1.3;
@@ -57,9 +57,9 @@ module probe_pin_req()
   union()
   {
     translate([0,0,0])
-    cylinder(r1=(ppdia)/2,r2=(ppdia+ppdiatol)/2, h=3);
+      cylinder(r1=(ppdia)/2,r2=(ppdia+ppdiatol)/2, h=3);
     translate([0,0,1])
-      cylinder(r=(ppdia+ppdiatol)/2, h=ppbody);
+      cylinder(r=(ppdia+ppdiatol)/2, h=ppbody+ppext+1);
     %color("gold") cylinder(r=ppdia/2, h=ppbody);
     %color("silver") translate([0,0,ppbody])
       cylinder(r=ppdia/2, r2=0, h=ppext);
@@ -68,27 +68,29 @@ module probe_pin_req()
 
 module openlog_clone_programmer_jig_clip()
 {
-  grip_thickness=printer_nozzle*3+0.1;
-  grip_height=6;
+  grip_gap=2;
+  grip_thickness=printer_nozzle*5;
+  grip_height=5;
   difference() 
   {
-    translate([-(grip_thickness*2+2)/2,-1,0])
-      cube([boxx+2+(grip_thickness*2),boxy/3+3,grip_height]);
-    translate([-1,-2,-1])
-      cube([boxx+2,boxy/3+2,grip_height+2]);
+    translate([-grip_gap-grip_thickness,-1,0])
+      cube([boxx+grip_gap*2+grip_thickness*2,boxy/3+3,grip_height]);
+    translate([-grip_gap,-2,-1])
+      cube([boxx+grip_gap*2,boxy/3+2,grip_height+2]);
   }
-  translate([-(grip_thickness*2+2)/2,-0.5,0])
+  translate([-(grip_thickness*2+grip_gap*2)/2,-0.5,0])
     hull()
     {
-      cube([3,0.1,grip_height]);
+      translate([0,0,0])
+        cube([(grip_thickness+grip_gap+ppdia/2),0.1,grip_height]);
       translate([0,-8,0])
         cube([0.1,0.1,grip_height]);
     }
-  translate([(grip_thickness*2+2)/2+boxx,-0.5,0])
+  translate([(grip_thickness*2+grip_gap*2)/2+boxx,-0.5,0])
     hull()
     {
-      translate([-3,0,0])
-        cube([3,0.1,grip_height]);
+      translate([-(grip_thickness+grip_gap+ppdia/2),0,0])
+        cube([(grip_thickness+grip_gap+ppdia/2),0.1,grip_height]);
       translate([-0.1,-8,0])
         cube([0.1,0.1,grip_height]);
     }
@@ -107,9 +109,9 @@ module openlog_clone_programmer_jig()
         translate([-5, 0, base_thickness+pcb_probe_offset+ppdia*1.5]) 
           cube([ppc * pps+10,ppbody, 5]);
         translate([0,0,-1])
-          cylinder(r=2, h=boxh);
+          cube([4,pcb_thickness*2,boxh],center=true);
         translate([boxx,0,-1])
-          cylinder(r=2, h=boxh);
+          cube([4,pcb_thickness*2,boxh],center=true);
       }
       translate([-(ppdia)/2, ppdiaoutset+7+ppbody/2, 0]) 
         cube([boxx+(ppdia),boxy-(ppdiaoutset+7+ppbody/2), boxh]);
@@ -152,7 +154,7 @@ module openlog_clone_programmer_jig()
     {
       translate([pps/2+pps*xii, boxy+1, base_thickness+ppdia+1.5+pcb_probe_offset+ppdiatol])
         rotate([95,0,0])
-          cylinder(r=1, h=15);
+          cube([2,2.5,20],center=true);
     }
   }
 }
