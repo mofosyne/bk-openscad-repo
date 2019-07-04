@@ -21,7 +21,7 @@ ppbody = 25; // Body of the probe
 ppdia = 1.5; // probe pin diameter
 
 ppdiatol = 0.6; // tolerance for fitting
-ppinset = 1;
+ppinset = 2.5;
 
 ppdiaoutset = ppext-ppinset; // How far to space out to allow for side fits
 echo(ppdiaoutset);
@@ -47,7 +47,7 @@ clip_tab = 5; // Clip tab to more easily open the clip
 pcb_h = 2; // pcb thickness
 
 /* calc */
-boxx = ppc * pps;
+boxx = ppc * pps + ppdia;
 boxy = 2 + ppbody + ppdiaoutset;
 boxh = base_thickness+pcb_probe_offset+ppdiatol+5;
 
@@ -97,7 +97,7 @@ module openlog_clone_programmer_jig()
     /* Probe */
     for ( xi = [0 : 1 : ppc-1] )
     {
-      translate([pps/2+pps*xi, 0, base_thickness])
+      translate([ppdia/2+pps/2+pps*xi, 0, base_thickness])
       union()
       {
         translate([0, ppdiaoutset, pcb_probe_offset+ppdiatol])
@@ -114,7 +114,7 @@ module openlog_clone_programmer_jig()
     /* Wire Guide (To solder onto the probe) */
     for ( xii = [0 : 1 : ppc-1] )
     {
-      translate([pps/2+pps*xii, boxy+1, base_thickness+ppdia+1.5+pcb_probe_offset+ppdiatol])
+      translate([ppdia/2+pps/2+pps*xii, boxy+1, base_thickness+ppdia+1.5+pcb_probe_offset+ppdiatol])
         rotate([95,0,0])
           cube([2,2.5,20],center=true);
     }
