@@ -80,15 +80,15 @@ module openlog_clone_programmer_jig_clip()
   translate([-(grip_thickness*2+2)/2,-0.5,0])
     hull()
     {
-      cube([4,0.1,grip_height]);
+      cube([3,0.1,grip_height]);
       translate([0,-8,0])
         cube([0.1,0.1,grip_height]);
     }
   translate([(grip_thickness*2+2)/2+boxx,-0.5,0])
     hull()
     {
-      translate([-4,0,0])
-        cube([4,0.1,grip_height]);
+      translate([-3,0,0])
+        cube([3,0.1,grip_height]);
       translate([-0.1,-8,0])
         cube([0.1,0.1,grip_height]);
     }
@@ -105,7 +105,11 @@ module openlog_clone_programmer_jig()
       {
         cube([boxx,boxy,boxh]);
         translate([-5, 0, base_thickness+pcb_probe_offset+ppdia*1.5]) 
-          cube([ppc * pps+10,ppbody, 5]);      
+          cube([ppc * pps+10,ppbody, 5]);
+        translate([0,0,-1])
+          cylinder(r=2, h=boxh);
+        translate([boxx,0,-1])
+          cylinder(r=2, h=boxh);
       }
       translate([-(ppdia)/2, ppdiaoutset+7+ppbody/2, 0]) 
         cube([boxx+(ppdia),boxy-(ppdiaoutset+7+ppbody/2), boxh]);
@@ -122,7 +126,7 @@ module openlog_clone_programmer_jig()
       {     
         translate([0, 0,base_thickness]) 
           cube([boxx,pcb_thickness, boxh]);   
-        translate([0, 0, base_thickness+ppdia/2]) 
+        translate([0, 0, base_thickness+ppdia+ppdiatol]) 
           cube([boxx,ppdiaoutset, boxh]);
       }
       
@@ -139,12 +143,12 @@ module openlog_clone_programmer_jig()
         translate([0, ppdiaoutset, pcb_probe_offset+ppdiatol])
           rotate([180,0,0])
             translate([0, (ppdiaoutset)/2, 0])
-              cube([ppdia,(ppdiaoutset),ppdia+1], center=true);
+              cube([ppdia+ppdiatol,(ppdiaoutset),ppdia+1], center=true);
       }
     }
     
     /* Wire Guide (To solder onto the probe) */
-    #for ( xii = [0 : 1 : ppc-1] )
+    for ( xii = [0 : 1 : ppc-1] )
     {
       translate([pps/2+pps*xii, boxy+1, base_thickness+ppdia+1.5+pcb_probe_offset+ppdiatol])
         rotate([95,0,0])
