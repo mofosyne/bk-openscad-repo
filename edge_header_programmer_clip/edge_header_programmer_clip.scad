@@ -1,11 +1,14 @@
 $fn=20;
 /*
-  Edge Header Programmer Jig Via Probes (e.g. OpenLog Clone)
+  Edge Header Programmer Clip Via Probes (e.g. OpenLog Clone)
   Author: Brian Khuu 2019
   
   This is originally designed for connecting to OpenLog Clones
   
   I used P100-E2 probes for this
+  
+  Note: The purple openlog clone Programmer Port essentally has [GND, RST, SCK, M0, M1, Vin]
+
 */
 
 // Designed For Printer Nozzle
