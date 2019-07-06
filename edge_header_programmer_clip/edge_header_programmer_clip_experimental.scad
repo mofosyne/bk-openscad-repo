@@ -11,11 +11,16 @@ $fn=20;
 
 */
 
+/* [Feature Selection] */
+PCB_probe_clip_grip_enable = true;
+PCB_probe_align_enable = false;
+
+/* [Properties] */
 // Designed For Printer Nozzle
 printer_nozzle=0.4;
 
 // Base Thickness
-base_thickness = 1;
+base_thickness = 0.2;
 
 /* probe pin spec */
 ppext = 8; // Probe extention length
@@ -23,12 +28,11 @@ ppbody = 25; // Body of the probe
 ppdia = 1.5; // probe pin diameter
 
 ppdiatol = 0.6; // tolerance for fitting
-ppinset = 0;
+ppinset = 0.5;
 
 ppdiaoutset = ppext-ppinset; // How far to space out to allow for side fits
-echo(ppdiaoutset);
 
-/* Castellated Module Pin Spacing and count */
+/* PCB Pin Spacing and count */
 
 // Pin Count
 ppc = 6;
@@ -39,8 +43,11 @@ pps = 2.54;
 // PCB Thickness
 pcb_thickness = 1.1; // 1mm Open Log Clone
 
-// PCB Probe Offset
+// PCB Probe Offset (Bottom)
 pcb_probe_offset = 1.3;
+
+// PCB Probe Offset (Side)
+pcb_probe_side_offset = 0;
 
 /* Clip */
 clip_tab = 5; // Clip tab to more easily open the clip
@@ -52,6 +59,8 @@ pcb_h = 2; // pcb thickness
 boxx = ppc * pps + ppdia;
 boxy = 2 + ppbody + ppdiaoutset;
 boxh = base_thickness+pcb_probe_offset+ppdiatol+5;
+
+supported_pcb_size = pcb_probe_side_offset*2+boxx;
 
 module probe_pin_req()
 {
@@ -71,30 +80,43 @@ module probe_pin_req()
 
 module openlog_clone_programmer_jig_clip()
 {
-  grip_gap=2;
-  grip_thickness=printer_nozzle*5;
-  grip_height=5;
-  difference() 
+  grip_gap=6;
+  grip_thickness=printer_nozzle*7;
+  grip_height=base_thickness+pcb_probe_offset+ppdiatol+ppdia;
+
+  if (PCB_probe_clip_grip_enable)
   {
     translate([-grip_gap-grip_thickness,-1,0])
-      cube([boxx+grip_gap*2+grip_thickness*2,boxy/3+3,grip_height]);
-    translate([-grip_gap,-2,-1])
-      cube([boxx+grip_gap*2,boxy/3+2,grip_height+2]);
+      cube([grip_thickness,boxy,grip_height]);
+    translate([grip_gap+boxx,-0.5,0])
+      cube([grip_thickness,boxy,grip_height]);
+  }
+
+  difference()
+  {
+    translate([-grip_gap-grip_thickness,0,0])
+      cube([boxx+grip_gap*2+grip_thickness*2,boxy/3,grip_height]);
+    translate([-grip_gap,-3,-1])
+      cube([boxx+grip_gap*2,boxy/3,grip_height+2]);
   }
   translate([-(grip_thickness*2+grip_gap*2)/2,-0.5,0])
     hull()
     {
       translate([0,0,0])
-        cube([(grip_thickness+grip_gap+ppdia/2),0.1,grip_height]);
-      translate([0,-8,0])
+        cube([(grip_thickness+grip_gap+ppdia-pcb_probe_side_offset),0.1,grip_height]);
+      translate([0,-5,0])
+        cube([0.1,0.1,grip_height]);
+      translate([(grip_thickness+grip_gap+ppdia-pcb_probe_side_offset),-1,0])
         cube([0.1,0.1,grip_height]);
     }
   translate([(grip_thickness*2+grip_gap*2)/2+boxx,-0.5,0])
     hull()
     {
-      translate([-(grip_thickness+grip_gap+ppdia/2),0,0])
-        cube([(grip_thickness+grip_gap+ppdia/2),0.1,grip_height]);
-      translate([-0.1,-8,0])
+      translate([-(grip_thickness+grip_gap+ppdia-pcb_probe_side_offset),0,0])
+        cube([(grip_thickness+grip_gap+ppdia-pcb_probe_side_offset),0.1,grip_height]);
+      translate([-0.1,-5,0])
+        cube([0.1,0.1,grip_height]);
+      translate([-(grip_thickness+grip_gap+ppdia-pcb_probe_side_offset),-1,0])
         cube([0.1,0.1,grip_height]);
     }
 }
@@ -123,14 +145,23 @@ module openlog_clone_programmer_jig()
 
     /* Probe Access Cutout */
     translate([-5, ppdiaoutset+7, base_thickness+pcb_probe_offset+ppdia/2]) 
-      cube([ppc * pps+10,ppbody/2, boxh]);;
+      cube([ppc * pps+10,ppbody/2, boxh]);
       
     /* Module Cutout */
     translate([0, -0.001, 0]) 
       union()
-      {     
-        translate([0, 0,base_thickness]) 
-          cube([boxx,pcb_thickness, boxh]);   
+      {
+        if(PCB_probe_align_enable)
+        {
+          translate([0, 0,base_thickness]) 
+            cube([boxx,pcb_thickness, boxh]);
+        }
+        else
+        {
+          translate([0, 0,-base_thickness/2]) 
+            cube([boxx,pcb_thickness, boxh]);
+        }
+        
         translate([0, 0, base_thickness+ppdia+ppdiatol]) 
           cube([boxx,ppdiaoutset, boxh]);
       }
@@ -163,3 +194,8 @@ module openlog_clone_programmer_jig()
 }
 
 openlog_clone_programmer_jig();
+
+/* Visualisation */
+%translate([boxx/2,pcb_thickness/2,base_thickness+pcb_probe_offset])
+  cube([supported_pcb_size,pcb_thickness,1], center=true);
+echo("##Supported PCB Length:",supported_pcb_size);

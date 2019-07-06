@@ -1,6 +1,6 @@
 $fn=20;
 /*
-  Pogo Pin Serial Adaptor
+  Pogo Pin Serial Adaptor (Customisable)
   Author: Brian Khuu 2019
   
   This is similar to https://hackaday.com/2017/08/04/pogo-pin-serial-adapter-thing/
@@ -87,8 +87,8 @@ module openlog_clone_programmer_jig()
     }
 
     /* Probe Access Cutout */
-    translate([-5, ppdiaoutset+7, base_thickness+ppdia/2]) 
-      cube([ppc * pps+10,ppbody/2, 10]);
+    translate([-5, ppdiaoutset+7, base_thickness+pcb_probe_offset+ppdia/2]) 
+      cube([ppc * pps+10,ppbody/2, boxh]);
       
     /* Module Cutout */
     translate([0, -0.001, base_thickness+ppdia+ppdiatol]) 
