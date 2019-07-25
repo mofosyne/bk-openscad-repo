@@ -1,6 +1,9 @@
 /*
-    Filament Mounting Clip For Cocoon Create
+    Filament Sensor Mounting Clip For Cocoon Create
     By Brian Khuu 2019
+    
+    This is for a cheap filament sensor, that you can usually find on ebay.
+    
 */
 $fn=100;
 
