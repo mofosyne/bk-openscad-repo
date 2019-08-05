@@ -8,7 +8,7 @@
 $fn=100;
 
 /*
-# Filament Mount Z
+# Filament Sensor Mount
 [<====y====>]
         [ ^ ]
         [ | ]
@@ -24,7 +24,7 @@ filament_mount_width=8.5;
 filament_mount_thickness=1.5;
 
 /*
-# Filament Mount Z
+# 3D printer Frame Clip
 [<====y====>]
 [ ^ ]
 [ | ]
