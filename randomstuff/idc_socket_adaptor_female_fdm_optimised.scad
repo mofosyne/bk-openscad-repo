@@ -14,7 +14,7 @@
 $fn=20;
 
 // Accounting for FDM printer inaccuracy
-nozzledia = 0.45;
+nozzledia = 0.5;
 
 // pin count; change to match your header
 PINS   = 10;
@@ -63,8 +63,8 @@ difference(){
         }
         
         // Tab
-	    translate([0,0.8,0])
-	        cube_rounded([3.5, 7, HEIGHT],radius=1);
+	    translate([0,1.5,0])
+	        cube_rounded([3.5, 6.5, HEIGHT],radius=1);
 
         // Bottom Base
         cube_rounded([7.3+PW, 5.5+2*nozzledia, HEIGHT-idc_depth],radius=1);
