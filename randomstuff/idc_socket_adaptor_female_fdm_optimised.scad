@@ -18,7 +18,7 @@ nozzledia = 0.45;
 
 // pin count; change to match your header
 PINS   = 10;
-HEIGHT = 12;
+HEIGHT = 14;
 
 // IDC Specs
 idc_depth=6.5;
@@ -77,9 +77,9 @@ difference(){
     // Bottom Base
     hull()
     {
-        cube_rounded([3.35+PW, 5.5, HEIGHT-idc_depth], radius=0);
+        cube_rounded([3.35+PW, 5.5, (HEIGHT-idc_depth)/2], radius=0);
         translate([0,0,-1])
-            cube_rounded([7.3+PW-2, 5.5, 1],radius=1);
+            cube_rounded([7.3+PW-3, 5.5, 1],radius=0);
     }
 }
 
