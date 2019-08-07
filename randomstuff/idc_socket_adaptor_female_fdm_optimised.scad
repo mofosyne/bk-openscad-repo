@@ -74,13 +74,17 @@ difference(){
     translate([0,0,-1])
         cube_rounded([3.35+PW, 5.5, HEIGHT+2], radius=0);
 
-    // Bottom Base
+    // Side Tab
     hull()
     {
-        cube_rounded([3.35+PW, 5.5, (HEIGHT-idc_depth)/2], radius=0);
-        translate([0,0,-1])
-            cube_rounded([7.3+PW-3, 5.5, 1],radius=0);
+        translate([0,0,HEIGHT-idc_depth/2])
+            cube_rounded([7.3+PW-1.5, 6-1.5, HEIGHT+2],radius=0.5);
+        translate([0,0,HEIGHT-idc_depth])
+            cube_rounded([3.35+PW, 6-1.5, 1], radius=0);
     }
+    // Tab
+    translate([0,1.5,-1])
+        cube_rounded([3.5-1.5, 6.5-1.5, HEIGHT+2],radius=0.5);
 }
 
 echo((6-5.5));
