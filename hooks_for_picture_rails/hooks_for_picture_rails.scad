@@ -3,13 +3,14 @@ $fn=50;
     Parametric Hooks For Picture Rails
     By Brian Khuu (2019)
     
-    Many old houses still have picture rails that you can hang pictures or clocks on. This allow you to print a picture rail hook that fits exactly your picture rail. Just measure the diameter of your rail and specify the hook depth you requre. Also you are recommened to use the support required version as the no support version while easier to print, does not have as good center of balance.
+    Many old houses still have picture rails that you can hang pictures or clocks on. This allow you to print a picture rail hook that fits exactly your picture rail. Just measure the diameter of your rail and specify the hook depth you requre.
+    
 */
 
 
 /* [Picture Rail Spec] */
 // Centered Hook mode (Requires support but is easier to mount)
-centeredHook=true;
+centeredHook=false;
 // Diameter of picture rail 
 dia=21;
 // Mount thickness

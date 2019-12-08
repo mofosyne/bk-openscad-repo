@@ -15,7 +15,7 @@ $fn=20;
 tol=0.6;
 
 // Base Thickness
-base_thickness=0.5;
+base_thickness=1.5;
 
 /* Alignment Pin */
 
@@ -40,7 +40,7 @@ align_pin_pos_entries = [
 
 // Non Alignment Pins Positions
 non_alignment_pin_pos_vec = [
-[27.5336/2 , 100 ],
+//[27.5336/2 , 100 ],
 [27.5336/2 , 90  ]
 ];
 
