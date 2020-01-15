@@ -6,7 +6,7 @@ $fn=20;
 module rpi_zero_bulk(h_mm, outset, cutout = false)
 {
   header_tol = 1;
-  hole_tol = 0.1;
+  hole_tol = 0.5;
 
   difference()
   {
@@ -35,13 +35,13 @@ module rpi_zero_bulk(h_mm, outset, cutout = false)
         //  cube([51+header_tol,5+header_tol,h_mm+0.1], center=true);
         
         // Holes
-        translate([0,0,-1])
+        translate([1,0,-1])
           cylinder(r=((holedia)/2),h=h_mm+2);
-        translate([0,23,-1])
+        translate([1,23,-1])
           cylinder(r=((holedia)/2),h=h_mm+2);
-        translate([58,0,-1])
+        translate([58+1,0,-1])
           cylinder(r=((holedia)/2),h=h_mm+2);
-        translate([58,23,-1])
+        translate([58+1,23,-1])
           cylinder(r=((holedia)/2),h=h_mm+2);
     }
   }
@@ -49,11 +49,11 @@ module rpi_zero_bulk(h_mm, outset, cutout = false)
 
 module rpi_zero_hat_case()
 {
-  base_mm = 5;
+  base_mm = 6;
   side_wall_mm = 16;
     
   pcb_h = 2;
-  pcb_standoff = 1.5;
+  pcb_standoff = 2;
   
     // align hole
     if (0)
@@ -105,53 +105,61 @@ module rpi_zero_hat_case()
     translate([3,-10,base_mm+pcb_standoff])
       cube([32,10,20]);
     translate([3,-10,base_mm+8])
-      cube([52,10,20]);
+      cube([53,10,20]);
 
     // Side Interface
-    translate([-5,23/2,base_mm+pcb_standoff+10])
-      cube([10,10,20], center=true); // Cutout for side usb
+    translate([-5,23/2+1,base_mm+pcb_standoff+10])
+      cube([10,12,20], center=true); // Cutout for side usb
     translate([-5,23/2+4,base_mm+pcb_standoff+6+10])
       cube([10,10,20], center=true); // Cutout for SD card on rpizero
      
     // Bendy bit cutout
     translate([4.5,23/2-6,-0.1])
-      cube([40,13,6]);
+      cube([50,13,10]);
 
-    // Back Prog
+    // Back Programmer Ribbon Cutout
     translate([4,17.5,-0.1])
       cube([1,15,40]);
-    translate([10,23/2+6.5,-0.1])
-        cube([10,20,base_mm/2]);
+    translate([9.5,23/2+6.5,-0.1])
+        cube([8,20,1.5]);
 
     // Power Cable
     translate([30-5/2,23/2+6.5,-0.1])
         cube([5,20,base_mm+0.2]);
-    translate([4,23/2+6,base_mm/2])
-        cube([25,9,base_mm+pcb_standoff+0.2]);
+    translate([4,23/2+6,-0.1])
+        cube([15,9,base_mm+pcb_standoff+1]);
+    translate([4,23/2+6,3])
+        cube([25,9,base_mm+pcb_standoff+1]);
   }
   
   // Bendy bit cutout
   translate([4.5,23/2-5,base_mm-2])
     cube([50,11,2]);
-  translate([25,23/2-5,0])
-    cube([1,11,base_mm]);
+  translate([20,23/2-5,0])
+    cube([2,11,base_mm]);
+  translate([37,23/2-5,0])
+    cube([2,11,base_mm]);
+  hull()
+  {
+    translate([55,23/2-5,0])
+        cube([1,11,base_mm]);
+    translate([50,23/2-5,base_mm-2])
+        cube([1,11,2]);
+  }
+  
   
   // PCB Clip
   translate([60+4.5,23/2,base_mm+pcb_standoff+pcb_h+1.5])
     rotate([90,0,0])
     cylinder(r=1.5, h=20, center= true);
   
-  translate([50,23+4.5,base_mm+pcb_standoff+pcb_h+1.5])
+  translate([52,23+4.5,base_mm+pcb_standoff+pcb_h+1.5])
     rotate([0,90,0])
-    cylinder(r=1.5, h=20, center= true);
+    cylinder(r=1.5, h=15, center= true);
   
-  translate([-4,23,base_mm+pcb_standoff+pcb_h+1.5+7])
-    rotate([90,0,0])
-    cylinder(r=1.5, h=3, center= true);
-  
-  translate([-4,0,base_mm+pcb_standoff+pcb_h+1.5+7])
-    rotate([90,0,0])
-    cylinder(r=1.5, h=3, center= true);
+  translate([52,-4,base_mm+pcb_standoff+pcb_h+1.5])
+    rotate([0,90,0])
+    cylinder(r=1.5, h=15, center= true);
   
   //%translate([0,0,base_mm+pcb_standoff]) rpi_zero_bulk(pcb_h, 0); // programmer
   //%translate([0,0,base_mm+pcb_standoff+7]) rpi_zero_bulk(pcb_h, 0); // rpizero
