@@ -50,7 +50,7 @@ union()
 
     // Thread
     translate([0,0,0])
-        thread_in_pitch(threaddia,height,1,$fn);
+        thread_in_pitch(threaddia,height*(2/3),1,$fn);
 }
 
 
