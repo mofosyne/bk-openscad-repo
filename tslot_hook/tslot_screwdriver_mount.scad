@@ -13,19 +13,24 @@ tslot_centerdepth = 5+0.5;
 tslot_centerwidth = 8; // Gap to slot the clip though
 // For the wedge... its based on a 4040mm Tslot... so may need to modify polygon() in this script
 
-/* [Hook Spec] */
-// Hook Diameter
-hookdia=12; // measured 10mm on the skinny side of the screwdriver... so add extra fudge factor
-// Hook Flange
-hookflange=3;
-// Hook Width
-hookwidth=7;
-// Hook Thickness
-hookthickness=5; // This is extra rest for the screwdriver head
+/* [Screwdriver Spec] */
+screwdriver_small_dia = 8;
+screwdriver_top_dia = 13;
+
 
 /* [Tslot Model] */
 model_slot_gap = 10;
 model_slot_side = 15;
+
+
+/* [Hook Calc] */
+// Hook Diameter
+hookdia=screwdriver_small_dia+2;
+// Hook Width
+hookwidth=7;
+// Hook Thickness
+hookthickness=screwdriver_top_dia-hookdia; // This is extra rest for the screwdriver head
+
 
 translate([0, -1, 0])
 union()
@@ -134,17 +139,28 @@ union()
                     cylinder(r=hookdia/2, h=1, center=true);
             }
             
-            // Cut
+            // Degreecut
             translate([hh,0,0])
             hull()
             {
-                degreecut = 50;
+                degreecut = 40;
+                // Degreecut
                 rotate([0,0,degreecut/2])
                     translate([(hookdia+hookthickness+1),0,0])
                     cube([hookdia+hookthickness+1,1,hookwidth+2], center=true);
                 rotate([0,0,-degreecut/2])
                     translate([(hookdia+hookthickness+1),0,0])
                     cube([hookdia+hookthickness+1,1,hookwidth+2], center=true);
+            }
+
+            // Slide In Cut
+            translate([hh,0,0])
+            hull()
+            {
+                translate([(hookdia+hookthickness+10),0,0])
+                    cube([1,screwdriver_small_dia+1,hookwidth+2], center=true);
+                translate([(hookdia/2),0,0])
+                    cube([1,screwdriver_small_dia+1,hookwidth+2], center=true);
             }
             
             //bottomcut
