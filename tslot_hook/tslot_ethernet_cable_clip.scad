@@ -36,13 +36,13 @@ model_slot_side = 15;
 
 ////////
 // cable diameter
-cable = 8;
+cable = 7;
 // number of cable pairs for holder
 rows = 1;
 // wall thikness */
 thik  = 1.5;
 // size of opening for cable
-angel = 50; // [90]
+angel = 45; // [90]
 
 
 outer = cable + 2*thik;

@@ -15,7 +15,7 @@ tslot_centerwidth = 8; // Gap to slot the clip though
 
 /* [Screwdriver Spec] */
 screwdriver_small_dia = 8;
-screwdriver_top_dia = 13;
+screwdriver_top_dia = 15;
 
 
 /* [Tslot Model] */
@@ -88,14 +88,13 @@ union()
     }
  
     // Hook
-    translate([0, -hookdia/2-hookthickness, 0])
+    translate([0, -hookdia/2-hookthickness*2, 0])
     union()
     {
-
         rotate([0,-90,0])
         difference()
         {
-            hh = 3;
+            hh = 1;
             xx = hookdia/2+hookthickness;
             hull()
             {
@@ -106,20 +105,20 @@ union()
                 
                 // Long Flat
                 rotate([90,0,0])
-                    cylinder(r=tslot_centerwidth/2, h=hookdia, center=true);
+                    cylinder(r=tslot_centerwidth/2, h=hookdia+hookthickness*2, center=true);
             }
             
             // Grip Side 1
             hull()
             {
                 //Outer
-                translate([xx+hh,0,hookwidth/2])
+                translate([xx+hh,0,hookwidth/2+0.5])
                     cylinder(r=(hookdia/2+hookthickness-1), h=0.1, center=true);
-                translate([xx   ,0,hookwidth/2])
-                    cylinder(r=(hookdia/2+hookthickness-1), h=1, center=true);
+                translate([xx   ,0,hookwidth/2+0.5])
+                    cylinder(r=(hookdia/2+hookthickness-1), h=0.1, center=true);
                 //Center
                 translate([xx+hh,0,0])
-                    cylinder(r=hookdia/2, h=+1, center=true);
+                    cylinder(r=hookdia/2, h=1, center=true);
                 translate([xx   ,0,0])
                     cylinder(r=hookdia/2, h=1, center=true);
             }
@@ -128,13 +127,13 @@ union()
             hull()
             {
                 //Outer
-                translate([xx+hh,0,-hookwidth/2])
+                translate([xx+hh,0,-hookwidth/2-0.5])
                     cylinder(r=(hookdia/2+hookthickness-1), h=0.1, center=true);
-                translate([xx   ,0,-hookwidth/2])
-                    cylinder(r=(hookdia/2+hookthickness-1), h=1, center=true);
+                translate([xx   ,0,-hookwidth/2-0.5])
+                    cylinder(r=(hookdia/2+hookthickness-1), h=0.1, center=true);
                 //Center
                 translate([xx+hh,0,0])
-                    cylinder(r=hookdia/2, h=+1, center=true);
+                    cylinder(r=hookdia/2, h=1, center=true);
                 translate([xx   ,0,0])
                     cylinder(r=hookdia/2, h=1, center=true);
             }
@@ -143,7 +142,7 @@ union()
             translate([hh,0,0])
             hull()
             {
-                degreecut = 40;
+                degreecut = 45;
                 // Degreecut
                 rotate([0,0,degreecut/2])
                     translate([(hookdia+hookthickness+1),0,0])
@@ -159,7 +158,7 @@ union()
             {
                 translate([(hookdia+hookthickness+10),0,0])
                     cube([1,screwdriver_small_dia+1,hookwidth+2], center=true);
-                translate([(hookdia/2),0,0])
+                translate([((hookdia+hookthickness)/2),0,0])
                     cube([1,screwdriver_small_dia+1,hookwidth+2], center=true);
             }
             
