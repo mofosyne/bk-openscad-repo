@@ -33,20 +33,25 @@ hookthickness=2;
 model_slot_gap = 10;
 model_slot_side = 15;
 
-
-////////
+/* [Clip Spec] */
+// number of cable for holder
+nClips=4;
 // cable diameter
-cable = 7;
-// number of cable pairs for holder
-rows = 1;
+cableDia = 6;
 // wall thikness */
-thik  = 1.5;
+wallThickness = 1.5;
 // size of opening for cable
-angel = 45; // [90]
+anglecut = 50; // [90]
 
 
-outer = cable + 2*thik;
 
+/*****************
+    clip() and clips() Functions from "cable clip / cable holder" by kenjo123 August 14, 2016
+    Modified slightly for this design
+    Source: https://makerware.thingiverse.com/thing:1719073 
+******************/
+
+outer = cableDia + 2*wallThickness;
 
 /* single clip, centered */
 module clip(cable, outer, angel) {
@@ -54,9 +59,9 @@ module clip(cable, outer, angel) {
 	union() {
 	    /* fill in the middle */
 	    translate([-outer/2,0])
-	    square(outer/2);
+            square(outer/2);
 	    translate([-outer/2,-outer/2])
-	    square(outer/2);
+            square(outer/2);
 
 	    /* outer circle */
 	    circle(d=outer);
@@ -75,8 +80,8 @@ module clip(cable, outer, angel) {
 }
 
 module clips(num, h, cable, outer, angel) {
-    w = (outer) * num;
-    translate([0,-w/2+outer/2,-h/2])
+    w = outer * num;
+    translate([outer/2,-w/2+outer/2,-h/2])
     linear_extrude(height=h) {
 	for(idx=[0 : 1 : num-1  ]) {
 	    translate([0, outer * idx])
@@ -85,10 +90,11 @@ module clips(num, h, cable, outer, angel) {
     }
 }
 
-////////
+/*****************
+    Tslot Clip
+******************/
 
 if (1)
-translate([0, -1, 0])
 union()
 {
     difference()
@@ -131,25 +137,22 @@ union()
                 intersection()
                 {
                     cheight = tslot_centerdepth+hookthickness+hookwidth/2;
-                    union()
-                    {
-                        cylinder(r=tslot_centerwidth/2, h=cheight);
-                    }
+                    cylinder(r=tslot_centerwidth/2, h=cheight);
                     translate([0, 0, cheight/2])
                         cube([tslot_centerwidth+10, hookwidth, cheight], center=true);
                 }
         }
         
-        //
+        // bend
         translate([0, 100/2, 0])
             cube([2,100,100], center=true);
 
     }
  
-    //
-    translate([0, -hookdia/2-hookthickness, 0])
-    rotate([0,0,-90])
-    clips(3, hookwidth, cable, outer, angel);
+    // Clip
+    translate([0, -hookthickness, 0])
+        rotate([0,0,-90])
+        clips(nClips, hookwidth, cableDia, outer, anglecut);
 
 }
 
