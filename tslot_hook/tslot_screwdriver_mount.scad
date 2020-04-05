@@ -1,9 +1,9 @@
 $fn=100;
 /*
-    Parametric Cable Hooks For Tslot Mounting
+    Parametric Screwdriver hook For Tslot Mounting
     By Brian Khuu (2020)
     
-    Got a desk with tslot rails, would be nice to mount cable on it...
+    Got a desk with tslot rails, would be nice to screwdriver on it...
 */
 
 /* [Tslot Spec] */

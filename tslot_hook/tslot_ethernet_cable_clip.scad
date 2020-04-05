@@ -37,11 +37,11 @@ model_slot_side = 15;
 // number of cable for holder
 nClips=4;
 // cable diameter
-cableDia = 6;
+cableDia = 6.5;
 // wall thikness */
 wallThickness = 1.5;
 // size of opening for cable
-anglecut = 50; // [90]
+anglecut = 55; // [90]
 
 
 
