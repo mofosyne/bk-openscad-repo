@@ -177,8 +177,8 @@ if (mode == 0) {
     // Demo
     translate([0,0,0])
         faceShieldCuttingGuide();
-    %translate([0,0,50])
+    %translate([0,0,100])
         faceShieldSheetModel();
-    translate([0,0,100])
+    translate([0,0,200])
         faceShieldDrillGuide();
 }
