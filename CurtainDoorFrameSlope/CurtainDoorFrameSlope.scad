@@ -4,6 +4,7 @@
     
     Curtian keeps getting caught on part of a doorframe. A slope fixes it.
 
+    https://www.reddit.com/r/functionalprint/comments/c22mtk/curtian_keeps_getting_caught_on_part_of_a/
 */
 
 $fn=100;
