@@ -1,11 +1,9 @@
 $fn=100;
 /*
-    Parametric Cable Hooks For Tslot Mounting
+    Parametric Cable Loop For Tslot Mounting
     By Brian Khuu (2020)
     
-    Got a desk with tslot rails, would be nice to mount cable on it...
-    
-    Inspired by https://www.thingiverse.com/thing:2676595 "V-Slot Cable Clips by pekcitron November 30, 2017"
+    Got a desk with tslot rails, would be nice to organise cable
 */
 
 /* [Tslot Spec] */

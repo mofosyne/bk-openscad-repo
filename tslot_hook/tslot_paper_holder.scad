@@ -29,7 +29,7 @@ model_slot_side = 15;
 /////////////// Modified Source From "Clip on paper holder" by Ken_Applications August 12, 2018 ////////
 
 Alter_spring_gap=4;//[0:1:7]
-paper_gap=0.2;//[0.2:0.1:0.5]
+paper_gap=0.5;//[0.2:0.1:0.5]
 thickness=hookwidth;
 grip_end_L1=20;
 grip_end_L2=17;
@@ -45,6 +45,17 @@ echo (sagitta);
 
 module main_shape()
 {
+    //Top
+    intersection() 
+    {
+        round2d(0.1,15)
+        {
+            translate([0,5.5,0]) rotate([0,0,0]) square([70,3],false);
+            translate([0,-8,0]) rotate([0,0,-12]) square([70,3],false);
+        }
+        translate([79.5,-7.5,0]) circle(19);//spring radius .. need to calculate
+    }
+    //Bottom
     intersection() 
     {
         round2d(0.8,9.9)
@@ -52,7 +63,7 @@ module main_shape()
             translate([0,5.5,0]) rotate([0,0,0]) square([100,3],false);
             translate([0,-8,0]) rotate([0,0,-12]) square([100,3],false);
         }
-        translate([52,-5.5,0]) circle(19);//spring radius .. need to calculate
+        translate([52,-5,0]) circle(19);//spring radius .. need to calculate
     }
     translate([0,5.5,0]) rotate([0,0,0]) square([70,3],false);//back straight
     translate([0,-8,0]) rotate([0,0,-12]) square([69,3],false);//front straight
@@ -61,8 +72,10 @@ module main_shape()
 
 module main_shape_3()
 {
-    round2d(0,4) 
+
+    round2d(0,1) 
         main_shape();
+    //#translate([60,-15,0]) round2d(3,0) square([7,20]);//Spring Preserver
 }
 
 module main_shape_2()
@@ -162,7 +175,7 @@ union()
 
     }
     
-    translate([-38, -8.5-hookthickness, -thickness/2])
+    translate([-0, -8.5-hookthickness, -thickness/2])
         main_minus_ring();
 }
     
