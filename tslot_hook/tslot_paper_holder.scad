@@ -58,12 +58,12 @@ module main_shape()
     //Bottom
     intersection() 
     {
-        round2d(0.8,9.9)
+        round2d(0.8,8)
         {
             translate([0,5.5,0]) rotate([0,0,0]) square([100,3],false);
             translate([0,-8,0]) rotate([0,0,-12]) square([100,3],false);
         }
-        translate([52,-5,0]) circle(19);//spring radius .. need to calculate
+        translate([36,-3,0]) circle(19);//spring radius .. need to calculate
     }
     translate([0,5.5,0]) rotate([0,0,0]) square([70,3],false);//back straight
     translate([0,-8,0]) rotate([0,0,-12]) square([69,3],false);//front straight
@@ -72,10 +72,8 @@ module main_shape()
 
 module main_shape_3()
 {
-
     round2d(0,1) 
         main_shape();
-    //#translate([60,-15,0]) round2d(3,0) square([7,20]);//Spring Preserver
 }
 
 module main_shape_2()
