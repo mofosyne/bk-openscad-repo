@@ -85,7 +85,7 @@ union()
     }
  
     // Cable Loop
-    translate([0, -hookdia/2-hookthickness, 0])
+    translate([0, -hookdia/2-hookthickness-2, 0])
     union()
     {
        difference()
