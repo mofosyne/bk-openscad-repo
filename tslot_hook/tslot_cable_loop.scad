@@ -8,7 +8,7 @@ $fn=100;
 
 /* [Tslot Spec] */
 // CenterDepth
-tslot_centerdepth = 5+0.5;
+tslot_centerdepth = 6.5;
 // CenterWidth
 tslot_centerwidth = 8; // Gap to slot the clip though
 // For the wedge... its based on a 4040mm Tslot... so may need to modify polygon() in this script
@@ -85,7 +85,7 @@ union()
     }
  
     // Cable Loop
-    translate([0, -hookdia/2-hookthickness-2, 0])
+    translate([0, -hookdia/2-hookthickness, 0])
     union()
     {
        difference()

@@ -2,15 +2,15 @@ $fn=100;
 /*
     Parametric Tslot Mounting of Paper Clip
     By Brian Khuu (2020)
-    
+
     Got a desk with tslot rails, would be nice to be able to clip paper to it
-    
+
     Remixed from https://www.thingiverse.com/thing:3045980 "Clip on paper holder" by Ken_Applications August 12, 2018
 */
 
 /* [Tslot Spec] */
 // CenterDepth
-tslot_centerdepth = 5+0.5;
+tslot_centerdepth = 6.5;
 // CenterWidth
 tslot_centerwidth = 8; // Gap to slot the clip though
 // For the wedge... its based on a 4040mm Tslot... so may need to modify polygon() in this script
@@ -46,7 +46,7 @@ echo (sagitta);
 module main_shape()
 {
     //Top
-    intersection() 
+    intersection()
     {
         round2d(0.1,15)
         {
@@ -56,7 +56,7 @@ module main_shape()
         translate([79.5,-7.5,0]) circle(19);//spring radius .. need to calculate
     }
     //Bottom
-    intersection() 
+    intersection()
     {
         round2d(0.8,8)
         {
@@ -72,7 +72,7 @@ module main_shape()
 
 module main_shape_3()
 {
-    round2d(0,1) 
+    round2d(0,1)
         main_shape();
 }
 
@@ -91,17 +91,17 @@ module ring(){
         circle(grip_radius-paper_gap);
     }
 }
-    
+
 module ring2()
 {
     rotate([0,90,0])
         translate([-thickness/2,-grip_radius+sagitta/2,-grip_end_L1/2-.1])
-            linear_extrude(height=grip_end_L1+.2) 
+            linear_extrude(height=grip_end_L1+.2)
                 ring();
 }
- 
+
 module main_minus_ring()
-{ 
+{
     difference()
     {
         main_shape_2();
@@ -142,12 +142,12 @@ union()
                             }
                             union()
                             {
-                                translate([0,0,heightlim/2+tslot_centerdepth/4]) 
+                                translate([0,0,heightlim/2+tslot_centerdepth/4])
                                     cube([20,20,heightlim-tslot_centerdepth/2], center = true);
                                 intersection()
                                 {
                                     rotate([0,90,0])
-                                        translate([-tslot_centerdepth/2,0,0]) 
+                                        translate([-tslot_centerdepth/2,0,0])
                                         cylinder(r=hookwidth/2, h=20, center = true);
                                     cube([20,20,hookwidth+1], center = true);
                                 }
@@ -166,17 +166,17 @@ union()
                         cube([tslot_centerwidth+10, hookwidth, cheight], center=true);
                 }
         }
-        
+
         // bend
         translate([0, 100/2, 0])
             cube([2,100,100], center=true);
 
     }
-    
+
     translate([-0, -8.5-hookthickness, -thickness/2])
         main_minus_ring();
 }
-    
+
 
 %translate([model_slot_side/2+model_slot_gap/2,0,0]) cube([model_slot_side,0.1,100], center=true);
 %translate([-model_slot_side/2-model_slot_gap/2,0,0]) cube([model_slot_side,0.1,100], center=true);

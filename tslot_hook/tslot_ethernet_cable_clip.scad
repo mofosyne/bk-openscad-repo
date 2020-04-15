@@ -2,17 +2,17 @@ $fn=100;
 /*
     Parametric Cable Hooks For Tslot Mounting of ethernet cables
     By Brian Khuu (2020)
-    
+
     Got a desk with tslot rails, would be nice to mount cable on it...
-    
+
     Inspired by https://www.thingiverse.com/thing:2676595 "V-Slot Cable Clips by pekcitron November 30, 2017"
-    
+
     // Also need to add https://makerware.thingiverse.com/thing:1719073
 */
 
 /* [Tslot Spec] */
 // CenterDepth
-tslot_centerdepth = 5+0.5;
+tslot_centerdepth = 6.5;
 // CenterWidth
 tslot_centerwidth = 8; // Gap to slot the clip though
 // For the wedge... its based on a 4040mm Tslot... so may need to modify polygon() in this script
@@ -48,7 +48,7 @@ anglecut = 55; // [90]
 /*****************
     clip() and clips() Functions from "cable clip / cable holder" by kenjo123 August 14, 2016
     Modified slightly for this design
-    Source: https://makerware.thingiverse.com/thing:1719073 
+    Source: https://makerware.thingiverse.com/thing:1719073
 ******************/
 
 outer = cableDia + 2*wallThickness;
@@ -118,12 +118,12 @@ union()
                             }
                             union()
                             {
-                                translate([0,0,heightlim/2+tslot_centerdepth/4]) 
+                                translate([0,0,heightlim/2+tslot_centerdepth/4])
                                     cube([20,20,heightlim-tslot_centerdepth/2], center = true);
                                 intersection()
                                 {
                                     rotate([0,90,0])
-                                        translate([-tslot_centerdepth/2,0,0]) 
+                                        translate([-tslot_centerdepth/2,0,0])
                                         cylinder(r=hookwidth/2, h=20, center = true);
                                     cube([20,20,hookwidth+1], center = true);
                                 }
@@ -142,13 +142,13 @@ union()
                         cube([tslot_centerwidth+10, hookwidth, cheight], center=true);
                 }
         }
-        
+
         // bend
         translate([0, 100/2, 0])
             cube([2,100,100], center=true);
 
     }
- 
+
     // Clip
     translate([0, -hookthickness, 0])
         rotate([0,0,-90])
