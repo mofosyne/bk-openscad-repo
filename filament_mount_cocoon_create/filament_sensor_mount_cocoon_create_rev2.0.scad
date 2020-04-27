@@ -1,9 +1,10 @@
 /*
-    Filament Sensor Mounting Clip For Cocoon Create
+    Filament Sensor Mounting Clip For Cocoon Create Touch and Wanhao i3 duplicator plus Rev2.0
     By Brian Khuu 2019
     
     This is for a cheap filament sensor, that you can usually find on ebay.
-    
+    This time it will clip right on to the NEMA17 extruder motor of a Cocoon Create Touch
+    and Wanhao i3 duplicator plus.
 */
 $fn=100;
 
@@ -27,13 +28,13 @@ filament_mount_thickness=1.5;
 // NEMA17 clip
 // Rounded by 5mm
 NEMA_dia=42.3;
-NEMA_clip_round=5; // Adjust based on motor indentation
+NEMA_clip_round=10; // Adjust based on motor indentation
 NEMA_clip_width=8;
-NEMA_clip_thickness=2;
+NEMA_clip_thickness=3;
 
-NEMA_mount_offset_h=10;
+NEMA_mount_offset_h=9;
 NEMA_mount_offset_length=15;
-NEMA_mount_offset_sideway=-5;
+NEMA_mount_offset_sideway=-5+2.125; // e.g. (Centerpoint=-5, sensor_hole_offset=2.125) --> sideoffset = -5 + 2.125
 
 module rcube(size, radius) 
 {
@@ -83,6 +84,8 @@ module filament_sensor_mount(xextra, yextra)
 
         hull()
         {
+            translate([filament_mount_x_length+2,-yextra,0])
+                cylinder(r=filament_mount_thickness/2, h=filament_mount_width);
             translate([filament_mount_x_length+xextra,0,0])
                 cylinder(r=filament_mount_thickness/2, h=filament_mount_width);
             translate([filament_mount_x_length+xextra,-yextra,0])
@@ -90,7 +93,6 @@ module filament_sensor_mount(xextra, yextra)
         }
     }
 }
-
 
 module NEMA_Clip()
 {
@@ -105,7 +107,7 @@ module NEMA_Clip()
             rcube([NEMA_dia,NEMA_dia,NEMA_clip_width+10],[NEMA_clip_round,NEMA_clip_round,NEMA_clip_round,NEMA_clip_round]);
 
         // Cut
-        cutlength=NEMA_dia-15;
+        cutlength=NEMA_dia-5;
         translate([NEMA_dia-(NEMA_clip_thickness*3)/2,-cutlength/2,-5])
             cube([NEMA_clip_thickness*3,cutlength,NEMA_clip_width+10]);
     }
