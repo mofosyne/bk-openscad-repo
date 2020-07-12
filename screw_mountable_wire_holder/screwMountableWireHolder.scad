@@ -148,29 +148,32 @@ module totalHolder(){
             rotate([0,180,0])
             quarterZylinder(backplateThickness,backplateHeightTotal,roundEdge[2]);
         }
-        translate([totalLengthAccumulate[sumVector(holderSizeDefCount)-1]-holderGapSizeDef[0]/2,0,-10])
+        translate([totalLengthAccumulate[sumVector(holderSizeDefCount)-1]-holderGapSizeDef[0]/2,0,-holderSizeDef[0]+holderThickness])
             drillHole();
-        translate([totalLengthAccumulate[sumVector(holderSizeDefCount)/2]-holderGapSizeDef[0]/2,0,-10])
+        translate([totalLengthAccumulate[sumVector(holderSizeDefCount)/2]-holderGapSizeDef[0]/2,0,-holderSizeDef[0]+holderThickness])
             drillHole();
-        translate([totalLengthAccumulate[1]-holderGapSizeDef[0]/2,0,-10])
+        translate([totalLengthAccumulate[1]-holderGapSizeDef[0]/2,0,-holderSizeDef[0]+holderThickness])
             drillHole();
     }
 }
 
-totalHolder();
-echo(totalLength);//<350
 
-
-
-/* [Tslot Model] */
-model_slot_gap = 10;
-model_slot_side = 15;
-
-if (1)
-translate([0,-5,-10])
-rotate([0,90,0])
-union()
+rotate([90,0,0])
 {
-    %translate([model_slot_side/2+model_slot_gap/2,0,0]) cube([model_slot_side,0.1,1000], center=true);
-    %translate([-model_slot_side/2-model_slot_gap/2,0,0]) cube([model_slot_side,0.1,1000], center=true);
+    /* Screw Mount Wire Holder */
+    totalHolder();
+    echo(totalLength);//<350
+
+    /* [Tslot Model] */
+    model_slot_gap = 10;
+    model_slot_side = 15;
+
+    if (1)
+    translate([0,-5,-holderSizeDef[0]+holderThickness])
+    rotate([0,90,0])
+    union()
+    {
+        %translate([model_slot_side/2+model_slot_gap/2,0,0]) cube([model_slot_side,0.1,1000], center=true);
+        %translate([-model_slot_side/2-model_slot_gap/2,0,0]) cube([model_slot_side,0.1,1000], center=true);
+    }
 }
