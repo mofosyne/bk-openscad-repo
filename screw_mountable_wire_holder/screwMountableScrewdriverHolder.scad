@@ -1,6 +1,19 @@
 /*
-    Screw mountable wire holder
+    Screw mountable screwdriver holder
     Remixed By Brian Khuu (2020 July)
+    
+    (Based off Screw mountable wire holder but with settings changes)
+
+    Adjusted for pixel lab (2020 July):
+    * backplateThickness : Thicker for easier mounting
+    * holderLengthA : Reduced to keep screwdriver in place
+    * holderLengthB : Reduced to keep screwdriver in place
+    * holderAngle : Reduced to keep screwdriver in place
+    * countersunkDiameter : Increased a mm to be easier to screw include
+    * holderGapSizeDef : 7.5 -> 8mm for pixel's mini screwdriver
+
+---------------- Old description ------------
+    Screw mountable wire holder
     For use with T-slot V-slots nuts and screws
 
     Remixed From: Customizable OpenSCAD Wire Holder, Kabelkamm by AndreasG4ris 
@@ -9,16 +22,17 @@
     ## For typical usage, just changes these two variables
     drillholeDiameter=8;
     countersunkDiameter=14;
+    
 */
 
 backplateThickness=5;
-backplateHeight=0; // Set to minimum as we don't need it...
+backplateHeight=4; // Set to minimum as we don't need it...
 backplateSupportHeight=20;
 supportWallThickness=3;
 holderThickness=4;
-holderLengthA=75;
-holderLengthB=15;
-holderAngle=35;
+holderLengthA=5;
+holderLengthB=10;
+holderAngle=40;
 cnt=9;
 holderGapSizeDef=[7.5,0];
 holderGapSizeDefCount=[cnt,1];
