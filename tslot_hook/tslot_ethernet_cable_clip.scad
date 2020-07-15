@@ -105,7 +105,7 @@ union()
             translate([0, tslot_centerdepth, 0])
                 intersection()
                 {
-                    heightlim=7;
+                    heightlim=6;
                     linear_extrude(height = hookwidth, center = true)
                         polygon(points=[[-10,0],[-5,8],[5,8],[10,0]]);
                     rotate([-90,0,0])
