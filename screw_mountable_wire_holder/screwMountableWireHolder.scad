@@ -11,7 +11,7 @@
     countersunkDiameter=14;
 */
 
-backplateThickness=5;
+backplateThickness=6;
 backplateHeight=0; // Set to minimum as we don't need it...
 backplateSupportHeight=20;
 supportWallThickness=3;
@@ -101,10 +101,20 @@ module singleHolder(curHolderGapSize,curHolderSize) union(){
     rotate([holderAngle,0,0])
     translate([0,0,-holderThickness])
     union(){
-        cube([curHolderSize,holderLengthB,holderThickness]);
-        translate([0,holderLengthB,holderThickness/2])
-        rotate([90,0,0])
-        halfZylinder(holderThickness/2,curHolderSize);
+        hull()
+        {
+            midlength=curHolderSize*0.8;
+            toplength=curHolderSize*0.1;
+            translate([0,0,0])
+                cube([curHolderSize,3,holderThickness]);
+            translate([curHolderSize/2-midlength/2,0,0])
+                cube([midlength,holderLengthB*3/4,holderThickness]);
+            translate([curHolderSize/2-toplength/2,0,0])
+                cube([toplength,holderLengthB,holderThickness]);
+            translate([curHolderSize/2-toplength/2,holderLengthB,holderThickness/2])
+                rotate([90,0,0])
+                    halfZylinder(holderThickness/2,toplength);
+        }
     }
     
     translate([-supportWallThickness/2+curHolderSize/2,0,0])

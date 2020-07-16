@@ -10,7 +10,7 @@
     * holderLengthB : Reduced to keep screwdriver in place
     * holderAngle : Reduced to keep screwdriver in place
     * countersunkDiameter : Increased a mm to be easier to screw include
-    * holderGapSizeDef : 7.5 -> 8mm for pixel's mini screwdriver
+    * holderGapSizeDef : 7.5 -> 10.5mm for pixel's mini screwdriver
 
 ---------------- Old description ------------
     Screw mountable wire holder
@@ -25,16 +25,16 @@
     
 */
 
-backplateThickness=5;
-backplateHeight=4; // Set to minimum as we don't need it...
+backplateThickness=6;
+backplateHeight=0; // Set to minimum as we don't need it...
 backplateSupportHeight=20;
 supportWallThickness=3;
 holderThickness=4;
-holderLengthA=5;
+holderLengthA=15;
 holderLengthB=10;
 holderAngle=40;
-cnt=9;
-holderGapSizeDef=[7.5,0];
+cnt=7;
+holderGapSizeDef=[10.5,0];
 holderGapSizeDefCount=[cnt,1];
 holderSizeDef=[11];
 holderSizeDefCount=[cnt+1];
@@ -115,10 +115,20 @@ module singleHolder(curHolderGapSize,curHolderSize) union(){
     rotate([holderAngle,0,0])
     translate([0,0,-holderThickness])
     union(){
-        cube([curHolderSize,holderLengthB,holderThickness]);
-        translate([0,holderLengthB,holderThickness/2])
-        rotate([90,0,0])
-        halfZylinder(holderThickness/2,curHolderSize);
+        hull()
+        {
+            midlength=curHolderSize*0.8;
+            toplength=curHolderSize*0.1;
+            translate([0,0,0])
+                cube([curHolderSize,3,holderThickness]);
+            translate([curHolderSize/2-midlength/2,0,0])
+                cube([midlength,holderLengthB*3/4,holderThickness]);
+            translate([curHolderSize/2-toplength/2,0,0])
+                cube([toplength,holderLengthB,holderThickness]);
+            translate([curHolderSize/2-toplength/2,holderLengthB,holderThickness/2])
+                rotate([90,0,0])
+                    halfZylinder(holderThickness/2,toplength);
+        }
     }
     
     translate([-supportWallThickness/2+curHolderSize/2,0,0])
