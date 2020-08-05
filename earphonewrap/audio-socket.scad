@@ -17,69 +17,73 @@ Here is few different sockets using OpenSCAD that you can consider using in your
 
 module plug_socket(plugdia, pluglength, plugdepth, outerdia, outerheight, sideshift)
 {
-  translate([0, -sideshift,0])
-  difference()
+  union()
   {
-    union()
-    {
+      /* Main Socket Body */
+      translate([0, -sideshift,0])
       difference()
       {
-        hull()
+        union()
         {
-          translate([0,(pluglength-plugdia)/2,0])
-            cylinder(r = outerdia/2, outerheight);
-          translate([0,-(pluglength-plugdia)/2,0])
-            cylinder(r = outerdia/2, outerheight);
+          difference()
+          {
+            hull()
+            {
+              translate([0,(pluglength-plugdia)/2,0])
+                cylinder(r = outerdia/2, outerheight);
+              translate([0,-(pluglength-plugdia)/2,0])
+                cylinder(r = outerdia/2, outerheight);
+              
+              /* Side Shift */
+              translate([0,(pluglength-plugdia)/2 + sideshift,0])
+                cylinder(r = outerdia/2, outerheight);
+            }
+          }
+        }
+        
+        /* Socket Align cut */
+        translate([0,0,outerheight])
+          hull()
+          {
+            translate([0,(pluglength-plugdia)/2,0])
+              cylinder(r=(outerdia/2), 1);
+            translate([0,-(pluglength-plugdia)/2,0])
+              cylinder(r=(outerdia/2), 1);
+            translate([0,(pluglength-plugdia)/2,-1])
+              cylinder(r=(plugdia/2), 1);
+            translate([0,-(pluglength-plugdia)/2,-1])
+              cylinder(r=(plugdia/2), 1);
+          }
+
+        /* Socket Cut */
+        translate([0,0,outerheight-plugdepth])
+          hull()
+          {
+            translate([0,(pluglength-plugdia)/2,0])
+              cylinder(r=(plugdia/2), plugdepth+1);
+            translate([0,-(pluglength-plugdia)/2,0])
+              cylinder(r=(plugdia/2), plugdepth+1);
+          }
+        
+        /* top wire wrap cut */
+        difference()
+        {
+          hull()
+          {
+            translate([0,0,outerheight])
+              cube( [outerdia+1, pluglength*2/3, 0.1], center=true);
+            translate([0,0,outerheight-plugdepth+1])
+              rotate([0,90,0])
+                cylinder(r=1, outerdia, center=true);
+          }
           
-          /* Side Shift */
-          translate([0,(pluglength-plugdia)/2 + sideshift,0])
-            cylinder(r = outerdia/2, outerheight);
+          // Enable to cut only on one side
+          if (0)
+          rotate([0,0,180])
+            translate([(outerheight+4)/2,0,(outerheight+2)/2])
+              cube((outerheight+4), center=true); 
         }
       }
-    }
-    
-    /* Socket Align cut */
-    translate([0,0,outerheight])
-      hull()
-      {
-        translate([0,(pluglength-plugdia)/2,0])
-          cylinder(r=(outerdia/2), 1);
-        translate([0,-(pluglength-plugdia)/2,0])
-          cylinder(r=(outerdia/2), 1);
-        translate([0,(pluglength-plugdia)/2,-1])
-          cylinder(r=(plugdia/2), 1);
-        translate([0,-(pluglength-plugdia)/2,-1])
-          cylinder(r=(plugdia/2), 1);
-      }
-
-    /* Socket Cut */
-    translate([0,0,outerheight-plugdepth])
-      hull()
-      {
-        translate([0,(pluglength-plugdia)/2,0])
-          cylinder(r=(plugdia/2), plugdepth+1);
-        translate([0,-(pluglength-plugdia)/2,0])
-          cylinder(r=(plugdia/2), plugdepth+1);
-      }
-    
-    /* top wire wrap cut */
-    difference()
-    {
-      hull()
-      {
-        translate([0,0,outerheight])
-          cube( [outerdia+1, pluglength*2/3, 0.1], center=true);
-        translate([0,0,outerheight-plugdepth+1])
-          rotate([0,90,0])
-            cylinder(r=1, outerdia, center=true);
-      }
-      
-      // Enable to cut only on one side
-      if (0)
-      rotate([0,0,180])
-        translate([(outerheight+4)/2,0,(outerheight+2)/2])
-          cube((outerheight+4), center=true); 
-    }
   }
 }
 
@@ -112,15 +116,33 @@ module lightning_socket(outerdia, outerheight, sideshift, tol)
 
 module trrs_socket(outerdia, outerheight, sideshift, tol)
 {
+  /* TRRS Spec */
   trrs_plugdia    = 3.5;
   trrs_pluglength = 3.5;
   trrs_plugdepth  = 15;
-  plug_socket(
-      trrs_plugdia+tol,
-      trrs_pluglength+0.5+tol,
-      trrs_plugdepth+tol,
-      outerdia, outerheight, sideshift
-    );
+  /* TRRS Plug Lock */
+  trrsLockRadius = 1/3;
+  trrsLockHeight = outerheight-10;
+  union()
+  {
+      /* TRRS Plug Lock */
+      translate([0, (trrs_pluglength)/2 -sideshift, trrsLockHeight])
+        rotate([0,90,0])
+          cylinder(r = trrsLockRadius, trrs_plugdia, center=true);
+      translate([0, -(trrs_pluglength)/2 -sideshift, trrsLockHeight])
+        rotate([0,90,0])
+          cylinder(r = trrsLockRadius, trrs_plugdia, center=true);
+      
+      /* TRRS Plug Lock */
+      trsLockRadius = 1/2;
+      trsLockHeight = outerheight-10;
+      translate([0, (trrs_pluglength)/2, trsLockHeight])
+        rotate([0,90,0])
+          cylinder(r = trsLockRadius, trrs_plugdia, center=true);
+      translate([0, -(trrs_pluglength)/2, trsLockHeight])
+        rotate([0,90,0])
+          cylinder(r = trsLockRadius, trrs_plugdia, center=true);
+  }
 }
 
 /*********************************************
@@ -129,87 +151,101 @@ module trrs_socket(outerdia, outerheight, sideshift, tol)
 
 module plug_inc_trrs_socket(plugdia, pluglength, plugdepth, outerdia, outerheight, sideshift)
 {
+  /* TRRS Spec */
   trrs_plugdia    = 3.5-0.01; //Make slightly smaller for snug fit
   trrs_plugdepth  = 15;
-
-  translate([0, -sideshift,0])
-  difference()
+  trrs_pluglength = 3.5;
+  /* TRRS Plug Lock */
+  trrsLockRadius = 1/3;
+  trrsLockHeight = outerheight-10;
+  union()
   {
-    union()
-    {
+      /* TRRS Plug Lock */
+      translate([0, (trrs_pluglength)/2 -sideshift, trrsLockHeight])
+        rotate([0,90,0])
+          cylinder(r = trrsLockRadius, trrs_plugdia, center=true);
+      translate([0, -(trrs_pluglength)/2 -sideshift, trrsLockHeight])
+        rotate([0,90,0])
+          cylinder(r = trrsLockRadius, trrs_plugdia, center=true);
+      /* Main Body */
+      translate([0, -sideshift,0])
       difference()
       {
+        union()
+        {
+          difference()
+          {
+            hull()
+            {
+              translate([0,(pluglength-plugdia)/2,0])
+                cylinder(r = outerdia/2, outerheight);
+              translate([0,-(pluglength-plugdia)/2,0])
+                cylinder(r = outerdia/2, outerheight);
+              
+              /* Side Shift */
+              translate([0,(pluglength-plugdia)/2 + sideshift,0])
+                cylinder(r = outerdia/2, outerheight);
+            }
+          }
+        }
+        
+        /* Socket Align cut */
+        translate([0,0,outerheight])
+          hull()
+          {
+            translate([0,(pluglength-plugdia)/2,0])
+              cylinder(r=(outerdia/2), 1);
+            translate([0,-(pluglength-plugdia)/2,0])
+              cylinder(r=(outerdia/2), 1);
+            translate([0,(pluglength-plugdia)/2,-1])
+              cylinder(r=(plugdia/2), 1);
+            translate([0,-(pluglength-plugdia)/2,-1])
+              cylinder(r=(plugdia/2), 1);
+          }
+
+        /* TRRS Cut */
+        translate([0,0,outerheight])
         hull()
         {
-          translate([0,(pluglength-plugdia)/2,0])
-            cylinder(r = outerdia/2, outerheight);
-          translate([0,-(pluglength-plugdia)/2,0])
-            cylinder(r = outerdia/2, outerheight);
+          translate([0,0,-plugdepth])
+          cylinder(r=(trrs_plugdia)*2/3, plugdepth);
+          translate([0,0,-plugdepth-1])
+          cylinder(r=(trrs_plugdia/2), 1);
+        }
+        translate([0,0,outerheight-trrs_plugdepth])
+          cylinder(r=(trrs_plugdia/2), trrs_plugdepth+1);
+
+        /* Socket Cut */
+        translate([0,0,outerheight-plugdepth])
+          hull()
+          {
+            translate([0,(pluglength-plugdia)/2,0])
+              cylinder(r=(plugdia/2), plugdepth+1);
+            translate([0,-(pluglength-plugdia)/2,0])
+              cylinder(r=(plugdia/2), plugdepth+1);
+          }
+        
+        /* top wire wrap cut */
+        difference()
+        {
+          hull()
+          {
+            translate([0,0,outerheight])
+              cube( [outerdia+1, trrs_plugdia*2/3, 0.1], center=true);
+            translate([0,0,outerheight-trrs_plugdepth+1])
+              rotate([0,90,0])
+                cylinder(r=1, outerdia, center=true);
+          }
           
-          /* Side Shift */
-          translate([0,(pluglength-plugdia)/2 + sideshift,0])
-            cylinder(r = outerdia/2, outerheight);
+          // Enable to cut only on one side
+          if (0)
+          rotate([0,0,180])
+            translate([(outerheight+4)/2,0,(outerheight+2)/2])
+              cube((outerheight+4), center=true); 
         }
       }
     }
-    
-    /* Socket Align cut */
-    translate([0,0,outerheight])
-      hull()
-      {
-        translate([0,(pluglength-plugdia)/2,0])
-          cylinder(r=(outerdia/2), 1);
-        translate([0,-(pluglength-plugdia)/2,0])
-          cylinder(r=(outerdia/2), 1);
-        translate([0,(pluglength-plugdia)/2,-1])
-          cylinder(r=(plugdia/2), 1);
-        translate([0,-(pluglength-plugdia)/2,-1])
-          cylinder(r=(plugdia/2), 1);
-      }
-
-    /* TRRS Cut */
-    translate([0,0,outerheight])
-    hull()
-    {
-      translate([0,0,-plugdepth])
-      cylinder(r=(trrs_plugdia)*2/3, plugdepth);
-      translate([0,0,-plugdepth-1])
-      cylinder(r=(trrs_plugdia/2), 1);
-    }
-    translate([0,0,outerheight-trrs_plugdepth])
-      cylinder(r=(trrs_plugdia/2), trrs_plugdepth+1);
-
-    /* Socket Cut */
-    translate([0,0,outerheight-plugdepth])
-      hull()
-      {
-        translate([0,(pluglength-plugdia)/2,0])
-          cylinder(r=(plugdia/2), plugdepth+1);
-        translate([0,-(pluglength-plugdia)/2,0])
-          cylinder(r=(plugdia/2), plugdepth+1);
-      }
-    
-    /* top wire wrap cut */
-    difference()
-    {
-      hull()
-      {
-        translate([0,0,outerheight])
-          cube( [outerdia+1, trrs_plugdia*2/3, 0.1], center=true);
-        translate([0,0,outerheight-trrs_plugdepth+1])
-          rotate([0,90,0])
-            cylinder(r=1, outerdia, center=true);
-      }
-      
-      // Enable to cut only on one side
-      if (0)
-      rotate([0,0,180])
-        translate([(outerheight+4)/2,0,(outerheight+2)/2])
-          cube((outerheight+4), center=true); 
-    }
-  }
 }
-
 
 
 module typec_trrs_socket(outerdia, outerheight, sideshift, tol)

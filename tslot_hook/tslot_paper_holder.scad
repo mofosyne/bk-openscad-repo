@@ -130,26 +130,27 @@ union()
                 intersection()
                 {
                     heightlim=6;
+                    es=1;
                     linear_extrude(height = hookwidth, center = true)
-                        polygon(points=[[-10,0],[-5,8],[5,8],[10,0]]);
+                        polygon(points=[[-10-es,0],[-5-es,8],[5+es,8],[10+es,0]]);
                     rotate([-90,0,0])
                         intersection()
                         {
                             hull()
                             {
-                                translate([0,0,0]) cylinder(r=10, h=0.1);
-                                translate([0,0,8]) cylinder(r=5, h=0.1);
+                                translate([0,0,0]) cylinder(r=10+es, h=0.1);
+                                translate([0,0,8]) cylinder(r=5+es, h=0.1);
                             }
                             union()
                             {
                                 translate([0,0,heightlim/2+tslot_centerdepth/4])
-                                    cube([20,20,heightlim-tslot_centerdepth/2], center = true);
+                                    cube([20+es*2,20,heightlim-tslot_centerdepth/2], center = true);
                                 intersection()
                                 {
                                     rotate([0,90,0])
                                         translate([-tslot_centerdepth/2,0,0])
-                                        cylinder(r=hookwidth/2, h=20, center = true);
-                                    cube([20,20,hookwidth+1], center = true);
+                                        cylinder(r=hookwidth/2, h=20+es*2, center = true);
+                                    cube([20+es*2,20,hookwidth+1], center = true);
                                 }
                             }
                         }
