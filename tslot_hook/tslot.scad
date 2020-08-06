@@ -29,7 +29,7 @@ module tslot(tslot_centerdepth = 7, tslot_centerwidth = 8, hookwidth=7, standoff
                 {
                     heighttrim=0.1;
                     heightlim=6;
-                    es=0.5;
+                    es=1;
                     linear_extrude(height = hookwidth, center = true)
                         polygon(points=[[-10-es,0],[-5-es,8],[5+es,8],[10+es,0]]);
                     rotate([-90,0,0])
@@ -44,12 +44,15 @@ module tslot(tslot_centerdepth = 7, tslot_centerwidth = 8, hookwidth=7, standoff
                                 {
                                     rotate([0,90,0])
                                         translate([-hookwidth/2,0,0])
-                                        cylinder(r=hookwidth/2, h=20, center = true);
-                                    cube([20-0.5,20,hookwidth], center = true);
+                                        cylinder(r=hookwidth/2, h=(20+es*2), center = true);
+                                    cube([(20+es*2-2),20,hookwidth], center = true);
                                 }
                             }
                         }
                 }
+
+            // This will change the stiffness
+            slimming=1.5;
 
             // tslot mount shaft
             translate([0, 0, 0])
@@ -59,7 +62,7 @@ module tslot(tslot_centerdepth = 7, tslot_centerwidth = 8, hookwidth=7, standoff
                     cheight = tslot_centerdepth+hookwidth/2+1;
                     cylinder(r=tslot_centerwidth/2, h=cheight);
                     translate([0, 0, cheight/2])
-                        cube([tslot_centerwidth-2, hookwidth, cheight], center=true);
+                        cube([tslot_centerwidth-slimming, hookwidth, cheight], center=true);
                 }
 
             // Base
@@ -73,7 +76,7 @@ module tslot(tslot_centerdepth = 7, tslot_centerwidth = 8, hookwidth=7, standoff
                         cheight = tslot_centerdepth+hookwidth/2+1;
                         cylinder(r=tslot_centerwidth/2, h=1);
                         translate([0, 0, standoff/2])
-                            cube([tslot_centerwidth-2, hookwidth, 1], center=true);
+                            cube([tslot_centerwidth-slimming, hookwidth, 1], center=true);
                     }
                     intersection()
                     {
@@ -152,5 +155,5 @@ model_slot_side = 15;
 %translate([model_slot_side/2+model_slot_gap/2,0,0]) cube([model_slot_side,0.1,100], center=true);
 %translate([-model_slot_side/2-model_slot_gap/2,0,0]) cube([model_slot_side,0.1,100], center=true);
 
-//%tslotOrg();
+%tslotOrg();
 tslot();

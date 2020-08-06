@@ -60,11 +60,11 @@ module typec_socket(outerdia, outerheight, sideshift, tol)
 module plug_inc_trrs_socket(plugdia, pluglength, plugdepth, outerdia, outerheight, sideshift)
 {
   /* TRRS Spec */
-  trrs_plugdia    = 3.5-0.01; //Make slightly smaller for snug fit
+  trrs_plugdia    = 3.5-0.2; //Make slightly smaller for snug fit
   trrs_plugdepth  = 15;
   trrs_pluglength = 3.5;
   /* TRRS Plug Lock */
-  trrsLockRadius = 1/3;
+  trrsLockRadius = 0.6;
   trrsLockHeight = outerheight-10;
   union()
   {

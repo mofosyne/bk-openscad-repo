@@ -14,7 +14,6 @@ Here is few different sockets using OpenSCAD that you can consider using in your
   TYPE-C LIGHTNING TRRS
 **********************************************/
 
-
 module plug_socket(plugdia, pluglength, plugdepth, outerdia, outerheight, sideshift)
 {
   union()
@@ -113,7 +112,6 @@ module lightning_socket(outerdia, outerheight, sideshift, tol)
     );
 }
 
-
 module trrs_socket(outerdia, outerheight, sideshift, tol)
 {
   /* TRRS Spec */
@@ -132,18 +130,16 @@ module trrs_socket(outerdia, outerheight, sideshift, tol)
       translate([0, -(trrs_pluglength)/2 -sideshift, trrsLockHeight])
         rotate([0,90,0])
           cylinder(r = trrsLockRadius, trrs_plugdia, center=true);
-      
-      /* TRRS Plug Lock */
-      trsLockRadius = 1/2;
-      trsLockHeight = outerheight-10;
-      translate([0, (trrs_pluglength)/2, trsLockHeight])
-        rotate([0,90,0])
-          cylinder(r = trsLockRadius, trrs_plugdia, center=true);
-      translate([0, -(trrs_pluglength)/2, trsLockHeight])
-        rotate([0,90,0])
-          cylinder(r = trsLockRadius, trrs_plugdia, center=true);
+      /* TRRS Plug Socket */
+      plug_socket(
+          trrs_plugdia+tol,
+          trrs_pluglength+0.5+tol,
+          trrs_plugdepth+tol,
+          outerdia, outerheight, sideshift
+        );
   }
 }
+
 
 /*********************************************
   TYPE-C LIGHTNING (Combined with TRRS)
@@ -152,11 +148,11 @@ module trrs_socket(outerdia, outerheight, sideshift, tol)
 module plug_inc_trrs_socket(plugdia, pluglength, plugdepth, outerdia, outerheight, sideshift)
 {
   /* TRRS Spec */
-  trrs_plugdia    = 3.5-0.01; //Make slightly smaller for snug fit
+  trrs_plugdia    = 3.5-0.2; //Make slightly smaller for snug fit
   trrs_plugdepth  = 15;
   trrs_pluglength = 3.5;
   /* TRRS Plug Lock */
-  trrsLockRadius = 1/3;
+  trrsLockRadius = 0.6;
   trrsLockHeight = outerheight-10;
   union()
   {
@@ -246,7 +242,6 @@ module plug_inc_trrs_socket(plugdia, pluglength, plugdepth, outerdia, outerheigh
       }
     }
 }
-
 
 module typec_trrs_socket(outerdia, outerheight, sideshift, tol)
 {
