@@ -24,7 +24,7 @@ fan_mount_nut_depth = 1.5;
 // Fan Upper Standoff
 fan_upper_standoff = 5;
 // Fan Side Standoff
-fan_side_standoff = 3;
+fan_side_standoff = 10;
 // Fan Mount Corner Radius
 fan_mount_corner_r = 1;
 
@@ -32,7 +32,9 @@ fan_mount_corner_r = 1;
 // Laser Diode Size
 laserDiode_size = 40;
 // Laser Diode Thickness
-laserDiode_thickness = 5;
+laserDiode_thickness = 1.5;
+// Laser Diode Screw Mount Thickness
+laserDiode_screw_thickness = 5;
 // Laser Diode Mount Screw Pitch
 laserDiode_screw_pitch = 32;
 // Laser Diode Hole Diameter (3.1mm typical but increased to 3.5mm to fix)
@@ -68,19 +70,30 @@ module fanMount()
   P13=[fan_upper_standoff, 0, 0];
 
   // Standoff
-  translate([fan_size/2,0,0])
   hull() 
   {
-    // Base Corners
-    PP1=[fan_side_standoff,laserDiode_size/2-fan_mount_corner_r,laserDiode_thickness/2];
-    PP2=[-1,laserDiode_size/2-fan_mount_corner_r,laserDiode_thickness/2];
-    PP3=[fan_side_standoff,-laserDiode_size/2+fan_mount_corner_r,laserDiode_thickness/2];
-    PP4=[-1,-laserDiode_size/2+fan_mount_corner_r,laserDiode_thickness/2];
+    PP1=[fan_size/2+fan_side_standoff,laserDiode_size/2-fan_mount_corner_r,laserDiode_thickness/2];
+    PP2=[0,laserDiode_size/2-fan_mount_corner_r,laserDiode_thickness/2];
+    PP3=[fan_size/2+fan_side_standoff,-laserDiode_size/2+fan_mount_corner_r,laserDiode_thickness/2];
+    PP4=[0,-laserDiode_size/2+fan_mount_corner_r,laserDiode_thickness/2];
 
     translate(PP1) cylinder(r=fan_mount_corner_r, h=laserDiode_thickness, center=true);
     translate(PP2) cylinder(r=fan_mount_corner_r, h=laserDiode_thickness, center=true);
     translate(PP3) cylinder(r=fan_mount_corner_r, h=laserDiode_thickness, center=true);
     translate(PP4) cylinder(r=fan_mount_corner_r, h=laserDiode_thickness, center=true);
+  }
+  
+  hull() 
+  {
+    PP1=[fan_size/2+fan_side_standoff,laserDiode_size/2-fan_mount_corner_r,laserDiode_thickness/2];
+    PP2=[fan_size/2+fan_side_standoff-2,laserDiode_size/2-fan_mount_corner_r,laserDiode_thickness/2];
+    PP3=[fan_size/2+fan_side_standoff,-laserDiode_size/2+fan_mount_corner_r,laserDiode_thickness/2];
+    PP4=[fan_size/2+fan_side_standoff-2,-laserDiode_size/2+fan_mount_corner_r,laserDiode_thickness/2];
+
+    translate(PP1) cylinder(r=fan_mount_corner_r, h=laserDiode_screw_thickness/2);
+    translate(PP2) cylinder(r=fan_mount_corner_r, h=laserDiode_screw_thickness/2);
+    translate(PP3) cylinder(r=fan_mount_corner_r, h=laserDiode_screw_thickness/2);
+    translate(PP4) cylinder(r=fan_mount_corner_r, h=laserDiode_screw_thickness/2);
   }
 
   // Fan Mount
@@ -145,9 +158,10 @@ module laserDiodeMountBase()
     union() 
     {        
       // fanMount
-      rotate([0,0,-90]) fanMount();
-      rotate([0,0,+90]) fanMount();
-      rotate([0,0,180]) fanMount();
+      rotate([0,0,90*1+45]) fanMount();
+      rotate([0,0,90*2+45]) fanMount();
+      rotate([0,0,90*3+45]) fanMount();
+      rotate([0,0,90*4+45]) fanMount();
         
       // Bulk
       hull() 
@@ -157,13 +171,19 @@ module laserDiodeMountBase()
         translate(P3) cylinder(r=laserDiode_corner_r, h=laserDiode_thickness, center=true);
         translate(P4) cylinder(r=laserDiode_corner_r, h=laserDiode_thickness, center=true);
       }
+      
+      // screw holes
+      translate(P5) cylinder(r=laserDiode_hole_diam/2+3, h=laserDiode_screw_thickness/2);
+      translate(P6) cylinder(r=laserDiode_hole_diam/2+3, h=laserDiode_screw_thickness/2);
+      translate(P7) cylinder(r=laserDiode_hole_diam/2+3, h=laserDiode_screw_thickness/2);
+      translate(P8) cylinder(r=laserDiode_hole_diam/2+3, h=laserDiode_screw_thickness/2);
     }
     
     // screw holes
-    translate(P5) cylinder(r=laserDiode_hole_diam/2, h=laserDiode_thickness+0.5, center=true);
-    translate(P6) cylinder(r=laserDiode_hole_diam/2, h=laserDiode_thickness+0.5, center=true);
-    translate(P7) cylinder(r=laserDiode_hole_diam/2, h=laserDiode_thickness+0.5, center=true);
-    translate(P8) cylinder(r=laserDiode_hole_diam/2, h=laserDiode_thickness+0.5, center=true);
+    translate(P5) cylinder(r=laserDiode_hole_diam/2, h=laserDiode_screw_thickness+0.5, center=true);
+    translate(P6) cylinder(r=laserDiode_hole_diam/2, h=laserDiode_screw_thickness+0.5, center=true);
+    translate(P7) cylinder(r=laserDiode_hole_diam/2, h=laserDiode_screw_thickness+0.5, center=true);
+    translate(P8) cylinder(r=laserDiode_hole_diam/2, h=laserDiode_screw_thickness+0.5, center=true);
     
     // laser holes
     hull()
