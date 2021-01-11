@@ -25,7 +25,7 @@
     
 */
 
-backplateThickness=6;
+backplateThickness=8;
 backplateHeight=0; // Set to minimum as we don't need it...
 backplateSupportHeight=20;
 supportWallThickness=3;
