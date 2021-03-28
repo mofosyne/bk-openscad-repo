@@ -6,16 +6,16 @@ Author: Brian Khuu 2021
 
 */
 
-adapterL=230;
+adapterL=230+10;
 adapterH=20-5;
-adapterAngle=20; 
+adapterAngle=0; 
 
 adapterHingeOffset=5;
 
 currGapW=15-0.5;
 newGapW=15-2;
 newGapH=60;
-newGapThickness=8;
+newGapThickness=15;
 
 union()
 {
