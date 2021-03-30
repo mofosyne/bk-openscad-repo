@@ -12,47 +12,43 @@ $fn=100;
 // CenterWidth
 //tslot_centerwidth = 8; // Gap to slot the clip though
 // For the wedge... its based on a 4040mm Tslot... so may need to modify polygon() in this script
+
 /* [Hook Calc] */
 // Hook Width
 //hookwidth=7;
 
-module tslot(tslot_centerdepth = 7, tslot_centerwidth = 8, hookwidth=7, standoff=3)
+module tslot(tslot_centerdepth = 7, tslot_centerwidth = 10, hookwidth=7, standoff=3)
 {
+    cWidthTol = 1;
     tslot_centerdepth = tslot_centerdepth + standoff;
     difference()
     {
         union()
         {
             // Tslot Mount Inner
-            translate([0, tslot_centerdepth, 0])
-                intersection()
+            translate([0,tslot_centerdepth,0])
+            intersection()
+            {                        
+                extraGrip = 0.25;
+                minkowski()
                 {
-                    heighttrim=0.1;
-                    heightlim=6;
-                    es=1;
-                    linear_extrude(height = hookwidth, center = true)
-                        polygon(points=[[-10-es,0],[-5-es,8],[5+es,8],[10+es,0]]);
-                    rotate([-90,0,0])
-                        intersection()
-                        {
-                            union()
-                            {
-                                ext=2;
-                                translate([0,0,hookwidth/2 +ext/2])
-                                    cube([20+es*2,20,ext], center = true);
-                                intersection()
-                                {
-                                    rotate([0,90,0])
-                                        translate([-hookwidth/2,0,0])
-                                        cylinder(r=hookwidth/2, h=(20+es*2), center = true);
-                                    cube([(20+es*2-2),20,hookwidth], center = true);
-                                }
-                            }
-                        }
+                    ss = 0.5; ///< Smoothing
+                    hull()
+                    {
+                        negTol = 0.8;
+                        posTol = 1.5;
+                        translate([0,   negTol,0]) cube([20+extraGrip-2*ss, 0.1, tslot_centerwidth-cWidthTol-2*ss], center=true);
+                        translate([0, 4-negTol,0]) cube([20+extraGrip-2*ss, 0.1, tslot_centerwidth-cWidthTol-2*ss], center=true);
+                        translate([0, 6-posTol,0]) cube([15-2*ss,           0.1, tslot_centerwidth-cWidthTol-2*ss], center=true);
+                    }
+                    sphere(r=ss);
                 }
+                rotate([-90,0,0])
+                    cylinder(r=10+extraGrip, h=10);
+            }
 
             // This will change the stiffness
-            slimming=1.5;
+            slimming=1;
 
             // tslot mount shaft
             translate([0, 0, 0])
@@ -62,7 +58,7 @@ module tslot(tslot_centerdepth = 7, tslot_centerwidth = 8, hookwidth=7, standoff
                     cheight = tslot_centerdepth+hookwidth/2+1;
                     cylinder(r=tslot_centerwidth/2, h=cheight);
                     translate([0, 0, cheight/2])
-                        cube([tslot_centerwidth-slimming, hookwidth, cheight], center=true);
+                        cube([tslot_centerwidth-slimming, tslot_centerwidth-cWidthTol, cheight], center=true);
                 }
 
             // Base
@@ -90,70 +86,35 @@ module tslot(tslot_centerdepth = 7, tslot_centerwidth = 8, hookwidth=7, standoff
 
         // Split
         translate([0, 100/2+standoff, 0])
-            cube([2,100,100], center=true);
-
+            cube([2.5,100,100], center=true);
     }
 }
 
-
-module tslotOrg(tslot_centerdepth = 6.5, tslot_centerwidth = 8, hookwidth=7, standoff=2)
-{
-    tslot_centerdepth = tslot_centerdepth + standoff;
-    difference()
-    {
-        union()
-        {
-            // Tslot Mount Inner
-            translate([0, tslot_centerdepth, 0])
-                intersection()
-                {
-                    heightlim=6;
-                    es=1;
-                    linear_extrude(height = hookwidth, center = true)
-                        polygon(points=[[-10-es,0],[-5-es,8],[5+es,8],[10+es,0]]);
-                    rotate([-90,0,0])
-                        intersection()
-                        {
-                            union()
-                            {
-                                translate([0,0,heightlim/2+tslot_centerdepth/4])
-                                    cube([20+es*2,20,heightlim-tslot_centerdepth/2], center = true);
-                                intersection()
-                                {
-                                    rotate([0,90,0])
-                                        translate([-tslot_centerdepth/2,0,0])
-                                        cylinder(r=hookwidth/2, h=20+es*2, center = true);
-                                    cube([20+es*2-1,20,hookwidth+es*2], center = true);
-                                }
-                            }
-                        }
-                }
-
-            // tslot mount shaft
-            translate([0, , 0])
-            rotate([-90,0,0])
-                intersection()
-                {
-                    cheight = tslot_centerdepth+hookwidth/2+1;
-                    cylinder(r=tslot_centerwidth/2, h=cheight);
-                    translate([0, 0, cheight/2])
-                        cube([tslot_centerwidth+10, hookwidth, cheight], center=true);
-                }
-        }
-
-        // Split
-        translate([0, 100/2+standoff, 0])
-            cube([2,100,100], center=true);
-
-    }
-}
 
 /* [Tslot Model] */
 model_slot_gap = 10;
 model_slot_side = 15;
+model_slot_depth = 4;
+model_slot_centerdepth = 7;
+//%translate([model_slot_side/2+model_slot_gap/2,0,0]) cube([model_slot_side,model_slot_depth,100], center=true);
+//%translate([-model_slot_side/2-model_slot_gap/2,0,0]) cube([model_slot_side,model_slot_depth,100], center=true);
 
-%translate([model_slot_side/2+model_slot_gap/2,0,0]) cube([model_slot_side,0.1,100], center=true);
-%translate([-model_slot_side/2-model_slot_gap/2,0,0]) cube([model_slot_side,0.1,100], center=true);
+translate([0,1,0])
+%difference()
+{
+    wallDepth=model_slot_depth+4;
+    translate([0,model_slot_centerdepth+wallDepth/2,0]) cube([model_slot_side*2+model_slot_gap,wallDepth,100], center=true);
 
-%tslotOrg();
+    translate([0,model_slot_centerdepth+model_slot_depth/2,0]) cube([model_slot_gap,model_slot_depth+0.1,100+0.1], center=true);
+   
+    translate([0,model_slot_centerdepth+model_slot_depth/2+(4)/2,0]) cube([20,4+0.1,100+0.1], center=true);
+
+    hull()
+    {
+        translate([0,model_slot_centerdepth+model_slot_depth/2+4,0]) cube([20,0.1,100+0.1], center=true);
+        translate([0,model_slot_centerdepth+model_slot_depth/2+6,0]) cube([15,0.1,100+0.1], center=true);
+    }
+}
+
+//rotate([0,90,0])
 tslot();

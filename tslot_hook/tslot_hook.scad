@@ -12,7 +12,7 @@ use <tslot.scad>
 // CenterDepth
 tslot_centerdepth = 6.5;
 // CenterWidth
-tslot_centerwidth = 8; // Gap to slot the clip though
+tslot_centerwidth = 10; // Gap to slot the clip though
 // For the wedge... its based on a 4040mm Tslot... so may need to modify polygon() in this script
 
 /* [Hook Spec] */
@@ -21,7 +21,7 @@ hookdia=10;
 // Hook Flange
 hookflange=3;
 // Hook Width
-hookwidth=7;
+hookwidth=9;
 // Hook Thickness
 hookthickness=4;
 
@@ -46,11 +46,11 @@ module tslotHook()
                         union()
                         {
                             cylinder(r=tslot_centerwidth/2, h=hookthickness);
-                            translate([-hookwidth/2+1, 0, hookthickness-hookthickness/2])
-                                cube([tslot_centerwidth,hookwidth,hookthickness], center=true);
+                            translate([-(tslot_centerwidth+3)/4, 0, 1/2])
+                                cube([(tslot_centerwidth+3)/2,hookwidth,1], center=true);
                         }
                         translate([0, 0, cheight/2])
-                            cube([tslot_centerwidth+10, hookwidth, cheight], center=true);
+                            cube([tslot_centerwidth, hookwidth, cheight], center=true);
                     }
             }
         }
@@ -64,7 +64,13 @@ module tslotHook()
             translate([0, 0, 0])
                 difference()
                 {
-                    cylinder(r=hookdia/2+hookthickness, h=hookwidth, center=true);
+                    union()
+                    {
+                        translate([0,0,-hookwidth/4])
+                            cylinder(r2=hookdia/2+hookthickness, r1=hookdia/2+1, h=hookwidth/2, center=true);
+                        translate([0,0,hookwidth/4])
+                            cylinder(r1=hookdia/2+hookthickness, r2=hookdia/2+1, h=hookwidth/2, center=true);
+                    }
                     translate([0,0,0])
                         cylinder(r=hookdia/2, h=hookwidth+2, center=true);
                     translate([0,hookdia/2,0])
@@ -72,13 +78,36 @@ module tslotHook()
                     translate([hookdia/2,hookdia/2,0])
                         cube([hookdia,hookdia,hookwidth+2], center=true);
                 }
-            translate([0, 0, 0])
+                
+                translate([0, 0, 0])
                 hull()
                 {
-                    translate([hookdia/2+hookthickness/2,0,0])
-                        cylinder(r=hookthickness/2, h=hookwidth, center=true);
-                    translate([hookdia/2+hookthickness/2+hookflange,hookflange,0])
-                        cylinder(r=hookthickness/2, h=hookwidth, center=true);
+                    translate([0,0,+hookwidth/2])
+                        union()
+                        {
+                            translate([hookdia/2+0.5,0,0])
+                                cylinder(r=0.5, h=0.001, center=true);
+                            translate([hookdia/2+0.5,hookflange,0])
+                                cylinder(r=0.5, h=0.001, center=true);
+                        }
+                    translate([0,0,-hookwidth/2])
+                        union()
+                        {
+                            translate([hookdia/2+0.5,0,0])
+                                cylinder(r=0.5, h=0.001, center=true);
+                            translate([hookdia/2+0.5,hookflange,0])
+                                cylinder(r=0.5, h=0.001, center=true);
+                        }
+                    translate([0,0,0])
+                        union()
+                        {
+                            #translate([hookdia/2+0.5,0,0])
+                                cylinder(r=0.5, h=0.001, center=true);
+                            #translate([hookdia/2+0.5,hookflange,0])
+                                cylinder(r=0.5, h=0.001, center=true);
+                            #translate([hookdia/2+hookthickness+0.5-1,0,0])
+                                cylinder(r=0.5, h=0.001, center=true);
+                        }
                 }
         }
     }
@@ -89,7 +118,7 @@ if (1)
 { 
     for(i = [0:1:4])
     {
-        layerGapSpacing = 0.45;
+        layerGapSpacing = 0.50;
         translate([0,0,i*(hookwidth+layerGapSpacing)])
             tslotHook();
     }
