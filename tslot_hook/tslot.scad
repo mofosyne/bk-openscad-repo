@@ -35,7 +35,7 @@ module tslot(tslot_centerdepth = 7, tslot_centerwidth = 10, hookwidth=7, standof
                     ss = 0.5; ///< Smoothing
                     hull()
                     {
-                        negTol = 0.8;
+                        negTol = 0.25;
                         posTol = 1.5;
                         translate([0,   negTol,0]) cube([20+extraGrip-2*ss, 0.1, tslot_centerwidth-cWidthTol-2*ss], center=true);
                         translate([0, 4-negTol,0]) cube([20+extraGrip-2*ss, 0.1, tslot_centerwidth-cWidthTol-2*ss], center=true);
@@ -48,7 +48,7 @@ module tslot(tslot_centerdepth = 7, tslot_centerwidth = 10, hookwidth=7, standof
             }
 
             // This will change the stiffness
-            slimming=1;
+            slimming=1.5;
 
             // tslot mount shaft
             translate([0, 0, 0])
@@ -61,6 +61,26 @@ module tslot(tslot_centerdepth = 7, tslot_centerwidth = 10, hookwidth=7, standof
                         cube([tslot_centerwidth-slimming, tslot_centerwidth-cWidthTol, cheight], center=true);
                 }
 
+            // Stabliser
+            translate([0, 2.5, 0])
+            rotate([-90,0,0])
+                intersection()
+                {
+                    cheight = tslot_centerdepth+hookwidth/2+2;
+                    stabliserD=4;
+                    stabTol = 0.25;
+                    union()
+                    {
+                        translate([0,0,cheight/2])
+                            cylinder(r=(tslot_centerwidth-stabTol)/2, h=stabliserD, center=true);
+                        translate([tslot_centerwidth/4, tslot_centerwidth/4, cheight/2])
+                            cube([(tslot_centerwidth-stabTol*2)/2, tslot_centerwidth/2, stabliserD], center=true);
+                        translate([-tslot_centerwidth/4, -tslot_centerwidth/4, cheight/2])
+                            cube([(tslot_centerwidth-stabTol*2)/2, tslot_centerwidth/2, stabliserD], center=true);
+                    }
+                    cube([tslot_centerwidth, tslot_centerwidth-cWidthTol, cheight], center=true);
+                }
+    
             // Base
             translate([0, 0, 0])
             rotate([-90,0,0])
