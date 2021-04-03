@@ -199,28 +199,27 @@ module ttgoV2Cut()
     translate([ttgoxExact/2-7/2,-ttgoyExact/2+40,ttgoPCB/2+10/2])
         union()
         {
+            tol = 0.5;
             cube([7,6,10],center=true);
             translate([6/2,0,1])
                 rotate([0,90,0])
                 cylinder(r=6/2, h=6);
             // Cover
+            translate([-tol,0,1])
             hull()
             {
-                tol = 0.5;
                 translate([-3.5,0,0])
                     rotate([0,90,0])
                     cylinder(r=(6+tol)/2, h=16);
-                translate([16/2-3.5,0,-(6+tol)/2])
+                translate([16/2-3.5,0,-(6+tol)/2-0.5-ttgoPCB])
                     cube([16,(6+tol),0.1],center=true);
             }
         }
     translate([ttgoxExact/2-7/2,-ttgoyExact/2+40,-ttgoPCB/2-4/2])
-        union()
-        {
-            cube([7,6,4],center=true);
-        }
+        cube([7,6,4],center=true);
 
     // Ports Reference
+    if (0)
     %union()
     {
         // USB
@@ -239,18 +238,18 @@ module ttgoV2Cut()
     // Port Cutout
     hull()
     {
-        translate([-ttgoxExact/2+6/2-0.5-caseThickness,-12,ttgoPCB/2+3/2+5])
+        translate([-ttgoxExact/2+6/2-0.5-caseThickness,-12,ttgoPCB/2+3/2+5/2])
             cube([1,35,3+0.1+5],center=true);
-        translate([-ttgoxExact/2+6/2-0.5-caseZipTieExtra-1,-12,ttgoPCB/2+3/2+5])
+        translate([-ttgoxExact/2+6/2-0.5-caseZipTieExtra-1,-12,ttgoPCB/2+3/2+5/2])
             cube([1,45,10+0.1+5],center=true);
     }
 
     // SMA Cutout
     hull()
     {
-        translate([-(-ttgoxExact/2+6/2-0.5-caseThickness),-12,ttgoPCB/2+3/2+5])
+        translate([-(-ttgoxExact/2+6/2-0.5-caseThickness),-12,ttgoPCB/2+3/2+5/2])
             cube([1,35,3+0.1+5],center=true);
-        translate([-(-ttgoxExact/2+6/2-0.5-caseZipTieExtra-1),-12,ttgoPCB/2+3/2+5])
+        translate([-(-ttgoxExact/2+6/2-0.5-caseZipTieExtra-1),-12,ttgoPCB/2+3/2+5/2])
             cube([1,45,10+0.1+5],center=true);
     }
 
@@ -309,15 +308,15 @@ module ttgoV2Cut()
     pcbBatTol=1; ///< Account for battery tolerance
     hull()
     {
-        translate([0,0,-ttgoPCB/2-7/2])
-            cube([23+pcbBatTol,ttgoy,7],    center=true);
+        translate([0,0,-ttgoPCB/2-10/2])
+            cube([23+pcbBatTol,ttgoy,10],    center=true);
         translate([0,0,-ttgoPCB/2-20])
             cube([16,78,0.01], center=true);
     }
     hull()
     {
-        translate([0,0,-ttgoPCB/2-7/2])
-            cube([ttgox,78+pcbBatTol,7],    center=true);
+        translate([0,0,-ttgoPCB/2-10/2])
+            cube([ttgox,78+pcbBatTol,10],    center=true);
         translate([0,0,-ttgoPCB/2-20])
             cube([16,78,0.01], center=true);
     }
@@ -350,6 +349,15 @@ module ttgoV2Cut()
         translate([-(-ttgox/2-caseZipTieExtra/2+1.5),0,0])
         cube([2,5,100], center=true);
     }
+    
+    // Strap Slot
+    translate([0,ttgoy/2-25,0])
+    {
+        translate([-ttgox/2-caseZipTieExtra/2+1.5,0,0])
+        cube([2,20,100], center=true);
+        translate([-(-ttgox/2-caseZipTieExtra/2+1.5),0,0])
+        cube([2,20,100], center=true);
+    }
 }
 
 
@@ -360,7 +368,7 @@ difference()
     ttgoV2Cut();
 }
 
-if (0)
+if (1)
 difference()
 {
     ttgoV2Bottom();
@@ -368,4 +376,4 @@ difference()
 }
 
 //%ttgoV2Model();
-//%ttgoV2Model_PCBOnly();
+%ttgoV2Model_PCBOnly();
