@@ -3,10 +3,10 @@ use <ttgo_t22_V1_1_model.scad>
 
 smdUseIPEX = false; ///< External IPEX to SMA antenna else onboard antenna
 
-production = true; // Ensure prints in ready orientation
+production = false; // Ensure prints in ready orientation
 
-topCaseEnable = false;
-bottomCaseEnable = true;
+topCaseEnable = true;
+bottomCaseEnable = false;
 
 module ttgoV2Bottom()
 {
@@ -24,7 +24,7 @@ module ttgoV2Bottom()
     ttgoyExact = 100.13;
     ttgox = ttgoxExact + caseThickness * 2 + caseZipTieExtra;
     ttgoy = ttgoyExact + caseThickness * 2;
-    ttgoSMD = 3; ///< SMD Standoff
+    ttgoSMD = 3.5; ///< SMD Standoff
     ttgoPCB = 2; ///< PCB thickness
     ttgoPCBHoleOff = 2.36;
     ttgoPCBHoleDia = 2;
@@ -139,7 +139,7 @@ module ttgoV2Top()
     ttgoyExact = 100.13;
     ttgox = ttgoxExact + caseThickness * 2 + caseZipTieExtra;
     ttgoy = ttgoyExact + caseThickness * 2;
-    ttgoSMD = 3; ///< SMD Standoff
+    ttgoSMD = 3.5; ///< SMD Standoff
     ttgoPCB = 2; ///< PCB thickness
     ttgoPCBHoleOff = 2.36;
     ttgoPCBHoleDia = 2;
@@ -179,13 +179,13 @@ module ttgoV2Cut()
     holeSpacing = 5;
 
     ///////////////////
-    pcbTolx = 1;
+    pcbTolx = 1.5;
     pcbToly = 3;
     ttgoxExact = 32.89;
     ttgoyExact = 100.13;
     ttgox = ttgoxExact + pcbTolx;
     ttgoy = ttgoyExact + pcbToly;
-    ttgoSMD = 3; ///< SMD Standoff
+    ttgoSMD = 3.5; ///< SMD Standoff
     ttgoPCB = 2; ///< PCB thickness
     ttgoPCBHoleOff = 2.36;
     ttgoPCBHoleDia = 2;
@@ -213,24 +213,40 @@ module ttgoV2Cut()
         translate([ttgoxExact/2-7/2,-ttgoyExact/2+40,ttgoPCB/2+10/2])
             union()
             {
-                tol = 0.5;
+                tol = 1;
                 cube([7,6,10],center=true);
                 translate([6/2,0,1])
                     rotate([0,90,0])
-                    cylinder(r=6/2, h=6);
+                    cylinder(r=6/2, h=6, $fn=50);
                 // Cover
                 translate([-tol,0,1])
                 hull()
                 {
-                    translate([-3.5,0,0])
+                    translate([-3.5,0,2])
                         rotate([0,90,0])
-                        cylinder(r=(6+tol)/2, h=16);
-                    translate([16/2-3.5,0,-(6+tol)/2-0.5-ttgoPCB])
-                        cube([16,(6+tol),0.1],center=true);
+                        cylinder(r=6/2+tol, h=16);
+                    translate([16/2-3.5,0,-(6+tol)/2-0.5])
+                        cube([16,(6+tol*2),0.1],center=true);
                 }
             }
         translate([ttgoxExact/2-7/2,-ttgoyExact/2+40,-ttgoPCB/2-4/2])
             cube([7,6,4],center=true);
+    }
+
+    // Detail Cutout
+    hull()
+    {
+        translate([-ttgoxExact/2+6/2-0.5-caseThickness-2,0,ttgoPCB/2+3/2+5/2])
+            cube([1,65,3+0.1+5],center=true);
+        translate([-ttgoxExact/2+6/2-0.5-caseZipTieExtra-1,0,ttgoPCB/2+3/2+5/2])
+            cube([1,70,10+0.1+5],center=true);
+    }
+    hull()
+    {
+        translate([-(-ttgoxExact/2+6/2-0.5-caseThickness-2),0,ttgoPCB/2+3/2+5/2])
+            cube([1,65,3+0.1+5],center=true);
+        translate([-(-ttgoxExact/2+6/2-0.5-caseZipTieExtra-1),0,ttgoPCB/2+3/2+5/2])
+            cube([1,70,10+0.1+5],center=true);
     }
 
     // Port Cutout
@@ -239,15 +255,6 @@ module ttgoV2Cut()
         translate([-ttgoxExact/2+6/2-0.5-caseThickness,-12,ttgoPCB/2+3/2+5/2])
             cube([1,40,3+0.1+5],center=true);
         translate([-ttgoxExact/2+6/2-0.5-caseZipTieExtra-1,-12,ttgoPCB/2+3/2+5/2])
-            cube([1,45,10+0.1+5],center=true);
-    }
-
-    // SMA Cutout
-    hull()
-    {
-        translate([-(-ttgoxExact/2+6/2-0.5-caseThickness),-12,ttgoPCB/2+3/2+5/2])
-            cube([1,40,3+0.1+5],center=true);
-        translate([-(-ttgoxExact/2+6/2-0.5-caseZipTieExtra-1),-12,ttgoPCB/2+3/2+5/2])
             cube([1,45,10+0.1+5],center=true);
     }
 
@@ -389,7 +396,7 @@ module ttgoV2Cut()
     }
 
     // Strap Slot
-    translate([0,ttgoy/2-28,0])
+    translate([0,ttgoy/2-30,0])
     {
         // Typical Straps is around 2mm by 25mm
         translate([-ttgox/2-caseZipTieExtra/2+1.5,0,0])
@@ -459,6 +466,6 @@ else
     }
 
     // Model
-    //%ttgoV2Model();
+    %ttgoV2Model();
     //%ttgoV2Model_PCBOnly();
 }
