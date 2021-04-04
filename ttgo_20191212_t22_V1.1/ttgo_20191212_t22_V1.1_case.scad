@@ -179,7 +179,7 @@ module ttgoV2Cut()
     holeSpacing = 5;
 
     ///////////////////
-    pcbTolx = 2;
+    pcbTolx = 1;
     pcbToly = 3;
     ttgoxExact = 32.89;
     ttgoyExact = 100.13;
@@ -233,23 +233,6 @@ module ttgoV2Cut()
             cube([7,6,4],center=true);
     }
 
-    // Ports Reference
-    if (0)
-    %union()
-    {
-        // USB
-        translate([-ttgoxExact/2+6/2-1,2,ttgoPCB/2+3/2])
-            cube([6+caseThickness,6,3],center=true);
-
-        // Button
-        translate([-ttgoxExact/2+5/2-1,-7,ttgoPCB/2+3/2])
-            cube([5,5,3],center=true);
-        translate([-ttgoxExact/2+5/2-1,-7-9.5,ttgoPCB/2+3/2])
-            cube([5,5,3],center=true);
-        translate([-ttgoxExact/2+5/2-1,-7-9.5-9.5,ttgoPCB/2+3/2])
-            cube([5,5,3],center=true);     
-    }
-
     // Port Cutout
     hull()
     {
@@ -260,15 +243,12 @@ module ttgoV2Cut()
     }
 
     // SMA Cutout
-    if(!smdUseIPEX)
+    hull()
     {
-        hull()
-        {
-            translate([-(-ttgoxExact/2+6/2-0.5-caseThickness),-12,ttgoPCB/2+3/2+5/2])
-                cube([1,40,3+0.1+5],center=true);
-            translate([-(-ttgoxExact/2+6/2-0.5-caseZipTieExtra-1),-12,ttgoPCB/2+3/2+5/2])
-                cube([1,45,10+0.1+5],center=true);
-        }
+        translate([-(-ttgoxExact/2+6/2-0.5-caseThickness),-12,ttgoPCB/2+3/2+5/2])
+            cube([1,40,3+0.1+5],center=true);
+        translate([-(-ttgoxExact/2+6/2-0.5-caseZipTieExtra-1),-12,ttgoPCB/2+3/2+5/2])
+            cube([1,45,10+0.1+5],center=true);
     }
 
     // TopStandoff
@@ -310,7 +290,7 @@ module ttgoV2Cut()
     difference()
     {
         pcbBatTol=3; ///< Account for battery tolerance
-        pcbLedgeX=0; ///5
+        pcbLedgeX=3;
         union()
         {
             //color("grey")
@@ -391,15 +371,31 @@ module ttgoV2Cut()
             cylinder(r=3/2-0.05, h=100, center=true, $fn=20);
         }
     }
-    
+
+    // M2Screw Slot
+    translate([0,ttgoy/2-14.5,0])
+    {
+        translate([-ttgox/2-caseZipTieExtra/2+1.5,0,0])
+            cylinder(r=2/2-0.05, h=100, center=true, $fn=20);
+        translate([-(-ttgox/2-caseZipTieExtra/2+1.5),0,0])
+            cylinder(r=2/2-0.05, h=100, center=true, $fn=20);
+    }
+    translate([0,-ttgoy/2+14.5,0])
+    {
+        translate([-ttgox/2-caseZipTieExtra/2+1.5,0,0])
+            cylinder(r=2/2-0.05, h=100, center=true, $fn=20);
+        translate([-(-ttgox/2-caseZipTieExtra/2+1.5),0,0])
+            cylinder(r=2/2-0.05, h=100, center=true, $fn=20);
+    }
+
     // Strap Slot
-    translate([0,ttgoy/2-26,0])
+    translate([0,ttgoy/2-28,0])
     {
         // Typical Straps is around 2mm by 25mm
         translate([-ttgox/2-caseZipTieExtra/2+1.5,0,0])
-            cube([2.5,24,100], center=true);
+            cube([2.5,20,100], center=true);
         translate([-(-ttgox/2-caseZipTieExtra/2+1.5),0,0])
-            cube([2.5,24,100], center=true);
+            cube([2.5,20,100], center=true);
     }
     
     // Strap Slot
