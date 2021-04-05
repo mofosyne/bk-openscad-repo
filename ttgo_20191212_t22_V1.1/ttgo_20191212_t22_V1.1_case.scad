@@ -1,14 +1,7 @@
 // ttgo_20191212_t22_V1.1 case
 use <ttgo_t22_V1_1_model.scad> 
 
-smdUseIPEX = false; ///< External IPEX to SMA antenna else onboard antenna
-
-production = false; // Ensure prints in ready orientation
-
-topCaseEnable = true;
-bottomCaseEnable = false;
-
-module ttgoV2Bottom()
+module ttgoV2Bottom(smdUseIPEX = false)
 {
     // http://www.lilygo.cn/claprod_view.aspx?TypeId=62&Id=1281&FId=t28:62:28
 
@@ -122,7 +115,7 @@ module ttgoV2Bottom()
     }
 }
 
-module ttgoV2Top()
+module ttgoV2Top(smdUseIPEX = false)
 {
     // http://www.lilygo.cn/claprod_view.aspx?TypeId=62&Id=1281&FId=t28:62:28
 
@@ -168,7 +161,7 @@ module ttgoV2Top()
         }
 }
 
-module ttgoV2Cut()
+module ttgoV2Cut(smdUseIPEX = false)
 {
     // http://www.lilygo.cn/claprod_view.aspx?TypeId=62&Id=1281&FId=t28:62:28
     caseThickness = 3;
@@ -430,35 +423,19 @@ module ttgoV2Cut()
 
 ///////////////////////////////////////////////////////
 // Output
-if (production)
+if (0)
 {
-    // Production
-    if (topCaseEnable)
-    rotate([0,180,0])
+    // Dev 
+    // topCaseEnable
+    if (0)
     difference()
     {
         ttgoV2Top();
         ttgoV2Cut();
     }
 
-    if (bottomCaseEnable)
-    difference()
-    {
-        ttgoV2Bottom();
-        ttgoV2Cut();
-    }
-}
-else
-{
-    // Dev
-    if (topCaseEnable)
-    difference()
-    {
-        ttgoV2Top();
-        ttgoV2Cut();
-    }
-
-    if (bottomCaseEnable)
+    // bottomCaseEnable
+    if (0)
     difference()
     {
         ttgoV2Bottom();
@@ -466,6 +443,44 @@ else
     }
 
     // Model
-    %ttgoV2Model();
+    //%ttgoV2Model();
     //%ttgoV2Model_PCBOnly();
+}
+
+
+module ttgo_20191212_t22_V1_1_case_ipex_top() 
+{ 
+    // make me
+    difference()
+    {
+        ttgoV2Top(smdUseIPEX = true);
+        ttgoV2Cut(smdUseIPEX = true);
+    }
+}
+module ttgo_20191212_t22_V1_1_case_ipex_bottom() 
+{ 
+    // make me
+    difference()
+    {
+        ttgoV2Bottom(smdUseIPEX = true);
+        ttgoV2Cut(smdUseIPEX = true);
+    }
+}
+module ttgo_20191212_t22_V1_1_case_sma_top() 
+{ 
+    // make me
+    difference()
+    {
+        ttgoV2Top(smdUseIPEX = false);
+        ttgoV2Cut(smdUseIPEX = false);
+    }
+}
+module ttgo_20191212_t22_V1_1_case_sma_bottom() 
+{ 
+    // make me
+    difference()
+    {
+        ttgoV2Bottom(smdUseIPEX = false);
+        ttgoV2Cut(smdUseIPEX = false);
+    }
 }
