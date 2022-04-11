@@ -6,8 +6,8 @@ print_layer_height = 0.2;
 
 // Businesscard
 // Default values based on https://www.mbe.com.au/what-is-the-standard-business-card-size-in-australia/
-businesscard_width = 131; // 130mm plus some tolerance
-businesscard_height = 131; // 130mm plus some tolerance
+businesscard_width = 127; // 127mm plus some tolerance
+businesscard_height = 127; // 127mm plus some tolerance
 businesscard_thickness = 1.0;
 
 // Holder
@@ -104,14 +104,14 @@ module cardholder(reducePlastic=false)
         translate([0,0,wall_base+businesscard_thickness/2+0.5])
         {
             //cube([businesscard_width-40,businesscard_height-30, wall_height+1], center=true);
-            cube([businesscard_width-wall_card_grip,businesscard_height-30, wall_height+1], center=true);
+            cube([businesscard_width-40,businesscard_height-40, wall_height+1], center=true);
         }
     }
 }
 
 if (wall_x_count == 1 && wall_y_count == 1)
 {
-    cardholder(true);
+    cardholder(false);
 }
 else
 {
