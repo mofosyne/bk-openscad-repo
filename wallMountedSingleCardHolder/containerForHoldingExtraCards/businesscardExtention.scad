@@ -34,15 +34,26 @@ translate([-(businesscard_width-wall_card_grip*2-1.0)/2, -wall_mount_spacing, 0]
 // Main Holder
 holder_thickness = 1.0;
 holder_slot_depth = businesscard_thickness*11; // 10 business cards (1 businesscard tolderance)
+holder_slot_shift = 10;
 difference()
 {
     // Bulk
-    translate([-(businesscard_width+holder_thickness*2)/2, 0, 0])
-        cube([(businesscard_width+holder_thickness*2), holder_slot_depth+holder_thickness*2, businesscard_height-holder_thickness]);
+    hull()
+    {
+        translate([-(businesscard_width+holder_thickness*2)/2, 0, businesscard_height-holder_thickness])
+            cube([(businesscard_width+holder_thickness*2), holder_slot_depth+holder_thickness*2, 1]);
+        translate([-(businesscard_width+holder_thickness*2)/2, 0, 0])
+            cube([(businesscard_width+holder_thickness*2), holder_slot_depth+holder_thickness*2+holder_slot_shift, 1]);
+    }
 
     // Card
-    translate([-(businesscard_width)/2, holder_thickness, holder_thickness])
-        cube([(businesscard_width), holder_slot_depth, businesscard_height]);
+    hull()
+    {
+        translate([-(businesscard_width)/2, holder_thickness, holder_thickness+businesscard_height])
+            cube([(businesscard_width), holder_slot_depth, 1]);
+        translate([-(businesscard_width)/2, holder_thickness+holder_slot_shift, holder_thickness])
+            cube([(businesscard_width), holder_slot_depth, 1]);
+    }
     
     // Slot Cut
     hull()
@@ -53,7 +64,5 @@ difference()
         translate([0, (holder_slot_depth+holder_thickness*3)/2, businesscard_height])
             rotate([0,0,0])
             cube([(businesscard_width*2), holder_slot_depth*2, 1], center=true);
-    }
-    
-    
+    }    
 }
