@@ -1,0 +1,2 @@
+RevA - Mini Gameboy Gallery
+RevB - Alexar Gallery. Modified for easier access to top and also command strip at the bottom, with 5mm extra heigh for clearer indication that it can be picked up.
