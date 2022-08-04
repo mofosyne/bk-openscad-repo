@@ -1,28 +1,34 @@
+//    Brian Khuu 2022
+//    Reminder TODO tracker
+//    Was tested on a 0.6mm nozzle on a MK3S+ Prusa Printer
+
+// Smoothing
 $fn = 20;
 
+/* [Printer Spec] */
 layerHeight = 0.30; // Typical for 0.4 to 0.6mm nozzle
 
+/* [Switch Feature] */
 NUMBER_OF_SWITCHES = 5; // Number Of Switches
 MODE_CONE_SLIDER = false;
 MODE_SWITCH_SLIDER = true;
+MODE_ADD_WINDOW = true;
 
-
+/* [Switch Bulk Dimentions] */
 baseThickness = layerHeight*15;
 baseWidth = 23;
 baseHeight = 20;
 
+/* [Switch Specific Dimentions] */
 sliderRail = 10;
 sliderWidthThickness = 1.5;
 sliderHeightThickness = 2;
 
+/* [Calculation] */
 sliderWidth = baseWidth-sliderWidthThickness*2;
 sliderHeight = baseHeight-sliderHeightThickness*2;
 
-echo(baseThickness);
-
-
-
-MODE_ADD_WINDOW = true;
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 module sliderBulk(heightTop, heightBottom, width, sliderRailW, sliderRailH=0, offsetX=0, offsetY=0, offsetZ=0, cutMode=false)
 {
@@ -143,6 +149,7 @@ module switch_model(flipSwitchState=false)
     }
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 translate([-((NUMBER_OF_SWITCHES-1)*baseHeight)/2,0,0])
     for(i = [0:1:NUMBER_OF_SWITCHES-1])
