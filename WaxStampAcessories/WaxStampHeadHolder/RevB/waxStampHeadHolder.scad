@@ -1,5 +1,4 @@
 use <lib/ISOThreadCust.scad>
-use <waxStampHolder.scad>
 
 $fn = 40;
 
@@ -10,12 +9,12 @@ waxStamp_metric_screw_dia = 8;
 waxStamp_metric_shaft_length = 6.5;
 
 // For stamp head
-wax_stamp_head_diameter = 40;
-wax_stamp_head_spacing  = 2;
+wax_stamp_head_diameter = 25; // 25mm, 30mm
+wax_stamp_head_spacing  = 5;
 
 // Number of heads
-x_holder_count = 4;
-y_holder_count = 4;
+x_holder_count = 3;
+y_holder_count = 3;
 
 holder_base_thickness = 1.0;
 
@@ -27,15 +26,14 @@ module wax_stamp_screw(
                 waxStamp_metric_screw_dia = 8,
                 waxStamp_metric_shaft_length = 6.5)
 {
-    difference()
+    union()
     {
-        union()
+        difference()
         {
-            thread_out(waxStamp_metric_screw_dia,waxStamp_metric_shaft_length);
-            thread_out_centre(waxStamp_metric_screw_dia+0.5,waxStamp_metric_shaft_length);
-            cylinder(d1=waxStamp_metric_screw_dia*1.5, d2=waxStamp_metric_screw_dia,waxStamp_metric_shaft_length/3);
+            cylinder(d1=waxStamp_metric_screw_dia*1.5+1, d2=waxStamp_metric_screw_dia+1,waxStamp_metric_shaft_length/2);
+	    	translate([0,0,-0.1]) cylinder(r = waxStamp_metric_screw_dia/2, h =waxStamp_metric_shaft_length/2 + 0.2);
         }
-        cube([waxStamp_metric_screw_dia/4, waxStamp_metric_screw_dia*2,waxStamp_metric_shaft_length*2+1], center = true);
+        thread_in(waxStamp_metric_screw_dia,waxStamp_metric_shaft_length/2);
     }
 }
 
@@ -54,7 +52,7 @@ for (i = [0:1:x_holder_count-1])
 for (j = [0:1:y_holder_count-1])
 {
     virtualHeadDia = wax_stamp_head_diameter +  wax_stamp_head_spacing;
-    
+
     // Stamp Head Holder
     translate([virtualHeadDia/2+virtualHeadDia*i, virtualHeadDia/2+virtualHeadDia*j,holder_base_thickness])
         wax_stamp_head_holder(waxStamp_screw_shaft, waxStampHolderLength);
