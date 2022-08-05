@@ -9,7 +9,7 @@ waxStamp_metric_screw_dia = 8;
 waxStamp_metric_shaft_length = 6.5;
 
 // For stamp head
-wax_stamp_head_diameter = 25; // 25mm, 30mm
+wax_stamp_head_diameter = 30; // 25mm, 30mm
 wax_stamp_head_spacing  = 5;
 
 // Number of heads
