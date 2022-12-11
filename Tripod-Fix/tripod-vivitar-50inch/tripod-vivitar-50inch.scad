@@ -1,22 +1,53 @@
 $fn=40;
 
-tubeInnerDia=14.8;
-tubeInnerCutoutDia=12.7;
-tubeInnerTol=1;
+rotateHeadDia=19.5;
+rotateHeadHeight=15;
+rotateScrewShaftDia=4.9;
 
-translate([0,0,0])
-    cylinder(r1=18.5/2, r2=18.5/2-1,h=5);
-translate([0,0,5])
-    cylinder(r=18.5/2-1,h=5);
-translate([0,0,5+5])
-    cylinder(r2=18.5/2, r1=18.5/2-1,h=5);
+tubeInnerDia=15;
+tubeInnerCutoutDia=12.7;
+tubeInnerCutoutWidth=4;
+tubeInnerTol=1;
+tubeInnerDepth=15;
 
 difference()
 {
-    translate([0,0,-10])
-        cylinder(r2=tubeInnerDia/2,r1=tubeInnerDia/2-tubeInnerTol,h=10);
-    cube([4,15,11*2], center=true);
-}
+    union()
+    {
+        // Rotate Head
+        rotate([0,180,0])
+        difference()
+        {
+            translate([0,0,0])
+                cylinder(r=rotateHeadDia/2,h=rotateHeadHeight);
+            translate([0,0,15/2])
+                rotate_extrude(convexity=10, $fn=100)
+                    translate([18.5/2, 0, 0])
+                        circle(r=rotateScrewShaftDia/2, $fn = 100);
+        }
 
-translate([0,0,-10])
-    cylinder(r2=tubeInnerCutoutDia/2, r1=tubeInnerCutoutDia/2-tubeInnerTol,h=10);
+        // Inner Pole Grip
+        rotate([0,0,0])
+        union()
+        {
+            difference()
+            {
+                hull()
+                {
+                    cylinder(r=tubeInnerDia/2,h=tubeInnerDepth*0.5);
+                    cylinder(r=tubeInnerDia/2-tubeInnerTol,h=tubeInnerDepth);
+                }
+                translate([0,0,tubeInnerDepth/2])
+                    cube([tubeInnerCutoutWidth,tubeInnerDia,tubeInnerDepth+0.5], center=true);
+            }
+            cylinder(r1=tubeInnerCutoutDia/2, r2=tubeInnerCutoutDia/2-tubeInnerTol,h=tubeInnerDepth);
+        }
+    }
+    
+    rotate([0,180,0])
+        translate([0,0,-0.5])
+        cylinder(r=tubeInnerCutoutDia/4,h=rotateHeadHeight+1);
+    rotate([0,0,0])
+        translate([0,0,-0.5])
+        cylinder(r=tubeInnerCutoutDia/4,h=tubeInnerDepth+1);
+}
