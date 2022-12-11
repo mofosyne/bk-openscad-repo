@@ -7,7 +7,7 @@ testtube_diameter=32;
 testtube_height=180;
 testtube_tolerance=1;
 
-PRINTER_PLATE_SIZE_TYPE="?x?";
+PRINTER_PLATE_SIZE_TYPE="25cm x 21cm";
 
 module testTubeBulk(diameter=32, height=30+50*3)
 {
