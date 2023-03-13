@@ -44,10 +44,13 @@ module lens_cover(hoffset=0)
                 hull()
                 {
                     cylinder (d = cap_outer_diameter, h = viewfinder_cover_thickness*3);
-                    translate([cap_outer_diameter/2,cap_outer_diameter/2-viewfinder_offset_from_lense-viewfinder_size,0])
-                    linear_extrude(height = viewfinder_cover_thickness)
-                        offset(viewfinder_offset_from_lense)
-                            square([viewfinder_size,viewfinder_size]);
+                    translate([
+                        cap_outer_diameter/2+viewfinder_offset_from_lense,
+                        cap_outer_diameter/2-viewfinder_offset_from_lense-viewfinder_size,
+                        0])
+                        linear_extrude(height = viewfinder_cover_thickness)
+                            offset(viewfinder_offset_from_lense)
+                                square([viewfinder_size,viewfinder_size]);
                 }
             }
             
