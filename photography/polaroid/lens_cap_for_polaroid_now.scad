@@ -29,8 +29,10 @@ cap_outer_diameter = inner_diameter + wall_thickness * 2;
 
 module lens_cover(hoffset=0)
 {
-    difference(){
-        union(){
+    difference()
+    {
+        union()
+        {
             cylinder (d = cap_outer_diameter, h = height);
             translate([0,0,height])
                 scale([1,1,bulge_factor])
@@ -48,10 +50,10 @@ module lens_cover(hoffset=0)
                             square([viewfinder_size,viewfinder_size]);
                 }
             }
-        }
-
+            
         // Polaroid Text
-        translate([0,0,hole_height+0.5])
+        color("black")
+        translate([0,0,(inner_diameter + wall_thickness * 2)*bulge_factor+0.5])
             linear_extrude(height = 8)
                 text("Polaroid", size = 7.5,
                    spacing=1,
@@ -59,6 +61,7 @@ module lens_cover(hoffset=0)
                    valign = "center",
                    halign = "center",
                    $fn = 16);
+        }
 
         // Cap Inner
         cylinder (d = inner_diameter, h = hole_height);
