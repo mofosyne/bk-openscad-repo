@@ -14,7 +14,7 @@ enable_viewfinder_cover = true;
 /* [Lens Cover Dimentions] */
 hole_height = 10;
 inner_diameter = 43;
-wall_thickness = 1;
+wall_thickness = 1.5;
 
 /* [Lens Cover Smoothing] */
 inner_chamfer = 0.4;
@@ -56,9 +56,9 @@ module lens_cover(hoffset=0)
             
         // Polaroid Text
         color("black")
-        translate([0,0,(inner_diameter + wall_thickness * 2)*bulge_factor+0.5])
+        translate([0,0,(inner_diameter + wall_thickness * 2)*bulge_factor+1.5])
             linear_extrude(height = 8)
-                text("Polaroid", size = 7.5,
+                text("Polaroid", size = 8,
                    spacing=1,
                    font = str("Liberation Sans", ":style=Bold"),
                    valign = "center",
