@@ -3,6 +3,11 @@
 // Heavy remix of post cap by Seemomster from printables
 // Ref: https://www.printables.com/model/220453-post-cap-openscad/files
 
+/* [Lens Cover Text] */
+lens_cover_text = "Polaroid";
+lens_cover_size = 8;
+lens_cover_enable = false;
+
 /* [Viewfinder Cover Dimentions] */
 viewfinder_size=20;
 viewfinder_offset_from_lense=2;
@@ -54,16 +59,19 @@ module lens_cover(hoffset=0)
                 }
             }
             
-        // Polaroid Text
-        color("black")
-        translate([0,0,(inner_diameter + wall_thickness * 2)*bulge_factor+1.5])
-            linear_extrude(height = 8)
-                text("Polaroid", size = 8,
-                   spacing=1,
-                   font = str("Liberation Sans", ":style=Bold"),
-                   valign = "center",
-                   halign = "center",
-                   $fn = 16);
+            // Polaroid Text
+            if (lens_cover_enable)
+            {
+                color("black")
+                translate([0,0,(inner_diameter + wall_thickness * 2)*bulge_factor+1.5])
+                    linear_extrude(height = 8)
+                        text(lens_cover_text, size = lens_cover_size,
+                           spacing=1,
+                           font = str("Liberation Sans", ":style=Bold"),
+                           valign = "center",
+                           halign = "center",
+                           $fn = 16);
+            }
         }
 
         // Cap Inner
