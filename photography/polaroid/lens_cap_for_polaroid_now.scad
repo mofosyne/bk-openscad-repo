@@ -6,7 +6,7 @@
 /* [Viewfinder Cover Dimentions] */
 viewfinder_size=20;
 viewfinder_offset_from_lense=2;
-viewfinder_cover_thickness=0.6;
+viewfinder_cover_thickness=0.5;
 
 // Enable Viewfinder Cover. Highly recommended to ensure users do not forget to remove the lens cover.
 enable_viewfinder_cover = true;
@@ -27,18 +27,6 @@ $fn = 75;
 height = hole_height + 0.5 * wall_thickness;
 cap_outer_diameter = inner_diameter + wall_thickness * 2;
 
-module lens_viewfinder_cover(hoffset=0)
-{
-    hull()
-    {
-        cylinder (d = cap_outer_diameter, h = viewfinder_cover_thickness+hoffset);
-        translate([cap_outer_diameter/2,cap_outer_diameter/2-viewfinder_offset_from_lense-viewfinder_size,0])
-        linear_extrude(height = viewfinder_cover_thickness+hoffset)
-            offset(viewfinder_offset_from_lense)
-                square([viewfinder_size,viewfinder_size]);
-    }
-}
-
 module lens_cover(hoffset=0)
 {
     difference(){
@@ -51,11 +39,13 @@ module lens_cover(hoffset=0)
             // Viewfinder Cover
             if (enable_viewfinder_cover)
             {
-                lens_viewfinder_cover();
-                intersection()
+                hull()
                 {
-                    lens_viewfinder_cover(10);
-                    cylinder (d1 = cap_outer_diameter*1.5, d2 = cap_outer_diameter, h = viewfinder_offset_from_lense);
+                    cylinder (d = cap_outer_diameter, h = viewfinder_cover_thickness*3);
+                    translate([cap_outer_diameter/2,cap_outer_diameter/2-viewfinder_offset_from_lense-viewfinder_size,0])
+                    linear_extrude(height = viewfinder_cover_thickness)
+                        offset(viewfinder_offset_from_lense)
+                            square([viewfinder_size,viewfinder_size]);
                 }
             }
         }
