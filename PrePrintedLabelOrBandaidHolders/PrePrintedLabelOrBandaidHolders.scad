@@ -19,7 +19,7 @@ wall_y_count = 6;
 
 // Calc
 wall_base = print_layer_width*3+0.1;
-wall_top = print_layer_width*4+0.1;
+wall_top = print_layer_width*6+0.1;
 wall_width = wall_base + slot_thickness + wall_top;
 slot_bulk_width = slot_width+wall_spacing+wall_card_grip;
 slot_bulk_height = slot_height+wall_spacing*2;
@@ -52,12 +52,11 @@ module cardholder()
                             [slot_width-wall_card_grip,slot_thickness],
                             [slot_width-wall_card_grip,slot_thickness+wall_top+0.1],
                             [slot_width-wall_card_grip,slot_thickness+wall_top+0.1],
-                            [slot_width,slot_thickness+wall_top],
+                            [slot_width-0.01,slot_thickness+wall_top],
                             [slot_width-wall_card_grip,0]
                             ]);
 
         // Slope
-        if (0)
         translate([wall_card_grip+wall_spacing,0,wall_base])
             rotate([90,0,0])
                 translate([0,0,-(slot_bulk_height-wall_spacing*2)/4])
@@ -67,13 +66,13 @@ module cardholder()
                             [slot_width-wall_card_grip,slot_thickness],
                             [slot_width-wall_card_grip,slot_thickness+wall_top+0.1],
                             [slot_width-wall_card_grip,slot_thickness+wall_top+0.1],
-                            [slot_width,slot_thickness+wall_top],
+                            [slot_width-0.01,slot_thickness+wall_top],
                             [slot_width-wall_card_grip/3,0]
                             ]);
 
         // Label Positioner
-        translate([wall_spacing,-(slot_bulk_height-wall_spacing*2-1)/2,wall_width-print_layer_width])
-            cube([slot_width, slot_bulk_height-wall_spacing*2-1, print_layer_width*1+0.1]);    
+        translate([wall_spacing+0.01,-(slot_bulk_height-wall_spacing*2)/2,wall_width-print_layer_width*3/2])
+            cube([slot_width, slot_bulk_height-wall_spacing*2, print_layer_width*3]);    
     }
 }
 
