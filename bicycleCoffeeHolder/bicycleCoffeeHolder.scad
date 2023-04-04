@@ -98,7 +98,6 @@ module gyro_model(cup_dia, gyro_gap, gyro_height, gyro_hinge_tolerance)
     }    
 }
 
-
 module gyro_mount(cup_dia, gyro_gap, gyro_height, gyro_hinge_tolerance)
 {
     // Length of spike
@@ -186,5 +185,4 @@ union()
     
 }
  
-    
-    %cylinder(r=coffeecup_ring_diameter/2,h=10);
+//%translate([0,0,ring_height]) cylinder(r=coffeecup_ring_diameter/2,h=10);
