@@ -7,7 +7,7 @@ spike_tolerance=0.5;
 
 /* [Coffee Cup] */
 coffeecup_ring_diameter = 73; 
-ring_thickness = 4;
+ring_thickness = 5;
 ring_height = 20;
 
 /* [Bike Spec] */
@@ -31,27 +31,27 @@ module gyro_ring(r=20, h=5, thickness=1, gyro_spacing=0, spike_length=5, spike_h
             {
                 difference() 
                 {
-                    sphere(r=r,$fn=50);
+                    sphere(r=r+thickness,$fn=50);
                     if (is_inner)
                     {
                         // No more ring. Keep flat for cup holder etc...
-                        cylinder(r=r-thickness,h=h+0.5,center=true);
+                        cylinder(r=r,h=h+0.5,center=true);
                     }
                     else
                     {
                         // Spherical cut so inner ring can spin inside it
-                        sphere(r=r-thickness,$fn=50);
+                        sphere(r=r,$fn=50);
                     }
                 }
                 // Height of each ring
-                cylinder(r=r,h=h,center=true);
+                cylinder(r=r+thickness,h=h,center=true);
             }
             if (pins) 
             {
                 rotate([0,0,90])
                     scale([0.8,1,1])
                         spikeHole(
-                            r=r, 
+                            r=r+thickness, 
                             h=h*0.8, 
                             spike_length=spike_length);
             }
@@ -59,7 +59,7 @@ module gyro_ring(r=20, h=5, thickness=1, gyro_spacing=0, spike_length=5, spike_h
         if (!is_inner) 
         {
             spikeHole(
-                r=r-gyro_spacing, 
+                r=r+thickness-gyro_spacing, 
                 h=h*0.8, 
                 spike_length=spike_length, 
                 tol=spike_hinge_tolerance, 
@@ -113,7 +113,7 @@ module gyro_mount(cup_dia, gyro_gap, gyro_height, gyro_hinge_tolerance)
     // Cut bit extra for easier print tolerance
     tol_scaled=1.4;
     
-    gyro_ring_outer_dia=coffeecup_ring_diameter/2+(ring_thickness+ring_tolerance)*(3-1);
+    gyro_ring_outer_dia=coffeecup_ring_diameter/2+(ring_thickness+ring_tolerance)*(3);
 
     difference()
     {
@@ -168,38 +168,23 @@ module gyro_mount(cup_dia, gyro_gap, gyro_height, gyro_hinge_tolerance)
 }
 
 /*********************************************************************************/
-gyro_ring_outer_dia=coffeecup_ring_diameter/2+(ring_thickness+ring_tolerance)*(3-1);
 
-
-difference()
+// Gyro Cup Model
+union()
 {
-    union()
-    {
-        gyro_model(
-            cup_dia=coffeecup_ring_diameter, 
-            gyro_gap=ring_tolerance,
-            gyro_height=ring_height, 
-            gyro_hinge_tolerance=spike_tolerance);
-        
-        gyro_mount(
-            cup_dia=coffeecup_ring_diameter, 
-            gyro_gap=ring_tolerance,
-            gyro_height=ring_height, 
-            gyro_hinge_tolerance=spike_tolerance);
-        
-    }
-    //cylinder(r=coffeecup_ring_diameter,h=10);
+    gyro_model(
+        cup_dia=coffeecup_ring_diameter, 
+        gyro_gap=ring_tolerance,
+        gyro_height=ring_height, 
+        gyro_hinge_tolerance=spike_tolerance);
+    
+    gyro_mount(
+        cup_dia=coffeecup_ring_diameter, 
+        gyro_gap=ring_tolerance,
+        gyro_height=ring_height, 
+        gyro_hinge_tolerance=spike_tolerance);
+    
 }
-
-//%cylinder(d=coffeecup_ring_diameter,h=1);
-
-if (0)
-%union()
-{
-    translate([gyro_ring_outer_dia+handlebar_handle_dia/2,0,0])
-        rotate([90,0,0])
-            cylinder(d=handlebar_handle_dia,h=100,center=true);
-    translate([gyro_ring_outer_dia+handlebar_shaft_dia/2,0,0])
-        rotate([180,0,0])
-            cylinder(d=handlebar_shaft_dia,h=100,center=true);
-}
+ 
+    
+    %cylinder(r=coffeecup_ring_diameter/2,h=10);
