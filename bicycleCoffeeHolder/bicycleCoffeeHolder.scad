@@ -152,18 +152,39 @@ module gyro_mount(cup_dia, gyro_gap, gyro_height, gyro_hinge_tolerance)
                     );
         }
 
+        // Bicycle Handlebars and Shaft
         translate([gyro_ring_outer_dia+handlebar_handle_dia/2,0,0])
             rotate([90,0,0])
                 cylinder(d=handlebar_handle_dia,h=100,center=true);
-
         translate([gyro_ring_outer_dia+handlebar_shaft_dia/2,0,0])
             rotate([180,0,0])
                 cylinder(d=handlebar_shaft_dia,h=100,center=true);
 
-        translate([gyro_ring_outer_dia-2,handlebar_shaft_dia,0])
-            cube([2,6,gyro_height*2],center=true);
-        translate([gyro_ring_outer_dia-2,-handlebar_shaft_dia,0])
-            cube([2,6,gyro_height*2],center=true);
+        // ZipTies
+        if (1)
+        {
+            // Rotated zip tie
+            translate([gyro_ring_outer_dia+(handlebar_shaft_dia-2)/2,handlebar_shaft_dia,0])
+                rotate([90,0,0])
+                scale([1.2,1,1])
+                rotate_extrude(convexity = 10)
+                translate([handlebar_shaft_dia/2, 0, 0])
+                square([2,6],center=true);
+            translate([gyro_ring_outer_dia+(handlebar_shaft_dia-2)/2,-handlebar_shaft_dia,0])
+                rotate([90,0,0])
+                scale([1.2,1,1])
+                rotate_extrude(convexity = 10)
+                translate([handlebar_shaft_dia/2, 0, 0])
+                square([2,6],center=true);
+        }
+        else
+        {
+            // Straight Down Ziptie
+            translate([gyro_ring_outer_dia-2,handlebar_shaft_dia,0])
+                cube([2,6,gyro_height*2],center=true);
+            translate([gyro_ring_outer_dia-2,-handlebar_shaft_dia,0])
+                cube([2,6,gyro_height*2],center=true);
+        }
     }
 }
 
