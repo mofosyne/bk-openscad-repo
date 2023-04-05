@@ -5,15 +5,15 @@ $fn=40;
 ring_tolerance=0.5;
 spike_tolerance=0.5;
 
-/* [Coffee Cup] */
-coffeecup_ring_diameter = 75; 
-ring_thickness = 5;
-ring_height = 24;
-ring_gap=1;
-
 /* [Bike Spec] */
 handlebar_handle_dia=22.5;
 handlebar_shaft_dia=24;
+
+/* [Coffee Cup] */
+coffeecup_ring_diameter = 75; 
+ring_thickness = 8;
+ring_height = handlebar_handle_dia*0.8;
+ring_gap=1;
 
 /* Gyro Spec */
 module spikeHole(r=20, h=5, spike_length=5, tol=0, tol_tip=0) 
@@ -50,7 +50,7 @@ module gyro_ring(r=20, h=5, thickness=1, gyro_spacing=0, spike_length=5, spike_h
             if (pins) 
             {
                 rotate([0,0,90])
-                    scale([0.8,1,1])
+                    scale([0.6,1,1])
                         spikeHole(
                             r=r+thickness, 
                             h=h*0.8, 
