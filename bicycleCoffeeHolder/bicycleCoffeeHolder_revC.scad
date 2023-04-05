@@ -190,7 +190,7 @@ module gyro_cup_mount(cup_hole_dia, cup_lip, gyro_gap, gyro_height, gyro_hinge_t
         translate([gyro_ring_outer_radius+handlebar_handle_dia/2+mount_offset,0,0])
             rotate([90,0,0])
                 cylinder(d=handlebar_handle_dia,h=100,center=true);
-        translate([gyro_ring_outer_radius+handlebar_shaft_dia/2+mount_offset,0,0])
+        translate([gyro_ring_outer_radius+handlebar_shaft_dia/2+mount_offset,0,50])
             rotate([180,0,0])
                 cylinder(d=handlebar_shaft_dia,h=100,center=true);
 
