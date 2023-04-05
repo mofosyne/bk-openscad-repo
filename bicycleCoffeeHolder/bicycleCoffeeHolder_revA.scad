@@ -117,24 +117,36 @@ module gyro_mount(cup_dia, gyro_gap, gyro_height, gyro_hinge_tolerance)
 
     difference()
     {
-        hull()
+        union()
         {
-            rotate([0,0,180]) 
-                gyro_ring(
-                    r=inner_ring_radius+gyro_spacing*2,
-                    h=gyro_height,
-                    thickness=ring_thickness,
-                    gyro_spacing=gyro_spacing,
-                    spike_length=spike_length,
-                    spike_hinge_tolerance=gyro_hinge_tolerance,
-                    pins=false,
-                    is_inner=false
-                    );
+            hull()
+            {
+                rotate([0,0,180]) 
+                    gyro_ring(
+                        r=inner_ring_radius+gyro_spacing*2,
+                        h=gyro_height,
+                        thickness=ring_thickness,
+                        gyro_spacing=gyro_spacing,
+                        spike_length=spike_length,
+                        spike_hinge_tolerance=gyro_hinge_tolerance,
+                        pins=false,
+                        is_inner=false
+                        );
 
-            translate([gyro_ring_outer_dia+handlebar_handle_dia/2,0,0])
-                rotate([90,0,0])
-                    cube([1,gyro_height,handlebar_shaft_dia*3],center=true);
-                    
+                translate([gyro_ring_outer_dia+handlebar_handle_dia/2,0,0])
+                    rotate([90,0,0])
+                        cube([1,gyro_height,handlebar_shaft_dia*3],center=true);
+                        
+            }
+            
+            // Flange to prevent tipping over the shaft
+            hull()
+            {
+                translate([gyro_ring_outer_dia,0,0])
+                    cube([handlebar_shaft_dia/6,handlebar_shaft_dia*1.2,1],center=true);
+                translate([gyro_ring_outer_dia,0,20])
+                    cube([handlebar_shaft_dia/6,handlebar_shaft_dia*1.2,1],center=true);
+            }
         }
 
         hull()
@@ -164,17 +176,24 @@ module gyro_mount(cup_dia, gyro_gap, gyro_height, gyro_hinge_tolerance)
         if (1)
         {
             // Rotated zip tie
-            translate([gyro_ring_outer_dia+(handlebar_shaft_dia-2)/2,handlebar_shaft_dia,0])
+            translate([gyro_ring_outer_dia+(handlebar_shaft_dia)/2,handlebar_shaft_dia,0])
                 rotate([90,0,0])
                 scale([1.2,1,1])
                 rotate_extrude(convexity = 10)
-                translate([handlebar_shaft_dia/2, 0, 0])
+                translate([(handlebar_handle_dia+2)/2, 0, 0])
                 square([2,6],center=true);
-            translate([gyro_ring_outer_dia+(handlebar_shaft_dia-2)/2,-handlebar_shaft_dia,0])
+            translate([gyro_ring_outer_dia+(handlebar_shaft_dia)/2,-handlebar_shaft_dia,0])
                 rotate([90,0,0])
                 scale([1.2,1,1])
                 rotate_extrude(convexity = 10)
-                translate([handlebar_shaft_dia/2, 0, 0])
+                translate([(handlebar_handle_dia+2)/2, 0, 0])
+                square([2,6],center=true);
+
+            translate([gyro_ring_outer_dia+(handlebar_shaft_dia)/2,0,15])
+                rotate([0,0,90])
+                scale([1,1.2,1])
+                rotate_extrude(convexity = 10)
+                translate([(handlebar_shaft_dia+2)/2, 0, 0])
                 square([2,6],center=true);
         }
         else
