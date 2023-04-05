@@ -12,7 +12,7 @@ handlebar_handle_dia=22.5;
 handlebar_shaft_dia=24;
 
 /* [Coffee Cup] */
-coffeecup_ring_diameter = 75; 
+coffeecup_ring_diameter = 70; // Cup rim was 75mm but want to make it easier to pick up cup
 ring_thickness = 8;
 ring_height = handlebar_handle_dia*0.8;
 ring_gap=1;
@@ -115,55 +115,55 @@ module gyro_mount(cup_dia, gyro_gap, gyro_height, gyro_hinge_tolerance)
     // Cut bit extra for easier print tolerance
     tol_scaled=1.4;
     
-    gyro_ring_outer_dia=coffeecup_ring_diameter/2+(ring_gap+ring_thickness+ring_tolerance)*(3);
-
+    gyro_ring_outer_dia=coffeecup_ring_diameter/2+(ring_gap+ring_thickness+ring_tolerance)*3;
+    
     difference()
     {
         union()
         {
-            hull()
-            {
-                rotate([0,0,180]) 
-                    gyro_ring(
-                        r=inner_ring_radius+gyro_spacing*2,
-                        h=gyro_height,
-                        thickness=ring_thickness,
-                        gyro_spacing=gyro_spacing,
-                        spike_length=spike_length,
-                        spike_hinge_tolerance=gyro_hinge_tolerance,
-                        pins=false,
-                        is_inner=false
-                        );
+            // Gyro Cup
+            gyro_model(
+                cup_dia=coffeecup_ring_diameter, 
+                gyro_gap=ring_gap+ring_tolerance,
+                gyro_height=ring_height, 
+                gyro_hinge_tolerance=spike_tolerance);
 
-                translate([gyro_ring_outer_dia+handlebar_handle_dia/2,0,0])
-                    rotate([90,0,0])
-                        cube([1,gyro_height,handlebar_shaft_dia*3],center=true);
-                        
-            }
-            
-            // Flange to prevent tipping over the shaft
-            hull()
+            // Mount Bulk
+            difference()
             {
-                translate([gyro_ring_outer_dia,0,0])
-                    cube([handlebar_shaft_dia/6,handlebar_shaft_dia*1.2,1],center=true);
-                translate([gyro_ring_outer_dia,0,20])
-                    cube([handlebar_shaft_dia/6,handlebar_shaft_dia*1.2,1],center=true);
-            }
-        }
+                hull()
+                {
+                    rotate([0,0,180]) 
+                        gyro_ring(
+                            r=inner_ring_radius+gyro_spacing*2,
+                            h=gyro_height,
+                            thickness=ring_thickness,
+                            gyro_spacing=gyro_spacing,
+                            spike_length=spike_length,
+                            spike_hinge_tolerance=gyro_hinge_tolerance,
+                            pins=false,
+                            is_inner=false
+                            );
 
-        hull()
-        {
-            rotate([0,0,180]) 
-                gyro_ring(
-                    r=inner_ring_radius+gyro_spacing*2,
-                    h=gyro_height+10,
-                    thickness=ring_thickness,
-                    gyro_spacing=gyro_spacing,
-                    spike_length=spike_length,
-                    spike_hinge_tolerance=gyro_hinge_tolerance,
-                    pins=false,
-                    is_inner=false
-                    );
+                    translate([gyro_ring_outer_dia+handlebar_handle_dia/2,0,0])
+                        rotate([90,0,0])
+                            cube([1,gyro_height,handlebar_shaft_dia*3],center=true);
+                }
+                hull()
+                {
+                    rotate([0,0,180]) 
+                        gyro_ring(
+                            r=inner_ring_radius+gyro_spacing*2,
+                            h=gyro_height+10,
+                            thickness=ring_thickness,
+                            gyro_spacing=gyro_spacing,
+                            spike_length=spike_length,
+                            spike_hinge_tolerance=gyro_hinge_tolerance,
+                            pins=false,
+                            is_inner=false
+                            );
+                }
+            }
         }
 
         // Bicycle Handlebars and Shaft
@@ -175,57 +175,34 @@ module gyro_mount(cup_dia, gyro_gap, gyro_height, gyro_hinge_tolerance)
                 cylinder(d=handlebar_shaft_dia,h=100,center=true);
 
         // ZipTies
-        if (1)
-        {
-            // Rotated zip tie
-            translate([gyro_ring_outer_dia+(handlebar_shaft_dia)/2,handlebar_shaft_dia,0])
-                rotate([90,0,0])
-                scale([1.2,1,1])
-                rotate_extrude(convexity = 10)
-                translate([(handlebar_handle_dia+2)/2, 0, 0])
-                square([2,6],center=true);
-            translate([gyro_ring_outer_dia+(handlebar_shaft_dia)/2,-handlebar_shaft_dia,0])
-                rotate([90,0,0])
-                scale([1.2,1,1])
-                rotate_extrude(convexity = 10)
-                translate([(handlebar_handle_dia+2)/2, 0, 0])
-                square([2,6],center=true);
-
-            translate([gyro_ring_outer_dia+(handlebar_shaft_dia)/2,0,15])
-                rotate([0,0,90])
-                scale([1,1.2,1])
-                rotate_extrude(convexity = 10)
-                translate([(handlebar_shaft_dia+2)/2, 0, 0])
-                square([2,6],center=true);
-        }
-        else
-        {
-            // Straight Down Ziptie
-            translate([gyro_ring_outer_dia-2,handlebar_shaft_dia,0])
-                cube([2,6,gyro_height*2],center=true);
-            translate([gyro_ring_outer_dia-2,-handlebar_shaft_dia,0])
-                cube([2,6,gyro_height*2],center=true);
-        }
+        translate([gyro_ring_outer_dia+(handlebar_shaft_dia)/2,handlebar_shaft_dia,0])
+            rotate([90,0,0])
+            scale([1.2,1,1])
+            rotate_extrude(convexity = 10)
+            translate([(handlebar_handle_dia+2)/2, 0, 0])
+            square([2,6],center=true);
+        translate([gyro_ring_outer_dia+(handlebar_shaft_dia)/2,-handlebar_shaft_dia,0])
+            rotate([90,0,0])
+            scale([1.2,1,1])
+            rotate_extrude(convexity = 10)
+            translate([(handlebar_handle_dia+2)/2, 0, 0])
+            square([2,6],center=true);
+        translate([gyro_ring_outer_dia-4,0,20])
+            rotate([-90,0,90])
+            scale([1,1.2,1])
+            rotate_extrude(convexity = 10)
+            translate([(handlebar_shaft_dia+2)/2, 0, 0])
+            square([2,6],center=true);
     }
 }
 
 /*********************************************************************************/
 
 // Gyro Cup Model
-union()
-{
-    gyro_model(
-        cup_dia=coffeecup_ring_diameter, 
-        gyro_gap=ring_gap+ring_tolerance,
-        gyro_height=ring_height, 
-        gyro_hinge_tolerance=spike_tolerance);
-    
-    gyro_mount(
-        cup_dia=coffeecup_ring_diameter, 
-        gyro_gap=ring_gap+ring_tolerance,
-        gyro_height=ring_height, 
-        gyro_hinge_tolerance=spike_tolerance);
-    
-}
- 
+gyro_mount(
+    cup_dia=coffeecup_ring_diameter, 
+    gyro_gap=ring_gap+ring_tolerance,
+    gyro_height=ring_height, 
+    gyro_hinge_tolerance=spike_tolerance);
+
 //%translate([0,0,ring_height]) cylinder(r=coffeecup_ring_diameter/2,h=10);
