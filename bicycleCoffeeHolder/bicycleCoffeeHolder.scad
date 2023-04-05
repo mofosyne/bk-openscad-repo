@@ -6,13 +6,14 @@ ring_tolerance=0.5;
 spike_tolerance=0.5;
 
 /* [Coffee Cup] */
-coffeecup_ring_diameter = 73; 
+coffeecup_ring_diameter = 75; 
 ring_thickness = 5;
-ring_height = 20;
+ring_height = 24;
+ring_gap=1;
 
 /* [Bike Spec] */
-handlebar_handle_dia=25;
-handlebar_shaft_dia=20;
+handlebar_handle_dia=22.5;
+handlebar_shaft_dia=24;
 
 /* Gyro Spec */
 module spikeHole(r=20, h=5, spike_length=5, tol=0, tol_tip=0) 
@@ -112,7 +113,7 @@ module gyro_mount(cup_dia, gyro_gap, gyro_height, gyro_hinge_tolerance)
     // Cut bit extra for easier print tolerance
     tol_scaled=1.4;
     
-    gyro_ring_outer_dia=coffeecup_ring_diameter/2+(ring_thickness+ring_tolerance)*(3);
+    gyro_ring_outer_dia=coffeecup_ring_diameter/2+(ring_gap+ring_thickness+ring_tolerance)*(3);
 
     difference()
     {
@@ -173,13 +174,13 @@ union()
 {
     gyro_model(
         cup_dia=coffeecup_ring_diameter, 
-        gyro_gap=ring_tolerance,
+        gyro_gap=ring_gap+ring_tolerance,
         gyro_height=ring_height, 
         gyro_hinge_tolerance=spike_tolerance);
     
     gyro_mount(
         cup_dia=coffeecup_ring_diameter, 
-        gyro_gap=ring_tolerance,
+        gyro_gap=ring_gap+ring_tolerance,
         gyro_height=ring_height, 
         gyro_hinge_tolerance=spike_tolerance);
     
