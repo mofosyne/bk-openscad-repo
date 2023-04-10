@@ -1,4 +1,4 @@
-$fn = 40;
+$fn = 100;
 
 module fusionPartyLogo_with_keyring(ringRadius=9.0, lineThickness=0.8, loopThickness=0.7, loopHole=1.0)
 {
