@@ -1,8 +1,8 @@
 // Table/Seat Post Mount
 // By Brian Khuu (May 2023)
-// Design Context: Wanted to mount a small flat wood top to a collapsable table post
+// Design Context: Wanted to mount a small flat wood top to a collapsible table post
 //                 Note that the table post has cross braces so this design is mostly there to keep 
-//                 the post aligned to the center of the table.
+//                 the post aligned to the centre of the table.
 //                 This will be glued to the wood table top and the post would be slotted in.
 
 /*

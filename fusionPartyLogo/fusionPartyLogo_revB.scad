@@ -30,6 +30,7 @@ module fusionPartyLogo_2D(ringRadius=9.0, lineThickness=0.8, loopThickness=0.7, 
     }
 }
 
+rotate([0,0,90])
 if (1)
 {
     // 3D printed
