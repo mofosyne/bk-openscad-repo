@@ -182,7 +182,7 @@ module cup_mount(cup_hole_dia, cup_lip, cup_holder_height)
                     RoundedBox(boxX-2*wall,boxY-2*wall,boxZ+2,roundBox-wall);
             }
     }
-    else if (1)
+    else if (0)
     {
         // Screwdriver Holder
         boxX=75; // 75mm is width of the shelf post at little cardboard cafe. 83mm is the size of Sizzix Big Shot instruction Manual, where we must also plus wall thickness times 2 to fit the manual in.
@@ -212,6 +212,60 @@ module cup_mount(cup_hole_dia, cup_lip, cup_holder_height)
                     {
                         cylinder(r2=2.1,r1=(10+1)/2,h=5);
                     }
+                }
+            }
+    }
+    else if (1)
+    {
+        // USB Flash Drive Holder
+        // The usb slot is lifted from OpenSCAD USB cable storage for wall mount By kamkalian https://www.printables.com/model/10112-openscad-usb-cable-storage-for-wall-mount/files
+        boxX=75; // 75mm is width of the shelf post at little cardboard cafe. 83mm is the size of Sizzix Big Shot instruction Manual, where we must also plus wall thickness times 2 to fit the manual in.
+        boxY=15; // typical Sharpie is 15mm dia, thick bundle of Sizzix Big Shot instruction Manual is 4mm. Must also plus wall thickness times 2 to fit the pen.
+        boxZ=15;
+        roundBox=5; // 6 norminally, but must be 2 for holding the instruction manual
+        wall = 1.5;
+        translate([0,0,0])
+            rotate([0,0,90])
+            translate([-boxX/2,-boxY,0])
+            difference()
+            {
+                HalfRoundedBox(boxX,boxY,boxZ,roundBox);
+                for(i = [-30:20:30])
+                translate([i,0,-1])
+                union()
+                {
+                    usb_length = 12.3;
+                    usb_width = 5;
+                    usb_height = 12.5;
+                    usb_space = 10;
+                    
+                    translate([boxX/2+usb_length/2,boxY/2-usb_width/2,0])
+                    rotate([0,0,90])
+                    difference()
+                    {
+                        cube([usb_width,usb_length,usb_height]); //USB connector
+                        
+                        // Nubsis
+                        translate([0,1.7,7.1]){
+                            //cube([0.5,2,2]);
+                            rotate([270,0,0]){
+                                linear_extrude(2){
+                                    polygon([[0,0],[0,2],[0.6,1.5],[0.6,1]]);
+                                }
+                            }
+                            
+                        }
+                        translate([0,usb_length-1.7-2,7.1]){
+                            //cube([0.3,2,2]);
+                            rotate([270,0,0]){
+                                linear_extrude(2){
+                                    polygon([[0,0],[0,2],[0.6,1.5],[0.6,1]]);
+                                }
+                            }
+                        }
+                    }
+                
+                    
                 }
             }
     }
