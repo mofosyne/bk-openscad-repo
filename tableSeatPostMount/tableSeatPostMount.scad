@@ -23,7 +23,7 @@
 */
 
 // Mount Base Thickness
-base_thickness = 3;
+base_thickness = 2;
 
 // Post Diamater
 post_slot_dia=17;
@@ -51,6 +51,7 @@ screw_head_height = 2;
 screw_head_dia = 4.5 + 0.2;
 
 // Lazy Susan Hole
+// Note: Was implemented so that this can fit a IKEA SNUDDA lazy susan which has a fixed base diameter of 18.2cm and 22mm offset from bottom of base to top of rotating table
 lazy_susan_enable = true;
 lazy_susan_dia = 185; // Measured 18.2cm
 
@@ -90,7 +91,7 @@ module post_to_tabletop_slot(post_slot_dia, post_slot_to_post_slot, base_thickne
                             translate([0,0,-1])
                                 cylinder(d=screw_shaft_dia, h=post_slot_height+0.1, $fn=40);
                             translate([0,0,screw_shaft_height])
-                                cylinder(d1=screw_head_dia, d2=screw_head_dia+5, h=screw_head_height+0.1, $fn=40);
+                                cylinder(d1=screw_head_dia, d2=screw_head_dia+2, h=screw_head_height+0.1, $fn=40);
                         }
             }
             if (lazy_susan_enable)
