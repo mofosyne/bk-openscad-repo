@@ -10,13 +10,13 @@ label_height = 26; // 25mm (add 0.5mm tol side to side)
 
 // slot
 // Default values based on https://www.mbe.com.au/what-is-the-standard-business-card-size-in-australia/
-slot_width = 31; // 30mm (add 0.5mm tol side to side)
+slot_width = 32; // 30mm (add 1.0mm tol side to side, to account for rolling up labels)
 slot_height = 40; // 30mm (add 0.5mm tol side to side)
 slot_thickness = 3; // 0.25mm for thin paper cards. 0.8mm for thick plastic cards. We need to add extra thickness to account for layer droop
 
 // Holder
 wall_spacing = print_nozzle_dia+0.4;
-wall_card_grip = 5;
+wall_card_grip = 10;
 wall_x_count = 1;
 wall_y_count = 1;
 
@@ -69,6 +69,13 @@ module cardholder()
                 translate([slot_bulk_height+keyring_hole_size_thinnest+keyring_hole_wall_top,0,(wall_thickness/8)/2])                
                     cube([0.01, (keyring_hole_size_widest)/2, wall_thickness/8], center=true);
             }
+
+            // Gameboy Label Positioner
+            translate([slot_bulk_height-4,0,wall_thickness])
+                rotate([0,0,-90])
+                linear_extrude(slot_label_height+0.1)
+                text( "GAME GIRL", size=3.5, halign = "center", valign="center", font=":style=Bold");             
+//                text( "GAME BOY", size=3.5, halign = "center", valign="center", font=":style=Bold");             
         }
 
         // Slope
@@ -89,9 +96,9 @@ module cardholder()
         hull()
         {
             translate([slot_bulk_height/2, 0, -0.1])
-                cylinder(d=slot_bulk_width/3, h=slot_thickness, $fn=40);
+                cylinder(d=slot_bulk_width*0.5, h=slot_thickness, $fn=40);
             translate([slot_height+wall_spacing-wall_card_grip, 0, (wall_base+1)/2-0.1])
-                cube([0.01, slot_bulk_width/3, wall_base+1], center=true);
+                cube([0.01, slot_bulk_width*0.6, wall_base+1], center=true);
         }
 
         // Label Positioner
@@ -105,7 +112,12 @@ module cardholder()
                 cube([0.01, keyring_hole_size_widest, wall_thickness], center=true);
             translate([slot_bulk_height+keyring_hole_size_thinnest,0,wall_thickness/2-0.1])                
                 cube([0.01, (keyring_hole_size_widest)/2, wall_thickness], center=true);
-        }        
+        }
+
+        // Gameboy Arrow
+        translate([5,0,wall_thickness-slot_label_height+(slot_label_height+0.1)/2+0.1])
+            rotate([0,0,180])
+            cylinder(d=5, h=slot_label_height+0.1, center=true, $fn=3);  
     }
 }
 
