@@ -11,6 +11,7 @@ handle_offset = 10;
 handle_screw_enable = true;
 handle_screw_hole = 3; // M3 thread = 3mm
 handle_screw_head = 5.6; // M3 head = 5.6mm
+screw_hole_tol = 0.15;
 screw_head_tol = 0.5;
 
 /* [Mount Base Spec] */
@@ -102,7 +103,7 @@ difference()
                 rotate([0,90,0])
                     cylinder(r=(handle_screw_head)/2+screw_head_tol, h=handle_offset+smoothing*2, center=true);
             rotate([0,90,0])
-                cylinder(r=handle_screw_hole/2, h=smoothing*2+mount_base_thickness, center=true);
+                cylinder(r=handle_screw_hole/2+screw_hole_tol, h=smoothing*2+mount_base_thickness, center=true);
         }
     }
 }
