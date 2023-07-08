@@ -89,31 +89,6 @@ module hookToothbrush()
                 }
             }
         }
-        if (0)
-        {
-            stablizer_h = 10;
-            difference()
-            {
-                translate([-handle_offset-(hook_diameter)/2,0,mount_base_height/2])
-                    cylinder(d=hook_diameter+curve_thickness*2, h=stablizer_h);
-                translate([-handle_offset-(hook_diameter)/2,0,mount_base_height/2-0.5])
-                    cylinder(d=hook_diameter, h=stablizer_h+1);
-                hull()
-                {
-                    translate([-handle_offset-(hook_diameter)/2-curve_thickness,0,mount_base_height/2+stablizer_h/2+stablizer_h*2/3])
-                        cube([hook_diameter+curve_thickness*2,hook_diameter+curve_thickness*2,stablizer_h], center=true);
-                    translate([-handle_offset-hook_diameter-curve_thickness,0,mount_base_height/2+stablizer_h/2-0.1])
-                        cube([hook_diameter+curve_thickness*2,hook_diameter+curve_thickness*2,stablizer_h], center=true);
-                }
-            }
-            hull()
-            {
-                translate([-handle_offset/2-curve_thickness,0,curve_height/2])
-                    cube([handle_offset/2,curve_thickness,0.1], center=true);
-                translate([-handle_offset+curve_thickness-0.1,0,curve_height/2+stablizer_h/2])
-                    cube([0.01,curve_thickness,stablizer_h], center=true);
-            }
-        }
     }
     translate([-handle_offset-handle_diameter/2,0,0])
         %cylinder(d=handle_diameter, h=mount_base_height+10, center=true);
