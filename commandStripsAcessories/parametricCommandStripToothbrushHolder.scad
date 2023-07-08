@@ -14,7 +14,7 @@ handle_tol = 0.5; // Toothbrush handle measured 6mm so add a bit of tolerance
 
 /* [Mount Base Spec] */
 mount_base_thickness = 1;
-mount_base_length = 60; // Command strips lengths: 30mm, 60mm
+mount_base_length = 90; // Command strips lengths: 30mm, 60mm
 mount_base_height = 15;
 
 /* [Mount Tab Spec] */
@@ -25,6 +25,11 @@ mount_tab_thickness = 0.6;
 /* [Mount Curve Spec] */
 curve_thickness = 1.5;
 curve_height = mount_base_height;
+
+/* [Mount Screw Spec] */
+screw_enable = true;
+screw_hole_size = 2;
+screw_hole_tol = 0.1;
 
 module hookCrossSection()
 {
@@ -111,8 +116,23 @@ union()
             translate([0,i*handle_spacing,0])
                 hookToothbrush();
         }
-    rotate([0,0,-90])
-        cube([mount_base_length, mount_base_thickness, curve_height], center=true);
+    difference()
+    {
+        rotate([0,0,-90])
+            cube([mount_base_length, mount_base_thickness, curve_height], center=true);
+
+        #translate([0,-((handle_count-1)*handle_spacing)/2,0])    
+            for (i = [0 : 1 : handle_count-1])
+            {
+                translate([0,i*handle_spacing+handle_spacing/2,0])
+                    rotate([0,90,0])
+                        cylinder(r=screw_hole_size/2+screw_hole_tol, h=mount_base_thickness+0.2, center=true);
+                translate([0,i*handle_spacing-handle_spacing/2,0])
+                    rotate([0,90,0])
+                        cylinder(r=screw_hole_size/2+screw_hole_tol, h=mount_base_thickness+0.2, center=true);
+            }
+        
+    }
     if (mount_tab_enable)
     {
         translate([-(mount_base_thickness-mount_tab_thickness)/2,mount_base_length/2+mount_tab_length/2,0])
