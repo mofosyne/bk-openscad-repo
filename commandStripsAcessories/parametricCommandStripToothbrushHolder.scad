@@ -5,7 +5,7 @@ $fn = 40;
 
 /* [Holder Spec] */
 handle_count = 3;
-handle_spacing = 25;
+handle_spacing = 40;
 
 /* [Handle Spec] */
 handle_diameter = 6; // Toothbrush handle measured 6mm so add a bit of tolerance
@@ -14,7 +14,7 @@ handle_tol = 0.5; // Toothbrush handle measured 6mm so add a bit of tolerance
 
 /* [Mount Base Spec] */
 mount_base_thickness = 1;
-mount_base_length = 90; // Command strips lengths: 30mm, 60mm
+mount_base_length = 130; // Command strips lengths: 30mm, 60mm
 mount_base_height = 15;
 
 /* [Mount Tab Spec] */
