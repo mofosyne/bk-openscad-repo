@@ -5,8 +5,8 @@ $fn = 40;
 
 /* [Handle Spec] */
 handle_diameter = 6; // Toothbrush handle measured 6mm so add a bit of tolerance
-handle_offset = 10;
-handle_tol = 1; // Toothbrush handle measured 6mm so add a bit of tolerance
+handle_offset = 5;
+handle_tol = 0.5; // Toothbrush handle measured 6mm so add a bit of tolerance
 
 /* [Mount Base Spec] */
 mount_base_thickness = 1;
@@ -16,7 +16,7 @@ mount_base_length = 30;
 mount_base_height = 15;
 
 /* [Mount Curve Spec] */
-curve_thickness = 1;
+curve_thickness = 1.5;
 curve_height = mount_base_height;
 
 module hookCrossSection()
@@ -60,37 +60,60 @@ module hookToothbrush()
 {
     hook_diameter = handle_diameter + handle_tol;
     flange_radius = hook_diameter/2+3;
-    difference()
+    union()
     {
-        union()
-        {
-            translate([-handle_offset,0,0])
-                union()
-                {
-                    hookHalfCurve(hook_diameter, flange_radius);
-                    mirror([0,1,0])
-                        hookHalfCurve(hook_diameter, flange_radius);
-                }
-            translate([-handle_offset/2,0,0])
-                cube([handle_offset,curve_thickness,curve_height], center=true);
-        }
         translate([-handle_offset,0,0])
+            union()
+            {
+                hookHalfCurve(hook_diameter, flange_radius);
+                mirror([0,1,0])
+                    hookHalfCurve(hook_diameter, flange_radius);
+            }
+        translate([-handle_offset/2,0,0])
+            cube([handle_offset,curve_thickness,curve_height], center=true);
+        if (1)
+        {
+            stablizer_h = 5;
+            difference()
+            {
+                translate([-handle_offset-(hook_diameter)/2,0,mount_base_height/2])
+                    cylinder(d=hook_diameter+curve_thickness*2, h=stablizer_h);
+                translate([-handle_offset-(hook_diameter)/2,0,mount_base_height/2-0.5])
+                    cylinder(d=hook_diameter, h=stablizer_h+1);
+                hull()
+                {
+                    translate([-handle_offset-(hook_diameter)/2-curve_thickness,0,mount_base_height/2+stablizer_h/2+stablizer_h])
+                        cube([hook_diameter+curve_thickness*2,hook_diameter+curve_thickness*2,stablizer_h], center=true);
+                    translate([-handle_offset-hook_diameter-curve_thickness,0,mount_base_height/2+stablizer_h/2-0.1])
+                        cube([hook_diameter+curve_thickness*2,hook_diameter+curve_thickness*2,stablizer_h], center=true);
+                }
+            }
+        }
+        if (0)
+        {
+            stablizer_h = 10;
+            difference()
+            {
+                translate([-handle_offset-(hook_diameter)/2,0,mount_base_height/2])
+                    cylinder(d=hook_diameter+curve_thickness*2, h=stablizer_h);
+                translate([-handle_offset-(hook_diameter)/2,0,mount_base_height/2-0.5])
+                    cylinder(d=hook_diameter, h=stablizer_h+1);
+                hull()
+                {
+                    translate([-handle_offset-(hook_diameter)/2-curve_thickness,0,mount_base_height/2+stablizer_h/2+stablizer_h*2/3])
+                        cube([hook_diameter+curve_thickness*2,hook_diameter+curve_thickness*2,stablizer_h], center=true);
+                    translate([-handle_offset-hook_diameter-curve_thickness,0,mount_base_height/2+stablizer_h/2-0.1])
+                        cube([hook_diameter+curve_thickness*2,hook_diameter+curve_thickness*2,stablizer_h], center=true);
+                }
+            }
             hull()
             {
-                translate([-hook_diameter/2,0,hook_diameter/2])
-                    rotate([90,0,0])
-                        cylinder(d=hook_diameter, h=hook_diameter*2, center=true);   
-                translate([-hook_diameter/2,0,mount_base_height/2])
-                    rotate([90,0,0])
-                        cylinder(d=hook_diameter, h=hook_diameter*2, center=true);        
-                translate([curve_thickness-hook_diameter-curve_thickness-flange_radius-1.5,0,mount_base_height/2])
-                    rotate([90,0,0])
-                        cylinder(d=0.01, h=hook_diameter*2, center=true);       
-                translate([curve_thickness-hook_diameter-curve_thickness-flange_radius-1.5,0,mount_base_height/6])
-                    rotate([90,0,0])
-                        cylinder(d=0.01, h=hook_diameter*2, center=true);               
-                
+                translate([-handle_offset/2-curve_thickness,0,curve_height/2])
+                    cube([handle_offset/2,curve_thickness,0.1], center=true);
+                translate([-handle_offset+curve_thickness-0.1,0,curve_height/2+stablizer_h/2])
+                    cube([0.01,curve_thickness,stablizer_h], center=true);
             }
+        }
     }
     translate([-handle_offset-handle_diameter/2,0,0])
         %cylinder(d=handle_diameter, h=mount_base_height+10, center=true);
