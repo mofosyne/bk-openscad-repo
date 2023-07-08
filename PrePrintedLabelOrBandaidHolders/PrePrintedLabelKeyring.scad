@@ -29,7 +29,7 @@ slot_bulk_width = slot_width+wall_spacing*2;
 slot_bulk_height = slot_height+wall_spacing*2;
 
 // Keyring
-keyring_hole_size_thinnest = 2;
+keyring_hole_size_thinnest = 2.5;
 keyring_hole_size_widest = 10;
 keyring_hole_wall_top = 1.5;
 keyring_hole_wall_side = 10;
@@ -74,8 +74,14 @@ module cardholder()
             translate([slot_bulk_height-4,0,wall_thickness])
                 rotate([0,0,-90])
                 linear_extrude(slot_label_height+0.1)
-                text( "GAME GIRL", size=3.5, halign = "center", valign="center", font=":style=Bold");             
-//                text( "GAME BOY", size=3.5, halign = "center", valign="center", font=":style=Bold");             
+                if (1)
+                {
+                    text( "GAME GIRL", size=3.5, halign = "center", valign="center", font=":style=Bold");
+                }
+                else
+                {
+                    text( "GAME BOY", size=3.5, halign = "center", valign="center", font=":style=Bold");             
+                }
         }
 
         // Slope

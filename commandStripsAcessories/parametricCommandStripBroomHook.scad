@@ -4,8 +4,8 @@
 $fn = 40;
 
 /* [Handle Spec] */
-handle_diameter = 25;
-handle_offset = 10;
+handle_diameter = 23;
+handle_offset = 20;
 
 /* [Mount Screw Spec] */
 handle_screw_enable = true;
