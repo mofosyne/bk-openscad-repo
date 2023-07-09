@@ -13,7 +13,7 @@ handle_offset = 5;
 handle_tol = 0.5; // Toothbrush handle measured 6mm so add a bit of tolerance
 
 /* [Mount Base Spec] */
-mount_base_thickness = 1;
+mount_base_thickness = 1.5;
 mount_base_length = 130; // Command strips lengths: 30mm, 60mm
 mount_base_height = 15;
 
