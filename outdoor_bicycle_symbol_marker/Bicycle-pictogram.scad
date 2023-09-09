@@ -40,6 +40,8 @@ module mount_clip()
 
 /////////////////////////////////////////////////////////////////////////
 // Bicycle-pictogram.svg 100mm length
+// Source of image: Retraced and slightly adjusted version of a public domain 
+//                  Bicycle symbol found at https://publicdomainvectors.org/en/free-clipart/Bicycle-pictogram-vector-illustration/23113.html
 linear_extrude(height=bicycle_symbol_thickness)
 scale(rescaling)
 import("Bicycle-pictogram.svg");
