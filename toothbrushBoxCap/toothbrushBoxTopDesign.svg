@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="98mm"
+   height="68mm"
+   viewBox="0 0 98 68"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3 (1:1.3+202307231459+0e150ed6c4)"
+   sodipodi:docname="toothbrushBoxTopDesign.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="1.4449635"
+     inkscape:cx="99.310467"
+     inkscape:cy="275.78551"
+     inkscape:window-width="1920"
+     inkscape:window-height="1008"
+     inkscape:window-x="1920"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="hole" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Base"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-0.00749373,0.00924886)">
+    <g
+       id="base"
+       inkscape:label="Base"
+       transform="matrix(0.6237987,0,0,0.94892231,-12.202877,-26.869222)">
+      <rect
+         style="fill:none;stroke:#800000;stroke-width:0.1"
+         id="rect1"
+         width="157.00197"
+         height="71.560242"
+         x="19.624218"
+         y="28.355766"
+         rx="8.016633"
+         ry="5.2693319" />
+    </g>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Holes"
+     transform="translate(-0.00749373,0.00924886)">
+    <g
+       id="hole"
+       transform="translate(7.0019989,-24.075254)"
+       inkscape:label="hole">
+      <rect
+         style="fill:none;stroke:#800000;stroke-width:0.1"
+         id="rect2"
+         width="39.511421"
+         height="61.316765"
+         x="48.717262"
+         y="27.51663"
+         rx="5"
+         ry="5" />
+      <rect
+         style="fill:none;stroke:#800000;stroke-width:0.15454"
+         id="rect10"
+         width="45"
+         height="8"
+         x="-1.0463984"
+         y="27.985725"
+         rx="5"
+         ry="5" />
+    </g>
+    <g
+       id="guidedhole"
+       inkscape:label="hole with guide"
+       transform="matrix(0.74839126,0,0,-0.74839126,-87.359407,89.309017)">
+      <circle
+         style="fill:none;stroke:#800000;stroke-width:0.1"
+         id="circle10"
+         cx="135.67378"
+         cy="-47.348244"
+         r="10.021496"
+         transform="scale(1,-1)" />
+      <circle
+         style="fill:none;stroke:#800000;stroke-width:0.1"
+         id="circle12"
+         cx="173.85571"
+         cy="-47.348244"
+         r="10.021496"
+         transform="scale(1,-1)" />
+      <circle
+         style="fill:none;stroke:#800000;stroke-width:0.1"
+         id="circle13"
+         cx="173.85571"
+         cy="-84.823097"
+         r="10.021496"
+         transform="scale(1,-1)" />
+      <circle
+         style="fill:none;stroke:#800000;stroke-width:0.1"
+         id="circle14"
+         cx="135.67378"
+         cy="-84.823097"
+         r="10.021496"
+         transform="scale(1,-1)" />
+    </g>
+  </g>
+  <text
+     xml:space="preserve"
+     style="font-size:11.2889px;font-family:Timmana;-inkscape-font-specification:Timmana;fill:none;stroke:#800000;stroke-width:0.1"
+     x="57.827686"
+     y="38.213169"
+     id="text8"><tspan
+       sodipodi:role="line"
+       id="tspan8"
+       style="stroke-width:0.1"
+       x="57.827686"
+       y="38.213169">98x68</tspan></text>
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="Ref"
+     transform="translate(-0.00749373,0.00924886)" />
+</svg>
