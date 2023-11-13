@@ -5,7 +5,7 @@ screw_head_dia=4;
 screw_head_depth=1;
 
 screw_spacing = 31;
-reset_rotor_spacing = 10;
+reset_rotor_spacing = 10+0.5;
 reset_rotor_dia = 14;
 reset_rotor_upper_dia = 10;
 reset_rotor_height = 10;
