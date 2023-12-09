@@ -7,7 +7,7 @@
    viewBox="0 0 98 68"
    version="1.1"
    id="svg1"
-   inkscape:version="1.3 (1:1.3+202307231459+0e150ed6c4)"
+   inkscape:version="1.3.2 (1:1.3.2+202311252150+091e20ef0f)"
    sodipodi:docname="toothbrushBoxTopDesign.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -23,15 +23,15 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
-     inkscape:zoom="1.4449635"
-     inkscape:cx="99.310467"
-     inkscape:cy="275.78551"
+     inkscape:zoom="2.889927"
+     inkscape:cx="196.37174"
+     inkscape:cy="146.19746"
      inkscape:window-width="1920"
-     inkscape:window-height="1008"
-     inkscape:window-x="1920"
+     inkscape:window-height="1048"
+     inkscape:window-x="3840"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer1" />
+     inkscape:current-layer="svg1" />
   <defs
      id="defs1" />
   <g
@@ -62,17 +62,7 @@
     <g
        id="hole"
        transform="translate(7.0019989,-24.075254)"
-       inkscape:label="hole">
-      <rect
-         style="fill:none;stroke:#800000;stroke-width:0.1"
-         id="rect2"
-         width="39.511421"
-         height="61.316765"
-         x="48.717262"
-         y="27.51663"
-         rx="5"
-         ry="5" />
-    </g>
+       inkscape:label="hole" />
     <g
        id="guidedhole"
        inkscape:label="hole with guide"
@@ -105,6 +95,16 @@
          cy="-84.823097"
          r="10.021496"
          transform="scale(1,-1)" />
+      <rect
+         style="fill:none;stroke:#800000;stroke-width:0.1"
+         id="rect2"
+         width="39.511421"
+         height="61.316765"
+         x="48.717262"
+         y="27.51663"
+         rx="5"
+         ry="5"
+         transform="matrix(1.3361995,0,0,-1.3361995,126.08566,151.504)" />
     </g>
     <g
        id="cuphole"
@@ -124,14 +124,14 @@
   <text
      xml:space="preserve"
      style="font-size:11.2889px;font-family:Timmana;-inkscape-font-specification:Timmana;fill:none;stroke:#800000;stroke-width:0.1"
-     x="57.827686"
-     y="38.213169"
+     x="63.209278"
+     y="37.010937"
      id="text8"><tspan
        sodipodi:role="line"
        id="tspan8"
        style="stroke-width:0.1"
-       x="57.827686"
-       y="38.213169">98x68</tspan></text>
+       x="63.209278"
+       y="37.010937">98x68</tspan></text>
   <g
      inkscape:groupmode="layer"
      id="layer4"

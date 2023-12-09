@@ -7,15 +7,15 @@ box_rounding_tol = 3;
 
 cap_basethickness = 0.5;
 cap_wall_thickness = 1.5;
-cap_retaining_wall_height = 10;
+cap_retaining_wall_height = 40;
 
 guidehole_wall_thickness = 1;
-guidehole_height = 40;
+guidehole_height = 100;
 guidehole_tol = 0.4;
 guidehole_entrance_tol = 1; // First layer is squashed
 
 cuphole_wall_thickness = 1;
-cuphole_depth = 40;
+cuphole_depth = 60;
 cuphole_tol = 0.4;
 
 module roundedRectangleBox(width, length, height, radius, scaling=1) {
@@ -42,7 +42,11 @@ difference()
             translate([0, 0, 0])
                 roundedRectangleBox(width_lip, length_lip, cap_retaining_wall_height, box_rounding+box_rounding_tol, 0.99);
             translate([cap_wall_thickness, cap_wall_thickness, -0.1])
-                roundedRectangleBox(width_lip-cap_wall_thickness*2, length_lip-cap_wall_thickness*2, cap_retaining_wall_height+1, 5);
+                roundedRectangleBox(width_lip-cap_wall_thickness*2, length_lip-cap_wall_thickness*2, cap_retaining_wall_height+1, box_rounding+box_rounding_tol);
+            // Extra cut to avoid 
+            translate([(width_lip-cap_wall_thickness*2)*0.1, length_lip, 10])
+                rotate([90,0,0])
+                roundedRectangleBox((width_lip-cap_wall_thickness*2)*0.8, cap_retaining_wall_height, length_lip, 5);
         }
         
         // Guided Holes
