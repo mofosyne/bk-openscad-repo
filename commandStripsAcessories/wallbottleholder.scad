@@ -2,7 +2,7 @@ $fn = 100;
 // Wall Bottle Holder
 // By Brian Khuu 2023
 
-bottle_w = 90; // bottle dia at marlen's cardboard cafe 8.5cm
+bottle_w = 75; // bottle dia at marlen's cardboard cafe 7.0cm
 bottleholder_h = 75; // 4cm
 
 commandstrip_w = 18;
