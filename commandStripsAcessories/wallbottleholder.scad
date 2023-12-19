@@ -1,17 +1,33 @@
-$fn = 100;
 // Wall Bottle Holder
 // By Brian Khuu 2023
+$fn = 100;
 
-bottle_w = 75; // bottle dia at marlen's cardboard cafe 7.0cm
+// Bottle Diameter
+bottle_w = 80; // (was 75mm, but marlen said it was a bit tight)
+
+// Bottle Holder Heighht
 bottleholder_h = 75; // 4cm
 
+/* [Command Strip] */
+
+// Command Strip Width
 commandstrip_w = 18;
+
+// Command Strip Height (Not including the pull tab)
 commandstrip_h = 75; // 75
+
+// Command Strip Thickness
 commandstrip_thickness = 1.0;
 
+/* [Model Spec] */
 wall_thickness = 1.5;
 
+/* [Screw Hole] */
+
+// Screw Hole Diameter
 screw_hole_dia = 4.5;
+
+// Screw Head Diameter
 screw_head_dia = 9;
 
 difference()
