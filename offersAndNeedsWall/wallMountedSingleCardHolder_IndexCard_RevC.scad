@@ -6,8 +6,8 @@ print_layer_height = 0.2;
 
 // Index Card
 // 76 x 127mm (More like 126mm width when measured)
-businesscard_width = 127.5; // 90mm but some in real life are more like 91mm (Plus 0.5 tol )
-businesscard_height = 76.5; // 55mm (add 0.5mm tol)
+businesscard_width = 127.5; // 127mm (Plus 0.5 tol)
+businesscard_height = 76.5; // 76mm (add 0.5mm tol)
 businesscard_thickness = 2.5; // 0.25mm for thin paper cards. 0.8mm for thick plastic cards. We need to add extra thickness to account for layer droop
 
 // Holder
