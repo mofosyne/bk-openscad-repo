@@ -45,24 +45,24 @@ if (0)
 
 module cardSlit(card_mount_height, card_mount_thickness, mount_width)
 {
-    main_slide_bottom_width = card_thickness+card_thickness_tol;
-    main_slide_width = mount_card_slide+card_thickness_tol;
+    main_slide_bottom_width = card_thickness+card_thickness_tol*2;
+    main_slide_width = card_thickness*3+card_thickness_tol;
     main_slide_flairout = card_thickness+mount_card_funnel;
     hull()
     {
         // Main Slide Channel
         translate([0,0,(mount_width-mount_card_grip_depth)])
-            cube([card_mount_height+1, main_slide_bottom_width, 0.01], center=true);
-        translate([0,0,(mount_width)-mount_card_grip_depth/2])
-            cube([card_mount_height+1, main_slide_width, 0.01], center=true);
+            cube([card_mount_height+50, main_slide_bottom_width, 0.01], center=true);
+        translate([0,0,(mount_width)-mount_card_grip_depth*1/3])
+            cube([card_mount_height+50, main_slide_width, 0.01], center=true);
     }
     hull()
     {
         // Flair Out (Since the first few sub mm on plate will be very inaccurate due to plate squish)
-        translate([0,0,(mount_width)-mount_card_grip_depth/2])
-            cube([card_mount_height+1, main_slide_width, 0.01], center=true);
+        translate([0,0,(mount_width)-mount_card_grip_depth*1/3])
+            cube([card_mount_height+50, main_slide_width, 0.01], center=true);
         translate([0,0,(mount_width)])
-            cube([card_mount_height+1, main_slide_flairout, 0.01], center=true);
+            cube([card_mount_height+50, main_slide_flairout, 0.01], center=true);
     }
 
     // Funnels
@@ -74,33 +74,51 @@ module cardSlit(card_mount_height, card_mount_thickness, mount_width)
         translate([card_mount_height/2,0,mount_card_grip_depth/2])
             cube([0.1, mount_card_funnel, mount_card_grip_depth+mount_card_funnel], center=true);
     }
-
-    translate([0,0,(mount_width - mount_card_grip_depth)+0.01])
-    hull()
-    {
-        translate([-card_mount_height/2+10,0,mount_card_grip_depth/2])
-            cube([0.1, card_thickness+card_thickness_tol, mount_card_grip_depth], center=true);
-        translate([-card_mount_height/2,0,mount_card_grip_depth/2])
-            cube([0.1, mount_card_funnel, mount_card_grip_depth+mount_card_funnel], center=true);
-    }
 }
 
 difference()
 {
     card_mount_height = (card_height+card_height_tol)*mount_slot_count;
-    card_mount_thickness = card_thickness+mount_card_funnel+mount_thickness*2+commandstrip_thickness/2;
+    card_mount_thickness = card_thickness+mount_card_funnel+mount_thickness*2;
     
-    translate([0,commandstrip_thickness/4,mount_width/2])
-        cube([card_mount_height, card_mount_thickness, mount_width], center=true);
+    union()
+    {
+        translate([0,0,mount_width/2])
+            cube([card_mount_height, card_mount_thickness, mount_width], center=true);
+
+       translate([0,0,mount_width])
+            hull()
+            {
+                translate([-card_mount_height/2-2,0,-mount_card_grip_depth/2])
+                    cube([0.1, card_thickness+card_thickness_tol, mount_card_grip_depth], center=true);
+                translate([-card_mount_height/2,0,-mount_card_grip_depth/2-mount_card_funnel/4])
+                    cube([0.1, mount_card_funnel, mount_card_grip_depth+mount_card_funnel/2], center=true);
+            }
+
+       translate([0,0,mount_width])
+            hull()
+            {
+                translate([-card_mount_height/2-2,0,-mount_card_grip_depth/2])
+                    cube([0.1, card_thickness+card_thickness_tol, mount_card_grip_depth], center=true);
+                translate([-card_mount_height/2,0,-mount_card_grip_depth/2-mount_card_funnel/4])
+                    cube([0.1, mount_card_funnel, mount_card_grip_depth+mount_card_funnel/2], center=true);
+            }
+    }
 
     // Card Slit
     translate([0,0,0])
         cardSlit(card_mount_height, card_mount_thickness, mount_width);
 
-    // Command Strip
-    translate([card_mount_height/2-commandstrip_h/2,card_mount_thickness/2+commandstrip_thickness/4+0.01,mount_width/2])
-        cube([commandstrip_h+0.01,commandstrip_thickness,mount_width+0.1], center=true);
-    translate([-card_mount_height/2+commandstrip_h/2,card_mount_thickness/2+commandstrip_thickness/4+0.01,mount_width/2])
-        cube([commandstrip_h+0.01,commandstrip_thickness,mount_width+0.1], center=true);
+    // This represents the next slide we can connect to
+    if (0)
+    %translate([0,0,(mount_width - mount_card_grip_depth)+0.01])
+    hull()
+    {
+        translate([-card_mount_height/2-5,0,mount_card_grip_depth/2])
+            cube([0.1, card_thickness+card_thickness_tol, mount_card_grip_depth], center=true);
+        translate([-card_mount_height/2,0,mount_card_grip_depth/2])
+            cube([0.1, mount_card_funnel, mount_card_grip_depth+mount_card_funnel], center=true);
+    }
+    
 }
 
