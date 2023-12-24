@@ -1,3 +1,8 @@
+// Wall Letter Holder (OpenSCAD)
+// Brian Khuu December 2023
+// Description: Wall Letter Organiser using commands strips split in half to stick it to the wall
+//              You need two copies to hold each letter stably
+//              This was tested under a Prusa MK3S+ with a 0.6mm Nozzle
 $fn = 40;
 
 /* [Letter Dimentions] */
@@ -22,7 +27,7 @@ commandstrip_h = 50;
 commandstrip_thickness = 1.0;
 
 /* [Stacked Printing Mode] */
-stack_printing_count = 2;
+stack_printing_count = 0;
 stack_printing_gap = 0.3;
 
 module hookHalfCurve(
@@ -58,7 +63,7 @@ module hookHalfCurve(
                         rotate([90,0,0])
                             linear_extrude(height=1, scale=0.5)
                                 hookCrossSection();
-        }  
+        }
 }
 
 module letter_holder()
