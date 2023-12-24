@@ -24,6 +24,55 @@ wall_height = wall_base + businesscard_thickness + wall_top*2;
 holder_thickness = 1.0;
 holder_slot_depth = businesscard_thickness*11; // 10 business cards (1 businesscard tolerance)
 holder_slot_shift = 10;
+
+// Pen Holder
+penHolder_thickness = 1;
+penHolder_pendia = 13;
+
+module penholder() {
+    intersection()
+    {
+
+        penHolder_outerdia = penHolder_pendia+penHolder_thickness*2+2;
+        penHolder_outerGripDia = penHolder_pendia;
+        penHolder_innerdia = penHolder_pendia+1;
+        difference()
+        {
+            hull()
+            {
+                translate([0,holder_slot_depth+holder_thickness*2+holder_slot_shift,penHolder_outerdia/2])
+                    rotate([0,90,0])
+                        cylinder(d=penHolder_outerdia, h=(businesscard_width+holder_thickness*2), center=true);
+                translate([0,holder_slot_depth+holder_thickness*2+holder_slot_shift+penHolder_outerdia/2,penHolder_outerdia/2])
+                    rotate([0,90,0])
+                        cylinder(d=penHolder_outerdia, h=(businesscard_width+holder_thickness*2), center=true);
+            }
+            hull()
+            {
+                translate([0,holder_slot_depth+holder_thickness*2+holder_slot_shift+penHolder_innerdia/2+penHolder_thickness-2,penHolder_innerdia/2+penHolder_thickness])
+                    rotate([0,90,0])
+                        cylinder(d=penHolder_innerdia, h=businesscard_width, center=true);
+                translate([0,holder_slot_depth+holder_thickness*2+holder_slot_shift+penHolder_innerdia/2+penHolder_thickness,penHolder_innerdia/2+penHolder_thickness])
+                    rotate([0,90,0])
+                        cylinder(d=penHolder_innerdia, h=businesscard_width, center=true);
+            }
+            hull()
+            {
+                translate([0,holder_slot_depth+holder_thickness*2+holder_slot_shift+penHolder_innerdia/2+penHolder_thickness-3,penHolder_innerdia/2+penHolder_thickness])
+                    rotate([0,90,0])
+                        cylinder(d=penHolder_outerGripDia, h=businesscard_width+holder_thickness*2+0.1, center=true);
+                translate([0,holder_slot_depth+holder_thickness*2+holder_slot_shift+penHolder_innerdia/2+penHolder_thickness,penHolder_innerdia/2+penHolder_thickness])
+                    rotate([0,90,0])
+                        cylinder(d=penHolder_outerGripDia, h=businesscard_width+holder_thickness*2+0.1, center=true);
+            }
+        }
+        translate([0,holder_slot_depth+holder_thickness*2+holder_slot_shift+penHolder_thickness,penHolder_outerdia/4])
+        cube([businesscard_width+holder_thickness*2,penHolder_outerdia*2,penHolder_outerdia/2],center=true);
+    }
+
+}
+
+rotate([0,90,0])
 difference()
 {
     // Bulk
@@ -39,36 +88,10 @@ difference()
             
         }
         // Pen Cut
-        intersection()
-        {
-            penHolder_thickness = 1;
-            penHolder_pendia = 13;
-            penHolder_outerdia = penHolder_pendia+penHolder_thickness*2;
-            penHolder_innerdia = penHolder_pendia;
-            difference()
-            {
-                hull()
-                {
-                    translate([0,holder_slot_depth+holder_thickness*2+holder_slot_shift,penHolder_outerdia/2])
-                        rotate([0,90,0])
-                            cylinder(d=penHolder_outerdia, h=(businesscard_width+holder_thickness*2), center=true);
-                    translate([0,holder_slot_depth+holder_thickness*2+holder_slot_shift+penHolder_outerdia/2,penHolder_outerdia/2])
-                        rotate([0,90,0])
-                            cylinder(d=penHolder_outerdia, h=(businesscard_width+holder_thickness*2), center=true);
-                }
-                hull()
-                {
-                    translate([0,holder_slot_depth+holder_thickness*2+holder_slot_shift+penHolder_innerdia/2+penHolder_thickness-2,penHolder_innerdia/2+penHolder_thickness])
-                        rotate([0,90,0])
-                            cylinder(d=penHolder_innerdia, h=businesscard_width+holder_thickness*2+1, center=true);
-                    translate([0,holder_slot_depth+holder_thickness*2+holder_slot_shift+penHolder_innerdia/2+penHolder_thickness,penHolder_innerdia/2+penHolder_thickness])
-                        rotate([0,90,0])
-                            cylinder(d=penHolder_innerdia, h=businesscard_width+holder_thickness*2+1, center=true);
-                }
-            }
-            translate([0,holder_slot_depth+holder_thickness*2+holder_slot_shift+penHolder_thickness,penHolder_outerdia/4])
-            cube([businesscard_width+holder_thickness*2,penHolder_outerdia*2,penHolder_outerdia/2],center=true);
-        }
+        penholder();
+        translate([0, -3, penHolder_pendia + penHolder_pendia/2])
+            penholder();
+        
     }
 
     // Card
