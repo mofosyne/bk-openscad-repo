@@ -3,7 +3,8 @@
 $fn = 100;
 
 // Bottle Diameter
-bottle_w = 80; // (was 75mm, but marlen said it was a bit tight)
+//bottle_w = 80; // (was 75mm, but marlen said it was a bit tight for his soap bottle)
+bottle_w = 95; // (was 90mm, but added bit more for his hand sanatiser)
 
 // Bottle Holder Heighht
 bottleholder_h = 75; // 4cm
