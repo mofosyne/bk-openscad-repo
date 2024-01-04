@@ -27,14 +27,14 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      inkscape:zoom="1.4059997"
-     inkscape:cx="761.02436"
-     inkscape:cy="287.69566"
+     inkscape:cx="347.79524"
+     inkscape:cy="407.89482"
      inkscape:window-width="1920"
      inkscape:window-height="1008"
      inkscape:window-x="1920"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g56-2" />
+     inkscape:current-layer="layer4" />
   <defs
      id="defs1" />
   <g
@@ -630,14 +630,19 @@
     <text
        xml:space="preserve"
        style="font-size:2.59353px;font-family:Gayathri;-inkscape-font-specification:Gayathri;text-align:center;text-anchor:middle;fill:#000000;stroke:none;stroke-width:0.245057"
-       x="79.785858"
-       y="108.10803"
+       x="80.251259"
+       y="107.09406"
        id="text9-9"><tspan
          sodipodi:role="line"
-         id="tspan9-3"
          style="stroke-width:0.245057"
-         x="79.785858"
-         y="108.10803">Inspired By: https://joelzaslofsky.com/offers-and-needs-market/</tspan></text>
+         x="80.251259"
+         y="107.09406"
+         id="tspan3">Designed By Brian Khuu</tspan><tspan
+         sodipodi:role="line"
+         style="stroke-width:0.245057"
+         x="80.251259"
+         y="110.33597"
+         id="tspan5">Inspired By: https://joelzaslofsky.com/offers-and-needs-market/</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:11.8193px;line-height:1;font-family:Gayathri;-inkscape-font-specification:Gayathri;text-align:center;text-anchor:middle;fill:#d4aa00;stroke:none;stroke-width:1.67518"
