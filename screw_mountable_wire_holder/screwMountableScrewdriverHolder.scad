@@ -12,6 +12,9 @@
     * countersunkDiameter : Increased a mm to be easier to screw include
     * holderGapSizeDef : 7.5 -> 10.5mm for pixel's mini screwdriver
 
+    Adjusted for GE (2024):
+    * Add capability to remove screw slide in slot (e.g. Magnetic screw base)
+
 ---------------- Old description ------------
     Screw mountable wire holder
     For use with T-slot V-slots nuts and screws
@@ -39,6 +42,7 @@ holderGapSizeDefCount=[cnt,1];
 holderSizeDef=[11];
 holderSizeDefCount=[cnt+1];
 fn=40;
+drillholeSlideSlot=true;
 drillholeDiameter=8;
 countersunkDiameter=15;
 countersunkHeight=2;
@@ -88,8 +92,11 @@ module drillHole(){
         cylinder(r=drillholeDiameter/2,h=backplateThickness,$fn=fn);
         translate([0,0,backplateThickness-countersunkHeight+0.001])
         cylinder(r1=drillholeDiameter/2,r2=countersunkDiameter/2,h=countersunkHeight+0.002,$fn=fn);
+        translate([0,0,backplateThickness])
+        cylinder(r=countersunkDiameter/2,h=countersunkHeight+0.002,$fn=fn);
     }
 
+    if (drillholeSlideSlot)
     translate([0,-backplateThickness-0.001,0])
     rotate([-90,0,0]){
         hull()

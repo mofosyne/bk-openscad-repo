@@ -1,0 +1,59 @@
+{
+    "fileFormatVersion": "1",
+    "parameterSets": {
+        "PixelT": {
+            "backplateHeight": "0",
+            "backplateSupportHeight": "20",
+            "backplateThickness": "8",
+            "cnt": "7",
+            "countersunkDiameter": "15",
+            "countersunkHeight": "2",
+            "drillholeDiameter": "8",
+            "drillholeSlideSlot": "true",
+            "fn": "40",
+            "holderAngle": "40",
+            "holderGapSizeDef": "[10.5, 0]",
+            "holderLengthA": "15",
+            "holderLengthB": "10",
+            "holderSizeDef": "[11]",
+            "holderThickness": "4",
+            "supportWallThickness": "3"
+        },
+        "GE": {
+            "backplateHeight": "0",
+            "backplateSupportHeight": "20",
+            "backplateThickness": "4",
+            "cnt": "7",
+            "countersunkDiameter": "10",
+            "countersunkHeight": "2",
+            "drillholeDiameter": "5",
+            "drillholeSlideSlot": "false",
+            "fn": "40",
+            "holderAngle": "40",
+            "holderGapSizeDef": "[10.5, 0]",
+            "holderLengthA": "15",
+            "holderLengthB": "10",
+            "holderSizeDef": "[11]",
+            "holderThickness": "4",
+            "supportWallThickness": "3"
+        },
+        "2024-08-13": {
+            "backplateHeight": "0",
+            "backplateSupportHeight": "20",
+            "backplateThickness": "8",
+            "cnt": "7",
+            "countersunkDiameter": "15",
+            "countersunkHeight": "2",
+            "drillholeDiameter": "8",
+            "drillholeSlideSlot": "true",
+            "fn": "40",
+            "holderAngle": "40",
+            "holderGapSizeDef": "[10.5, 0]",
+            "holderLengthA": "15",
+            "holderLengthB": "10",
+            "holderSizeDef": "[11]",
+            "holderThickness": "4",
+            "supportWallThickness": "3"
+        }
+    }
+}
