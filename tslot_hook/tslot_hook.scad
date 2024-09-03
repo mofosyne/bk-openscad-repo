@@ -16,7 +16,7 @@ extraStackCopies = 2;
 // CenterDepth
 //tslot_centerdepth = 6.5;
 // CenterWidth
-tslot_centerwidth = 10; // Gap to slot the clip though
+tslot_centerwidth = 10; // Gap to slot the clip though // 10
 // For the wedge... its based on a 4040mm Tslot... so may need to modify polygon() in this script
 
 /* [Hook Spec] */
@@ -25,7 +25,7 @@ hookdia=12;
 // Hook Flange
 hookflange=3;
 // Hook Width
-hookwidth=9;
+hookwidth=tslot_centerwidth-1;
 // Hook Thickness
 hookthickness=4;
 
@@ -36,7 +36,7 @@ module tslotHook()
         union()
         {
             // Tslot
-            tslot();
+            tslot(tslot_centerwidth=tslot_centerwidth);
 
             // tslot mount shaft
             translate([0, -hookthickness, 0])

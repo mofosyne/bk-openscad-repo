@@ -1,0 +1,21 @@
+{
+    "fileFormatVersion": "1",
+    "parameterSets": {
+        "Pixel": {
+            "$fn": "100",
+            "extraStackCopies": "2",
+            "hookdia": "12",
+            "hookflange": "3",
+            "hookthickness": "4",
+            "tslot_centerwidth": "10"
+        },
+        "geicp": {
+            "$fn": "100",
+            "extraStackCopies": "2",
+            "hookdia": "12",
+            "hookflange": "3",
+            "hookthickness": "4",
+            "tslot_centerwidth": "8"
+        }
+    }
+}
