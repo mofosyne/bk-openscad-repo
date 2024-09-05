@@ -11,7 +11,7 @@
         },
         "geicp": {
             "$fn": "100",
-            "extraStackCopies": "2",
+            "extraStackCopies": "0",
             "hookdia": "12",
             "hookflange": "3",
             "hookthickness": "4",
