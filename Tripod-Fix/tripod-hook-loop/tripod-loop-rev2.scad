@@ -129,11 +129,11 @@ module th_in_pt(rt,p,s,sg,thr,h,sh)
 // | 1/4           | 6.3500      | 20          |
 // | 3/8           | 7.9375      | 16          |
 
-hole_dia_tolerance = 0.5;
-ball_mount_dia = 17;
+cap_height = 15;
+hole_dia_tolerance = 0.1;
 bottom_screw_size = 6.35;
 screw_mount_outer_dia = (fairbury_hex_nut_dia(6.35)+fairbury_hex_nut_dia(7.9375))/2;
-ball_midpoint_to_mount_midpoint = ball_mount_dia/2+screw_mount_outer_dia/2+3;
+ball_midpoint_to_mount_midpoint = cap_height/2+screw_mount_outer_dia/2+3;
 difference()
 {
     intersection()
@@ -144,32 +144,37 @@ difference()
             {
                 union()
                 {
-                    cylinder(d = screw_mount_outer_dia, h = ball_mount_dia, $fn=60);
-                    for (angle = [ -90/2 : 90/3 : 90/2 ])
+                    cylinder(d = screw_mount_outer_dia, h = cap_height, $fn=60);
+                    hull()
                     {
-                        rotate([0,0,90+angle]) translate([screw_mount_outer_dia/2-1/2,0,0]) cylinder(d = 2, h = ball_mount_dia, $fn=60);
-                        rotate([0,0,-90+angle]) translate([screw_mount_outer_dia/2-1/2,0,0]) cylinder(d = 2, h = ball_mount_dia, $fn=60);
+                        rotate([0,0,90]) translate([(cap_height/2)+(screw_mount_outer_dia/2)*2/3+1,0,0]) cylinder(d = 1.5, h = cap_height, $fn=60);
+                        rotate([0,0,-90]) translate([(cap_height/2)+(screw_mount_outer_dia/2)*2/3+1,0,0]) cylinder(d = 1.5, h = cap_height, $fn=60);
                     }
                 }
                 // Bottom thread
                 translate([0,0,-0.1])
-                    cylinder(d = bottom_screw_size+hole_dia_tolerance, h = ball_mount_dia/2);
+                    cylinder(d = bottom_screw_size+hole_dia_tolerance, h = cap_height-screw_mount_outer_dia/3);
             }
             translate([0,0,0])
-                thread_in(bottom_screw_size+hole_dia_tolerance, ball_mount_dia/2-0.2);
+                thread_in(bottom_screw_size+hole_dia_tolerance, cap_height/2-0.2);
         }
         hull()
         {
-            cylinder(d = screw_mount_outer_dia + 1, h = ball_mount_dia/2, $fn=60);
-            translate([0,0,(screw_mount_outer_dia + 1)/2])
-                sphere(d = screw_mount_outer_dia + 1);
+            cylinder(d = screw_mount_outer_dia, h = 0.1, $fn=60);
+            translate([0,screw_mount_outer_dia*2/3,cap_height/2])
+                rotate([0,90,0])
+                    cylinder(d = cap_height/2, h = 0.5, center=true);
+            translate([0,-screw_mount_outer_dia*2/3,cap_height/2])
+                rotate([0,90,0])
+                    cylinder(d = cap_height/2, h = 0.5, center=true);
+            translate([0,0,cap_height-screw_mount_outer_dia/2])
+                sphere(d = screw_mount_outer_dia);
         }
     }
 
-    translate([0,0,ball_mount_dia/2]) 
     hull()
     {
-        translate([0,0,2]) rotate([0,90,0]) cylinder(d = 2.5, h = ball_midpoint_to_mount_midpoint, $fn=60, center=true);
-        translate([0,0,-2]) rotate([0,90,0]) cylinder(d = 2.5, h = ball_midpoint_to_mount_midpoint, $fn=60, center=true);
+        translate([0,0,screw_mount_outer_dia-8]) rotate([0,90,0]) cylinder(d = 2.5, h = screw_mount_outer_dia, $fn=60, center=true);
+        translate([0,0,screw_mount_outer_dia-3]) rotate([0,90,0]) cylinder(d = 2.5, h = screw_mount_outer_dia, $fn=60, center=true);
     }
 }
