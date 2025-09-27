@@ -1,4 +1,4 @@
-/* KEEPTEEN D5 Lora Sled for Heltec v3 (and other slideable PCB) */
+/* KEEPTEEN D5 Lora Sled for Heltec v3 (and other slideable PCB) (Rev1) */
 // This is intended to allow for mounting meshtastic/meshcore/rnodes in a lipo based solar powered node. Tested against a KEEPTEEN D5 Solar Lora Repeater enclosure.
 
 // Brian Khuu 2025
