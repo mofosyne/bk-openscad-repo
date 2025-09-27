@@ -1,0 +1,39 @@
+{
+    "parameterSets": {
+        "Heltec LoRa v3": {
+            "$fn": "80",
+            "cell_count": "6",
+            "holder_h": "11",
+            "holder_w": "45",
+            "pcb_bottom_clearance_height": "3",
+            "pcb_bottom_clearance_width": "23",
+            "pcb_bottom_plug_clearance_height": "5",
+            "pcb_bottom_plug_clearance_width": "10",
+            "pcb_thickness": "1.7",
+            "pcb_top_clearance_height": "3",
+            "pcb_top_clearance_width": "23",
+            "pcb_width": "26",
+            "tray_pcb_slot_count": "2"
+        },
+        "Heltec Mesh Node T114": {
+            "$fn": "80",
+            "cell_count": "6",
+            "holder_h": "11",
+            "holder_w": "45",
+            "pcb_bottom_clearance_height": "3",
+            "pcb_bottom_clearance_width": "20",
+            "pcb_bottom_plug_clearance_height": "5",
+            "pcb_bottom_plug_clearance_width": "18",
+            "pcb_thickness": "1.7",
+            "pcb_top_clearance_height": "3",
+            "pcb_top_clearance_width": "22",
+            "pcb_width": "23",
+            "tray_pcb_slot_count": "2"
+        }
+    },
+    "fileFormatVersion": "1",
+    "parameterSets": "",
+    "parameterSets": "",
+    "parameterSets": "",
+    "parameterSets": ""
+}
