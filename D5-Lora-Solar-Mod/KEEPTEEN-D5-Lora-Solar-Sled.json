@@ -29,6 +29,36 @@
             "pcb_top_clearance_width": "22",
             "pcb_width": "23",
             "tray_pcb_slot_count": "2"
+        },
+        "fakeTecV5": {
+            "$fn": "80",
+            "cell_count": "6",
+            "holder_h": "11",
+            "holder_w": "45",
+            "pcb_bottom_clearance_height": "3",
+            "pcb_bottom_clearance_width": "24",
+            "pcb_bottom_plug_clearance_height": "6",
+            "pcb_bottom_plug_clearance_width": "10",
+            "pcb_thickness": "1.7",
+            "pcb_top_clearance_height": "3",
+            "pcb_top_clearance_width": "24",
+            "pcb_width": "25.5",
+            "tray_pcb_slot_count": "2"
+        },
+        "design default values": {
+            "$fn": "80",
+            "cell_count": "6",
+            "holder_h": "11",
+            "holder_w": "45",
+            "pcb_bottom_clearance_height": "3",
+            "pcb_bottom_clearance_width": "24",
+            "pcb_bottom_plug_clearance_height": "6",
+            "pcb_bottom_plug_clearance_width": "10",
+            "pcb_thickness": "1.7",
+            "pcb_top_clearance_height": "3",
+            "pcb_top_clearance_width": "24",
+            "pcb_width": "25.6",
+            "tray_pcb_slot_count": "2"
         }
     },
     "fileFormatVersion": "1",

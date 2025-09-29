@@ -8,25 +8,25 @@
 pcb_thickness = 1.7;
 
 // PCB Width
-pcb_width = 26.0;
+pcb_width = 26.1;
 
 // PCB Top Clearance Height
 pcb_top_clearance_height = 3;
 
 // PCB Top Clearance Width
-pcb_top_clearance_width = 23.0;
+pcb_top_clearance_width = 23.01;
 
-// PCB Bottom Clerance Height
-pcb_bottom_clearance_height = 3;
+// PCB Bottom Clearance Height
+pcb_bottom_clearance_height = 3.01;
 
 // PCB Bottom Clearance Width
-pcb_bottom_clearance_width = 23.0;
+pcb_bottom_clearance_width = 23.01;
 
-// PCB Bottom Plug Clerance Height
-pcb_bottom_plug_clearance_height = 5;
+// PCB Bottom Plug Clearance Height
+pcb_bottom_plug_clearance_height = 5.01;
 
-// PCB Bothm Plug Clerance Width
-pcb_bottom_plug_clearance_width = 10.0;
+// PCB Bottom Plug Clearance Width
+pcb_bottom_plug_clearance_width = 10.01;
 
 /* [Tray] */
 
@@ -112,3 +112,10 @@ difference()
         translate([pcb_width/2 + 1 + ((pcb_width + 1) * i),0,-pcb_top_clearance_height+0.01])
             pcb_slide();
 }
+
+// Double Checking if fakeTec v5 will fit
+// https://github.com/gargomoma/fakeTec_pcb/tree/main/design_files
+if (1)
+    %translate([-90.0+0.1,3.8,110])
+        rotate([90,0,0])
+        import("model_fakeTecv5.stl");
