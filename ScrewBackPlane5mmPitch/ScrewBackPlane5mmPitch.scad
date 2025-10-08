@@ -4,6 +4,21 @@
 // Found out that these junction boxes typically have screw size of M2 and screw pitch of 5mm
 // At least based on https://www.aliexpress.com/item/1005009909495336.html
 
+// Width
+width=30;
+
+// Length
+length=30;
+
+// Pitch
+pitch=5;
+
+// Screw Size
+screwSize=2;
+
+// Thickness
+thickness=3;
+
 module screwBackPlaneHoles(width, length, thickness=3, pitch=5, screwSize=2)
 {
     xCount = floor(width/pitch)-1;
@@ -43,4 +58,4 @@ module screwBackPlane(width=67, length=117, pitch=5, screwSize=2, thickness=3)
     }
 }
 
-screwBackPlane();
+screwBackPlane(width=width, length=length, pitch=pitch, screwSize=screwSize, thickness=thickness);
