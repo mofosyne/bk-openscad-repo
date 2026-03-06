@@ -16,6 +16,10 @@ lt = 2; // loop thickness
 lh = 5; // loop size
 ll = 10; // loop length
 
+/* [Wood Screw Option] */
+sd = 4; // Screw Hole Dia
+so = 6.5; // Screw Offset
+
 /* Hook function and module */
 function loop_width(thickness, holesize) = holesize+thickness*2;
 module hook(x, z, thickness, holesize)
@@ -49,9 +53,16 @@ module hook(x, z, thickness, holesize)
 }
 
 union() {
-    translate([0  , 0  , 0])
-        cube([sx,sy,sh]);
-    
+    difference()
+    {
+        translate([0  , 0  , 0])
+            cube([sx,sy,sh]);
+        translate([sx-so,sy/2,-0.5])
+            cylinder(d=sd, h=sh+1);
+        translate([so,sy/2,-0.5])
+            cylinder(d=sd, h=sh+1);
+    }
+   
     if ((loop_pos == "a")||(loop_pos == "c"))
         hook(sx/2, sh, lt, lh);
     if ((loop_pos == "a")||(loop_pos == "s")||(loop_pos == "l"))
